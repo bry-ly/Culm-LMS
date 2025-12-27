@@ -6,6 +6,7 @@ import { request } from "@arcjet/next";
 import prisma from "@/lib/db";
 import { ApiResponse } from "@/lib/types";
 import { courseSchema, CourseSchemaType } from "@/lib/zodSchemas";
+import { revalidatePath } from "next/cache";
 
 const aj = arcjet
   .withRule(
@@ -71,6 +72,82 @@ export async function editCourse(data: CourseSchemaType, courseId: string): Prom
     return {
       status: "error",
       message: "Failed to update course",
+    };
+  }
+}
+
+export async function reorderLessons(chapterId: string, lessons: { id: string; position: number }[], courseId: string): Promise<ApiResponse> {
+  await requireAdmin();
+  try {
+    if (!lessons || lessons.length === 0) {
+      return {
+        status: "error",
+        message: "No lesson provided for reordering",
+      };
+    }
+
+    const updates = lessons.map((lesson) =>
+      prisma.lesson.update({
+        where: {
+          id: lesson.id,
+          chapterId: chapterId,
+        },
+        data: {
+          position: lesson.position,
+        },
+      }),
+    );
+
+    revalidatePath(`/admin/courses/${courseId}/edit`);
+
+    await prisma.$transaction(updates);
+
+    return {
+      status: "success",
+      message: "Lesson reordered successfully",
+    };
+  } catch {
+    return {
+      status: "error",
+      message: "Failed to reorder lessons.",
+    };
+  }
+}
+
+export async function reorderChapter(courseId: string, chapters: { id: string; position: number }[]): Promise<ApiResponse> {
+  await requireAdmin();
+  try {
+    if (!chapters || chapters.length === 0) {
+      return {
+        status: "error",
+        message: "No Chapters provided for reordering",
+      };
+    }
+
+    const updates = chapters.map((chapter) =>
+      prisma.chapter.update({
+        where: {
+          id: chapter.id,
+          courseId: courseId,
+        },
+        data: {
+          position: chapter.position,
+        },
+      }),
+    );
+
+    revalidatePath(`/admin/courses/${courseId}/edit`);
+
+    await prisma.$transaction(updates);
+
+    return {
+      status: "success",
+      message: "Chapters reordered successfully",
+    };
+  } catch {
+    return {
+      status: "error",
+      message: "Failed to reorder chapter",
     };
   }
 }
