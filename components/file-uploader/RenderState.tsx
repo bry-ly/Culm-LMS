@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils";
 import { CloudUploadIcon, ImageIcon, Loader, XIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import Image from "next/image";
+import { ShimmeringText } from "@/components/ui/shimmering-text";
 
 export function RenderEmptyState({ isDragActive }: { isDragActive: boolean }) {
   return (
@@ -80,30 +81,60 @@ export function RenderUploadedState({
 }
 
 export function RenderUploadingState({
-  previewUrl,
   progress,
 }: {
-  previewUrl: string;
   progress: number;
 }) {
+  const size = 80;
+  const strokeWidth = 8;
+  const radius = (size - strokeWidth) / 2;
+  const circumference = 2 * Math.PI * radius;
+  const offset = circumference - (progress / 100) * circumference;
+
   return (
-    <div className="relative w-full h-full">
-      <Image
-        src={previewUrl}
-        alt="Uploading File"
-        fill
-        className="object-contain p-2 opacity-50"
-      />
-      <div className="absolute inset-0 flex flex-col items-center justify-center bg-background/50">
-        <div className="w-3/4 h-2 bg-muted rounded-full overflow-hidden">
-          <div
-            className="h-full bg-primary transition-all duration-300 ease-out"
-            style={{ width: `${progress}%` }}
+    <div className="flex flex-col items-center justify-center w-full h-full">
+      <div className="flex flex-col items-center">
+        <div className="relative inline-flex items-center justify-center">
+          <svg
+            width={size}
+            height={size}
+            className="transform -rotate-90"
+          >
+            {/* Background circle */}
+            <circle
+              cx={size / 2}
+              cy={size / 2}
+              r={radius}
+              stroke="currentColor"
+              strokeWidth={strokeWidth}
+              fill="none"
+              className="text-muted"
+            />
+            {/* Progress circle */}
+            <circle
+              cx={size / 2}
+              cy={size / 2}
+              r={radius}
+              stroke="currentColor"
+              strokeWidth={strokeWidth}
+              fill="none"
+              strokeDasharray={circumference}
+              strokeDashoffset={offset}
+              strokeLinecap="round"
+              className="text-primary transition-all duration-300 ease-out"
+            />
+          </svg>
+          {/* Progress percentage in center */}
+          <span className="absolute text-sm font-semibold text-foreground">
+            {progress}%
+          </span>
+        </div>
+        <div className="mt-4 text-center">
+          <ShimmeringText
+            text="Uploading..."
+            className="text-sm font-medium"
           />
         </div>
-        <p className="mt-2 text-sm font-medium text-foreground">
-          Uploading... {progress}%
-        </p>
       </div>
     </div>
   );
