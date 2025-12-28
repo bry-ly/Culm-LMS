@@ -3,16 +3,40 @@
 import { Button, buttonVariants } from "@/components/ui/button";
 import { ArrowLeft, Loader, PlusIcon, SparkleIcon } from "lucide-react";
 import Link from "next/link";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { courseCategory, courseLevels, courseSchema, courseStatus } from "@/lib/zodSchemas";
-import { useForm } from "react-hook-form";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  courseCategory,
+  courseLevels,
+  courseSchema,
+  courseStatus,
+  CourseFormValues,
+} from "@/lib/zodSchemas";
+import { useForm, Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { z } from "zod";
 import slugify from "slugify";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { RichTextEditor } from "@/components/rich-text-editor/Editor";
 import { Uploader } from "@/components/file-uploader/Uploader";
 import { useTransition } from "react";
@@ -20,14 +44,13 @@ import { tryCatch } from "@/hooks/try-catch";
 import { CreateCourse } from "./actions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-type CourseFormValues = z.infer<typeof courseSchema>;
 
 export default function CourseCreationPage() {
   const [Pending, startTransition] = useTransition();
   const router = useRouter();
 
   const form = useForm<CourseFormValues>({
-    resolver: zodResolver(courseSchema),
+    resolver: zodResolver(courseSchema) as Resolver<CourseFormValues>,
     defaultValues: {
       title: "",
       description: "",
@@ -73,7 +96,9 @@ export default function CourseCreationPage() {
       <Card className="">
         <CardHeader>
           <CardTitle>Basic Information</CardTitle>
-          <CardDescription>Fill in the basic information of the course</CardDescription>
+          <CardDescription>
+            Fill in the basic information of the course
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -124,7 +149,11 @@ export default function CourseCreationPage() {
                   <FormItem className="w-full">
                     <FormLabel>Small Description</FormLabel>
                     <FormControl>
-                      <Textarea placeholder="Your description" className="max-h-120px" {...field} />
+                      <Textarea
+                        placeholder="Your description"
+                        className="max-h-120px"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -162,7 +191,10 @@ export default function CourseCreationPage() {
                   render={({ field }) => (
                     <FormItem className="w-full">
                       <FormLabel>Category</FormLabel>
-                      <Select onValueChange={field.onChange} value={field.value}>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
                         <FormControl>
                           <SelectTrigger className="w-full">
                             <SelectValue placeholder="Select Category" />
@@ -186,7 +218,10 @@ export default function CourseCreationPage() {
                   render={({ field }) => (
                     <FormItem className="w-full">
                       <FormLabel>Level</FormLabel>
-                      <Select onValueChange={field.onChange} value={field.value}>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
                         <FormControl>
                           <SelectTrigger className="w-full">
                             <SelectValue placeholder="Select Level" />
@@ -211,7 +246,11 @@ export default function CourseCreationPage() {
                     <FormItem className="w-full">
                       <FormLabel>Duration (hours)</FormLabel>
                       <FormControl>
-                        <Input placeholder="Duration" type="number" {...field} />
+                        <Input
+                          placeholder="Duration"
+                          type="number"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -259,7 +298,7 @@ export default function CourseCreationPage() {
                 {Pending ? (
                   <>
                     Creating...
-                    <Loader />
+                    <Loader className="ml-2 size-4 animate-spin" />
                   </>
                 ) : (
                   <>
