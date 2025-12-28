@@ -223,7 +223,6 @@ export function Uploader({ onChange, value }: iAppprops) {
     if (fileState.uploading) {
       return (
         <RenderUploadingState
-          previewUrl={fileState.objectUrl as string}
           progress={fileState.progress}
         />
       );
