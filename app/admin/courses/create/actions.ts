@@ -12,17 +12,19 @@ const aj = arcjet
     detectBot({
       mode: "LIVE",
       allow: [],
-    }),
+    })
   )
   .withRule(
     fixedWindow({
       mode: "LIVE",
       window: "1m",
       max: 5,
-    }),
+    })
   );
 
-export async function CreateCourse(data: CourseSchemaType): Promise<ApiResponse> {
+export async function CreateCourse(
+  data: CourseSchemaType
+): Promise<ApiResponse> {
   const session = await requireAdmin();
 
   try {
@@ -52,10 +54,9 @@ export async function CreateCourse(data: CourseSchemaType): Promise<ApiResponse>
         status: "error",
         message: "Invalid Form Data",
       };
-      // throw new Error("Something failed");
     }
 
-    const course = await prisma.course.create({
+    await prisma.course.create({
       data: {
         ...validation.data,
         userId: session?.user.id as string,
