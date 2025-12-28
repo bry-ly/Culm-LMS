@@ -1,9 +1,14 @@
 "use client";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FileRejection, useDropzone } from "react-dropzone";
 import { Card, CardContent } from "../ui/card";
 import { cn } from "@/lib/utils";
-import { RenderEmptyState, RenderErrorState, RenderUploadedState, RenderUploadingState } from "./RenderState";
+import {
+  RenderEmptyState,
+  RenderErrorState,
+  RenderUploadedState,
+  RenderUploadingState,
+} from "./RenderState";
 import { toast } from "sonner";
 import { v4 as uuidv4 } from "uuid";
 import { useConstructUrl } from "@/hooks/use-constract-url";
@@ -36,7 +41,8 @@ export function Uploader({ onChange, value }: iAppprops) {
     isDeleting: false,
     fileType: "image",
     key: value,
-    objectUrl: fileUrl,
+    // Only set objectUrl if value is truthy (has actual file key)
+    objectUrl: value ? fileUrl : undefined,
   });
 
   async function uploadFile(file: File) {
@@ -117,32 +123,29 @@ export function Uploader({ onChange, value }: iAppprops) {
     }
   }
 
-  const onDrop = useCallback(
-    (acceptedFiles: File[]) => {
-      if (acceptedFiles.length > 0) {
-        const file = acceptedFiles[0];
+  const onDrop = (acceptedFiles: File[]) => {
+    if (acceptedFiles.length > 0) {
+      const file = acceptedFiles[0];
 
-        if (fileState.objectUrl && !fileState.objectUrl.startsWith("http")) {
-          URL.revokeObjectURL(fileState.objectUrl);
-        }
-
-        setFileState({
-          file: file,
-          uploading: false,
-          progress: 0,
-          objectUrl: URL.createObjectURL(file),
-          error: false,
-          id: uuidv4(),
-          isDeleting: false,
-          fileType: "image",
-        });
-
-        // Start upload after setting state
-        uploadFile(file);
+      if (fileState.objectUrl && !fileState.objectUrl.startsWith("http")) {
+        URL.revokeObjectURL(fileState.objectUrl);
       }
-    },
-    [fileState.objectUrl],
-  );
+
+      setFileState({
+        file: file,
+        uploading: false,
+        progress: 0,
+        objectUrl: URL.createObjectURL(file),
+        error: false,
+        id: uuidv4(),
+        isDeleting: false,
+        fileType: "image",
+      });
+
+      // Start upload after setting state
+      uploadFile(file);
+    }
+  };
 
   async function handleRemoveFile() {
     if (fileState.isDeleting || !fileState.objectUrl) return;
@@ -199,8 +202,12 @@ export function Uploader({ onChange, value }: iAppprops) {
 
   function rejectedFiles(fileRejection: FileRejection[]) {
     if (fileRejection.length) {
-      const tooManyFiles = fileRejection.find((rejection) => rejection.errors[0].code === "to-many-files");
-      const filesSizeToBig = fileRejection.find((rejection) => rejection.errors[0].code === "file-too-large");
+      const tooManyFiles = fileRejection.find(
+        (rejection) => rejection.errors[0].code === "to-many-files"
+      );
+      const filesSizeToBig = fileRejection.find(
+        (rejection) => rejection.errors[0].code === "file-too-large"
+      );
 
       if (filesSizeToBig) {
         toast.error("File Size exceeds the limit");
@@ -214,14 +221,25 @@ export function Uploader({ onChange, value }: iAppprops) {
 
   function renderContent() {
     if (fileState.uploading) {
-      return <RenderUploadingState previewUrl={fileState.objectUrl as string} progress={fileState.progress} />;
+      return (
+        <RenderUploadingState
+          previewUrl={fileState.objectUrl as string}
+          progress={fileState.progress}
+        />
+      );
     }
     if (fileState.error) {
       return <RenderErrorState />;
     }
 
     if (fileState.objectUrl) {
-      return <RenderUploadedState previewUrl={fileState.objectUrl} handleRemoveFile={handleRemoveFile} isDeleting={fileState.isDeleting} />;
+      return (
+        <RenderUploadedState
+          previewUrl={fileState.objectUrl}
+          handleRemoveFile={handleRemoveFile}
+          isDeleting={fileState.isDeleting}
+        />
+      );
     }
     return <RenderEmptyState isDragActive={isDragActive} />;
   }
@@ -247,7 +265,12 @@ export function Uploader({ onChange, value }: iAppprops) {
   return (
     <Card
       {...getRootProps()}
-      className={cn("relative border-2 border-dashed transition-colors duration-200 ease-in-out w-full h-64", isDragActive ? " border-primary bg-primary/10 border-solid" : "border-border hover:border-primary")}
+      className={cn(
+        "relative border-2 border-dashed transition-colors duration-200 ease-in-out w-full h-64",
+        isDragActive
+          ? " border-primary bg-primary/10 border-solid"
+          : "border-border hover:border-primary"
+      )}
     >
       <CardContent className="flex items-center justify-center h-full w-full p-4">
         <input {...getInputProps()} />
