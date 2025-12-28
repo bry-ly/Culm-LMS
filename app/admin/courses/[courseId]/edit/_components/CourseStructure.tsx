@@ -9,10 +9,14 @@ import { AdminCourseSingularType } from "@/app/data/admin/admin-get-course";
 import { cn } from "@/lib/utils";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, ChevronRight, FileText, GripVertical, Trash2Icon } from "lucide-react";
+import { ChevronDown, ChevronRight, FileText, GripVertical } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
 import { reorderChapter, reorderLessons } from "../actions";
+import { NewChapterModal } from "./NewChapterModal";
+import { NewLessonModal } from "./NewLessonModal";
+import { DeleteLesson } from "./DeleteLesson";
+import { DeleteChapter } from "./DeleteChapter";
 
 interface iAppProps {
   data: AdminCourseSingularType;
@@ -88,14 +92,14 @@ export function CourseStructure({ data }: iAppProps) {
     const activeId = active.id;
     const overId = over.id;
     const activeType = active.data.current?.type as "chapter" | "lesson";
-    const overType = active.data.current?.type as "chapter" | "lesson";
+    const overType = over.data.current?.type as "chapter" | "lesson";
     const courseId = data.id;
 
     if (activeType === "chapter") {
       let targetChapterId = null;
 
       if (overType === "chapter") {
-        targetChapterId === overId;
+        targetChapterId = overId;
       } else if (overType === "lesson") {
         targetChapterId = over.data.current?.chapterId ?? null;
       }
@@ -145,8 +149,8 @@ export function CourseStructure({ data }: iAppProps) {
     }
 
     if (activeType === "lesson" && overType === "lesson") {
-      const chapterId = active.data.current?.chapter.Id;
-      const overChapterId = over.data.current?.chapter.Id;
+      const chapterId = active.data.current?.chapterId;
+      const overChapterId = over.data.current?.chapterId;
 
       if (!chapterId || chapterId !== overChapterId) {
         toast.error("Lesson move between chapters must be in the same chapter");
@@ -228,6 +232,7 @@ export function CourseStructure({ data }: iAppProps) {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between border-b border-border">
           <CardTitle>Chapter</CardTitle>
+          <NewChapterModal courseId={data.id} />
         </CardHeader>
         <CardContent className="space-y-8">
           <SortableContext strategy={verticalListSortingStrategy} items={items}>
@@ -236,7 +241,7 @@ export function CourseStructure({ data }: iAppProps) {
                 {(listeners) => (
                   <Card>
                     <Collapsible open={item.isOpen} onOpenChange={() => toggleChapter(item.id)}>
-                      <div className="fflex items-center justify-between p-3 border-b border-border">
+                      <div className="flex items-center justify-between p-3 border-b border-border">
                         <div className="flex items-center gap-2">
                           <Button className="cursor-grab opacity-60 hover:opacity-100" variant="ghost" size="icon" {...listeners}>
                             <GripVertical className="size-4" />
@@ -248,9 +253,7 @@ export function CourseStructure({ data }: iAppProps) {
                           </CollapsibleTrigger>
                           <p className="cursor-pointer hover:text-primary">{item.title}</p>
                         </div>
-                        <Button size="icon" variant="outline">
-                          <Trash2Icon className="size-4" />
-                        </Button>
+                        <DeleteChapter chapterId={item.id} courseId={data.id} />
                       </div>
                       <CollapsibleContent>
                         <div className="p-1">
@@ -260,24 +263,20 @@ export function CourseStructure({ data }: iAppProps) {
                                 {(lessonListeners) => (
                                   <div className="flex items-center justify-between p-2 hover:bg-accent rounded-sm">
                                     <div className="flex items-center gap-2">
-                                      <Button variant="ghost" size="icon" {...lessonListeners}>
+                                      <Button variant="ghost" className="cursor-grab" {...lessonListeners}>
                                         <GripVertical className="size-4" />
                                       </Button>
                                       <FileText className="size-4" />
                                       <Link href={`/admin/courses/${data.id}/${item.id}/${lesson.id}`}>{lesson.title}</Link>
                                     </div>
-                                    <Button variant="outline" size="icon">
-                                      <Trash2Icon className="size-4" />
-                                    </Button>
+                                    <DeleteLesson chapterId={item.id} courseId={data.id} lessonId={lesson.id} />
                                   </div>
                                 )}
                               </SortableItem>
                             ))}
                           </SortableContext>
                           <div className="p-2">
-                            <Button className="w-full" variant="outline">
-                              New Lesson
-                            </Button>
+                            <NewLessonModal chapterId={item.id} courseId={data.id} />
                           </div>
                         </div>
                       </CollapsibleContent>
