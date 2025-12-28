@@ -2,25 +2,41 @@
 
 import { Uploader } from "@/components/file-uploader/Uploader";
 import { RichTextEditor } from "@/components/rich-text-editor/Editor";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { tryCatch } from "@/hooks/try-catch";
-import { courseCategory, courseLevels, courseSchema, CourseSchemaType, courseStatus } from "@/lib/zodSchemas";
+import {
+  courseCategory,
+  courseLevels,
+  courseSchema,
+  CourseSchemaType,
+  courseStatus,
+} from "@/lib/zodSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Edit2, Edit2Icon, Loader, PlusIcon, SparkleIcon } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Edit2Icon, Loader, SparkleIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { z } from "zod";
 import slugify from "slugify";
 import { editCourse } from "../actions";
 import { AdminCourseSingularType } from "@/app/data/admin/admin-get-course";
-// import { CreateCourse } from "../../../create/actions";
-type CourseFormValues = z.infer<typeof courseSchema>;
 
 interface iAppProps {
   data: AdminCourseSingularType;
@@ -30,8 +46,9 @@ export function EditCourseForm({ data }: iAppProps) {
   const [Pending, startTransition] = useTransition();
   const router = useRouter();
 
-  const form = useForm<CourseFormValues>({
-    resolver: zodResolver(courseSchema),
+  const form = useForm<CourseSchemaType>({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    resolver: zodResolver(courseSchema) as any,
     defaultValues: {
       title: data.title,
       description: data.description,
@@ -48,7 +65,9 @@ export function EditCourseForm({ data }: iAppProps) {
 
   function onSubmit(values: CourseSchemaType) {
     startTransition(async () => {
-      const { data: result, error } = await tryCatch(editCourse(values, data.id));
+      const { data: result, error } = await tryCatch(
+        editCourse(values, data.id)
+      );
 
       if (error) {
         toast.error("An unexpected error occurred. Please try again.");
@@ -113,7 +132,11 @@ export function EditCourseForm({ data }: iAppProps) {
             <FormItem className="w-full">
               <FormLabel>Small Description</FormLabel>
               <FormControl>
-                <Textarea placeholder="Your description" className="max-h-120px" {...field} />
+                <Textarea
+                  placeholder="Your description"
+                  className="max-h-120px"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
