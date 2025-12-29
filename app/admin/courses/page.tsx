@@ -1,11 +1,12 @@
 import { adminGetCourses } from "@/app/data/admin/admin-get-courses";
 import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
-import { AdminCourseCard } from "./_components/AdminCourseCard";
+import { AdminCourseCard, AdminCoursesCardSekeleton } from "./_components/AdminCourseCard";
+import { EmptyCourseState } from "@/components/general/EmptyState";
+import { Suspense } from "react";
+import { Loader } from "lucide-react";
 
-export default async function CoursesPage() {
-  const data = await adminGetCourses();
-
+export default function CoursesPage() {
   return (
     <>
       <div className="flex item-center justify-between">
@@ -19,11 +20,36 @@ export default async function CoursesPage() {
         <h1>Here you will see all of the courses</h1>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-7 ">
-        {data.map((course) => (
-          <AdminCourseCard key={course.id} data={course}/>
-        ))}
-      </div>
+      <Suspense fallback={<AdminCoursesCardSkeletonLayout />}>
+        <RenderCourses />
+      </Suspense>
     </>
+  );
+}
+
+async function RenderCourses() {
+  const data = await adminGetCourses();
+  return (
+    <>
+      {data.length === 0 ? (
+        <EmptyCourseState />
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-7 ">
+          {data.map((course) => (
+            <AdminCourseCard key={course.id} data={course} />
+          ))}
+        </div>
+      )}
+    </>
+  );
+}
+
+function AdminCoursesCardSkeletonLayout() {
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-7 ">
+      {Array.from({ length: 4 }).map((_, index) => (
+        <AdminCoursesCardSekeleton key={index} />
+      ))}
+    </div>
   );
 }
