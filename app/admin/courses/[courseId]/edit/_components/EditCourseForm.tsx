@@ -2,32 +2,13 @@
 
 import { Uploader } from "@/components/file-uploader/Uploader";
 import { RichTextEditor } from "@/components/rich-text-editor/Editor";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { tryCatch } from "@/hooks/try-catch";
-import {
-  courseCategory,
-  courseLevels,
-  courseSchema,
-  CourseSchemaType,
-  courseStatus,
-} from "@/lib/zodSchemas";
+import { courseCategory, courseLevels, courseSchema, CourseSchemaType, courseStatus } from "@/lib/zodSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Edit2Icon, Loader, SparkleIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
@@ -65,9 +46,7 @@ export function EditCourseForm({ data }: iAppProps) {
 
   function onSubmit(values: CourseSchemaType) {
     startTransition(async () => {
-      const { data: result, error } = await tryCatch(
-        editCourse(values, data.id)
-      );
+      const { data: result, error } = await tryCatch(editCourse(values, data.id));
 
       if (error) {
         toast.error("An unexpected error occurred. Please try again.");
@@ -132,11 +111,7 @@ export function EditCourseForm({ data }: iAppProps) {
             <FormItem className="w-full">
               <FormLabel>Small Description</FormLabel>
               <FormControl>
-                <Textarea
-                  placeholder="Your description"
-                  className="max-h-120px"
-                  {...field}
-                />
+                <Textarea placeholder="Your description" className="max-h-120px" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -160,7 +135,7 @@ export function EditCourseForm({ data }: iAppProps) {
             <FormItem className="w-full">
               <FormLabel>Thumbnail Image</FormLabel>
               <FormControl>
-                <Uploader value={field.value} onChange={field.onChange} />
+                <Uploader fileTypeAccepted="image" value={field.value} onChange={field.onChange} />
                 {/*<Input placeholder="thumbnail url" {...field} />*/}
               </FormControl>
               <FormMessage />
