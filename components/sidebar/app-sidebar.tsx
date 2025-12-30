@@ -32,7 +32,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import Link from "next/link"
-import { Logo } from "../logo/fbc-logo/logo"
+import { Logo } from "../logo/culm-logo/logo"
 
 const data = {
   navMain: [
@@ -93,7 +93,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             >
               <Link href="#">
                 <Logo className="size-8" />
-                <span className="text-base font-semibold">Fullbright College LMS.</span>
+                <span className="text-base font-semibold">Culm LMS.</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
