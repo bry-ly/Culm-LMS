@@ -2,7 +2,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { ArrowLeftIcon } from "lucide-react";
 import Link from "next/link";
 import { ReactNode } from "react";
-import { Logo } from "@/components/logo/fbc-logo/logo";
+import { Logo } from "@/components/logo/culm-logo/logo";
 
 export default function AuthLayout({ children }: { children: ReactNode }) {
   return (
@@ -19,8 +19,8 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
       </Link>
       <div className="flex w-full max-w-sm flex-col gap-6">
         <Link href="/" className="flex items-center gap-2 self-center font-medium">
-          <Logo className="size-15" />
-          Fullbright College LMS
+          <Logo className="size-10" />
+          Culm LMS.
         </Link>
         {children}
         <div className="text-balance text-center text-xs text-muted-foreground">
