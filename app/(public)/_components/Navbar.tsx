@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Logo } from "@/components/logo/fbc-logo/logo";
+import { Logo } from "@/components/logo/culm-logo/logo";
 import { ThemeToggleButton } from "@/components/ui/theme-toggle";
 import { UserDropdown } from "./Userdropdown";
 import { authClient } from "@/lib/auth-client";
@@ -19,8 +19,8 @@ export const Navbar = () => {
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
       <div className="container relative flex min-h-16 items-center gap-6 mx-auto px-4 md:px-6 lg:px-8">
         <Link href="/" className="flex items-center">
-          <Logo className="size-15" />
-          <span className="font-bold">Fullbright College LMS.</span>
+          <Logo className="size-10" />
+          <span className="font-bold">Culm LMS.</span>
         </Link>
 
         {/* Desktop Navigation*/}
