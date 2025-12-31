@@ -1,36 +1,109 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Culm LMS - The Modern Learning Management System
 
-## Getting Started
+![Project Preview](https://github.com/user-attachments/assets/placeholder) <!-- Replace with actual screenshot when available -->
 
-First, run the development server:
+## 🚀 Overview
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+**Culm LMS** is a robust, scalable, and modern Learning Management System (SaaS) designed to empower educators and institutions with the tools they need to deliver high-quality digital education. Built with a focus on performance, security, and user experience, it provides a seamless environment for course creation, student management, and secure monetization.
+
+## 🎯 Our Goal
+
+Our mission is to bridge the gap between education and technology by providing a platform that is not only powerful for administrators and teachers but also intuitive and engaging for students. We aim to revolutionize the digital learning experience through a "student-first" design philosophy and a "teacher-empowering" featureset.
+
+## ✨ Key Features
+
+### 🛠️ For Educators & Administrators
+
+- **Robust Course Builder**: Create rich, multi-chapter courses with ease.
+- **Dynamic Content Management**: Upload lessons, videos, and manage thumbnails with integrated S3 storage.
+- **Role-Based Access Control**: Secure management for Admins, Teachers, and Students.
+- **Admin Dashboard**: Comprehensive overview of users, courses, and platform health.
+- **Teacher Dashboard**: Specialized tools for managing your own courses and students.
+
+### 🎓 For Students
+
+- **Engaging Learning Experience**: Fluid navigation through courses and lessons.
+- **Secure Payments**: Frictionless enrollment via Stripe integration.
+- **Progress Tracking**: (Coming Soon) Visualize your learning journey.
+- **Responsive Design**: Learn on the go with a mobile-optimized interface.
+
+### 🛡️ Security & Performance
+
+- **Bot Protection**: Layered security with Arcjet integration.
+- **Secure Auth**: Modern authentication powered by Better Auth.
+- **Optimized Performance**: Built on Next.js 16 for blazing-fast page loads.
+
+## 🛠️ Tech Stack
+
+<div align="left">
+  <img src="https://skillicons.dev/icons?i=nextjs,react,tailwind,ts,prisma,postgres,stripe" />
+</div>
+
+- **Framework**: [Next.js 16](https://nextjs.org) (App Router, React 19)
+- **Styling**: [Tailwind CSS 4](https://tailwindcss.com) & [Framer Motion](https://www.framer.com/motion/)
+- **Database**: [Prisma](https://www.prisma.io) with PostgreSQL (Hosted on [Neon](https://neon.tech))
+- **Authentication**: [Better Auth](https://better-auth.com)
+- **Security**: [Arcjet](https://arcjet.com)
+- **Payments**: [Stripe](https://stripe.com)
+- **UI Components**: [Radix UI](https://www.radix-ui.com) & [Lucide Icons](https://lucide.dev)
+- **Rich Text Editing**: [Tiptap](https://tiptap.dev)
+
+## 🏁 Getting Started
+
+### Prerequisites
+
+- Node.js 20+
+- pnpm (Recommended)
+- PostgreSQL database (e.g., Neon.tech)
+
+### Installation
+
+1. **Clone the repository:**
+
+   ```bash
+   git clone https://github.com/bry-ly/Fullbright-College-LMS.git
+   cd lms-saas
+   ```
+
+2. **Install dependencies:**
+
+   ```bash
+   pnpm install
+   ```
+
+3. **Set up environment variables:**
+   Create a `.env` file in the root directory and add your credentials (refer to `.env.example` if available).
+
+4. **Initialize the database:**
+
+   ```bash
+   npx prisma generate
+   npx prisma db push
+   ```
+
+5. **Run the development server:**
+   ```bash
+   npm run dev
+   ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📁 Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+lms-saas/
+├── app/             # Next.js App Router (Pages, Layouts, Actions)
+├── components/      # UI Components (Shadcn/UI, Custom)
+├── hooks/           # Custom React Hooks
+├── lib/             # Utility functions and shared logic
+├── prisma/          # Database schema and migrations
+└── public/          # Static assets
+```
 
-## Learn More
+## 📄 License
 
-To learn more about Next.js, take a look at the following resources:
+This project is [Private/Proprietary]. All rights reserved.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Built with ❤️ by the **Culm Team**.
