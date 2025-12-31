@@ -1,6 +1,15 @@
 import { auth } from "@/lib/auth";
 import arcjet from "@/lib/arcjet";
-import { type ArcjetDecision, type BotOptions, type EmailOptions, type ProtectSignupOptions, type SlidingWindowRateLimitOptions, detectBot, protectSignup, shield, slidingWindow } from "@arcjet/next";
+import {
+  type ArcjetDecision,
+  type BotOptions,
+  type EmailOptions,
+  type ProtectSignupOptions,
+  type SlidingWindowRateLimitOptions,
+  detectBot,
+  protectSignup,
+  slidingWindow,
+} from "@arcjet/next";
 import { toNextJsHandler } from "better-auth/next-js";
 import { NextRequest } from "next/server";
 
@@ -57,14 +66,21 @@ async function protect(req: NextRequest): Promise<ArcjetDecision> {
     // the email validation checks as well. See
     // https://www.better-auth.com/docs/concepts/hooks#example-enforce-email-domain-restriction
     if (typeof body.email === "string") {
-      return arcjet.withRule(protectSignup(signupOptions)).protect(req, { email: body.email, fingerprint: userId });
+      return arcjet
+        .withRule(protectSignup(signupOptions))
+        .protect(req, { email: body.email, fingerprint: userId });
     } else {
       // Otherwise use rate limit and detect bot
-      return arcjet.withRule(detectBot(botOptions)).withRule(slidingWindow(rateLimitOptions)).protect(req, { fingerprint: userId });
+      return arcjet
+        .withRule(detectBot(botOptions))
+        .withRule(slidingWindow(rateLimitOptions))
+        .protect(req, { fingerprint: userId });
     }
   } else {
     // For all other auth requests
-    return arcjet.withRule(detectBot(botOptions)).protect(req, { fingerprint: userId });
+    return arcjet
+      .withRule(detectBot(botOptions))
+      .protect(req, { fingerprint: userId });
   }
 }
 
@@ -89,7 +105,8 @@ export const POST = async (req: NextRequest) => {
       } else if (decision.reason.emailTypes.includes("DISPOSABLE")) {
         message = "We do not allow disposable email addresses.";
       } else if (decision.reason.emailTypes.includes("NO_MX_RECORDS")) {
-        message = "Your email domain does not have an MX record. Is there a typo?";
+        message =
+          "Your email domain does not have an MX record. Is there a typo?";
       } else {
         // This is a catch all, but the above should be exhaustive based on the
         // configured rules.
