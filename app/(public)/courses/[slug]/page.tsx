@@ -9,6 +9,7 @@ import { env } from "@/lib/env";
 import { IconBook, IconCategory2, IconChartBar, IconCheck, IconChevronDown, IconClock, IconPlayerPlay } from "@tabler/icons-react";
 import { ClockIcon } from "lucide-react";
 import Image from "next/image";
+import { EnrollmentCourseAction } from "./actions";
 
 type Params = Promise<{ slug: string }>;
 
@@ -190,7 +191,14 @@ export default async function SlugPage({ params }: { params: Params }) {
                   </li>
                 </ul>
               </div>
-              <Button className="w-full">Enroll Now!</Button>
+              <form
+                action={async () => {
+                  "use server";
+                  EnrollmentCourseAction(course.id);
+                }}
+              >
+                <Button className="w-full">Enroll Now!</Button>
+              </form>
               <p className="mt-3 text-center text-xs text-muted-foreground">30-day money-back guarantee</p>
             </CardContent>
           </Card>
