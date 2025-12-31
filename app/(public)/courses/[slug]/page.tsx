@@ -9,13 +9,16 @@ import { env } from "@/lib/env";
 import { IconBook, IconCategory2, IconChartBar, IconCheck, IconChevronDown, IconClock, IconPlayerPlay } from "@tabler/icons-react";
 import { ClockIcon } from "lucide-react";
 import Image from "next/image";
-import { EnrollmentCourseAction } from "./actions";
+import { checkIfCourseBought } from "@/app/data/user/user-is-enrolled";
+import Link from "next/link";
+import { EnrollmentButton } from "./_components/EnrollmentButton";
 
 type Params = Promise<{ slug: string }>;
 
 export default async function SlugPage({ params }: { params: Params }) {
   const { slug } = await params;
   const course = await getIndividualCourse(slug);
+  const isEnrolled = await checkIfCourseBought(course.id);
   return (
     <div className="grid grid-cols-1 gap-8 lg:grid-cols-3 mt-5">
       <div className="order-1 lg:col-span-2">
@@ -191,14 +194,13 @@ export default async function SlugPage({ params }: { params: Params }) {
                   </li>
                 </ul>
               </div>
-              <form
-                action={async () => {
-                  "use server";
-                  EnrollmentCourseAction(course.id);
-                }}
-              >
-                <Button className="w-full">Enroll Now!</Button>
-              </form>
+              {isEnrolled ? (
+                <Link href="/dashboard">
+                  Watch Course
+                </Link>
+              ): (
+                <EnrollmentButton courseId={course.id}/>
+              )}
               <p className="mt-3 text-center text-xs text-muted-foreground">30-day money-back guarantee</p>
             </CardContent>
           </Card>
