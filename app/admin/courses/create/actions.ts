@@ -3,6 +3,7 @@
 import { requireAdmin } from "@/app/data/admin/require-admin";
 import arcjet, { fixedWindow } from "@/lib/arcjet";
 import prisma from "@/lib/db";
+import { stripe } from "@/lib/stripe";
 import { ApiResponse } from "@/lib/types";
 import { courseSchema, CourseSchemaType } from "@/lib/zodSchemas";
 import { request } from "@arcjet/next";
@@ -15,7 +16,7 @@ const aj = arcjet.withRule(
   }),
 );
 
-export async function CreateCourse(data: CourseSchemaType): Promise<ApiResponse> {
+export async function CreateCourse(values: CourseSchemaType): Promise<ApiResponse> {
   const session = await requireAdmin();
 
   try {
@@ -38,7 +39,7 @@ export async function CreateCourse(data: CourseSchemaType): Promise<ApiResponse>
       }
     }
 
-    const validation = courseSchema.safeParse(data);
+    const validation = courseSchema.safeParse(values);
 
     if (!validation.success) {
       return {
@@ -47,10 +48,27 @@ export async function CreateCourse(data: CourseSchemaType): Promise<ApiResponse>
       };
     }
 
+    const data = await stripe.products.create({
+      name: validation.data.title,
+      description: validation.data.smallDescription,
+      default_price_data: {
+        currency: "php",
+        unit_amount: validation.data.price * 100,
+      },
+    });
+    
+    if (!data.default_price || typeof data.default_price !== "string") {
+      return {
+        status: "error",
+        message: "Failed to create Stripe price",
+      };
+    }
+    
     await prisma.course.create({
       data: {
         ...validation.data,
-        userId: session?.user.id as string,
+        userId: session.user.id as string,
+        stripePriceId: data.default_price,
       },
     });
 
