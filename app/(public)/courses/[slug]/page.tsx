@@ -1,13 +1,13 @@
 import { getIndividualCourse } from "@/app/data/course/get-course";
 import { RenderDescription } from "@/components/rich-text-editor/RenderDescription";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Separator } from "@/components/ui/separator";
 import { env } from "@/lib/env";
 import { IconBook, IconCategory2, IconChartBar, IconCheck, IconChevronDown, IconClock, IconPlayerPlay } from "@tabler/icons-react";
-import { ClockIcon } from "lucide-react";
+import { ClockIcon, PlayIcon } from "lucide-react";
 import Image from "next/image";
 import { checkIfCourseBought } from "@/app/data/user/user-is-enrolled";
 import Link from "next/link";
@@ -195,11 +195,18 @@ export default async function SlugPage({ params }: { params: Params }) {
                 </ul>
               </div>
               {isEnrolled ? (
-                <Link href="/dashboard">
+                <Link
+                  href="/dashboard"
+                  className={buttonVariants({
+                    variant: "outline",
+                    className:"w-full"
+                  })}
+                >
+                <IconPlayerPlay className="size-4"/>
                   Watch Course
                 </Link>
-              ): (
-                <EnrollmentButton courseId={course.id}/>
+              ) : (
+                <EnrollmentButton courseId={course.id} />
               )}
               <p className="mt-3 text-center text-xs text-muted-foreground">30-day money-back guarantee</p>
             </CardContent>
