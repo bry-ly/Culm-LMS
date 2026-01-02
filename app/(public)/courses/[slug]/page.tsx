@@ -7,7 +7,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { Separator } from "@/components/ui/separator";
 import { env } from "@/lib/env";
 import { IconBook, IconCategory2, IconChartBar, IconCheck, IconChevronDown, IconClock, IconPlayerPlay } from "@tabler/icons-react";
-import { ClockIcon, PlayIcon } from "lucide-react";
+import { ClockIcon} from "lucide-react";
 import Image from "next/image";
 import { checkIfCourseBought } from "@/app/data/user/user-is-enrolled";
 import Link from "next/link";
