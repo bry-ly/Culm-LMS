@@ -1,24 +1,33 @@
 import { buttonVariants } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { ChevronLeft, XIcon } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { ChevronLeft, X } from "lucide-react";
 import Link from "next/link";
 
 export default function PaymentCancelled() {
   return (
-    <div className="relative flex min-h-svh   flex-col items-center justify-center">
-      <Card className=" max-w-87.5">
-        <CardContent className="space-y-4">
-          <div className="w-full flex justify-center">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-red-100">
-              <XIcon className="size-6 text-red-600" />
-            </div>
+    <div className="flex min-h-svh flex-col items-center justify-center p-4">
+      <Card className="w-full max-w-md text-center">
+        <CardHeader className="flex flex-col items-center gap-2">
+          <div className="rounded-full bg-destructive/10 p-3">
+            <X className="h-10 w-10 text-destructive" />
           </div>
-          <div className="mt-3 text-center sm:mt-5 w-full">
-            <h2 className="text-xl font-semibold">Payment Cancelled</h2>
-            <p className="text-sm mt-2 text-muted-foreground text-balance">
-              No worries, you wount be charged, Please try again!
-            </p>
-          </div>
+          <CardTitle className="text-2xl font-semibold mt-1">
+            Payment Cancelled
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <CardDescription className="text-base">
+            No worries, you won&apos;t be charged. Please try again!
+          </CardDescription>
+        </CardContent>
+        <CardFooter className="flex justify-center">
           <Link
             className={buttonVariants({
               className: "w-full",
@@ -28,7 +37,7 @@ export default function PaymentCancelled() {
             <ChevronLeft className="size-4" />
             Back to Homepage
           </Link>
-        </CardContent>
+        </CardFooter>
       </Card>
     </div>
   );
