@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { GripHorizontal } from "lucide-react";
+import { GripHorizontal, Sun, Moon } from "lucide-react";
 import { useTheme } from "next-themes";
 import React, { useCallback, useEffect, useState } from "react";
 
@@ -417,34 +417,59 @@ export const ThemeToggleButton = ({
     <button
       type="button"
       className={cn(
-        "size-10 cursor-pointer rounded-full bg-black p-0 transition-all duration-300 active:scale-95",
+        "relative size-10 cursor-pointer rounded-full bg-black p-0 transition-all duration-300 active:scale-95 flex items-center justify-center overflow-hidden",
         className,
       )}
       onClick={toggleTheme}
       aria-label="Toggle theme"
     >
       <span className="sr-only">Toggle theme</span>
-      <svg viewBox="0 0 240 240" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <motion.g
-          animate={{ rotate: isDark ? -180 : 0 }}
-          transition={{ ease: "easeInOut", duration: 0.5 }}
+      <motion.div
+        className="absolute inset-0 flex items-center justify-center"
+        initial={false}
+        animate={{
+          rotate: isDark ? 360 : 0,
+        }}
+        transition={{
+          duration: 0.6,
+          ease: "easeInOut",
+        }}
+      >
+        <motion.div
+          initial={false}
+          animate={{
+            scale: isDark ? 0 : 1,
+            opacity: isDark ? 0 : 1,
+            rotate: isDark ? 90 : 0,
+          }}
+          transition={{
+            duration: 0.25,
+            ease: "easeInOut",
+          }}
+          style={{
+            position: "absolute",
+          }}
         >
-          <path
-            d="M120 67.5C149.25 67.5 172.5 90.75 172.5 120C172.5 149.25 149.25 172.5 120 172.5"
-            fill="white"
-          />
-          <path
-            d="M120 67.5C90.75 67.5 67.5 90.75 67.5 120C67.5 149.25 90.75 172.5 120 172.5"
-            fill="black"
-          />
-        </motion.g>
-        <motion.path
-          animate={{ rotate: isDark ? 180 : 0 }}
-          transition={{ ease: "easeInOut", duration: 0.5 }}
-          d="M120 3.75C55.5 3.75 3.75 55.5 3.75 120C3.75 184.5 55.5 236.25 120 236.25C184.5 236.25 236.25 184.5 236.25 120C236.25 55.5 184.5 3.75 120 3.75ZM120 214.5V172.5C90.75 172.5 67.5 149.25 67.5 120C67.5 90.75 90.75 67.5 120 67.5V25.5C172.5 25.5 214.5 67.5 214.5 120C214.5 172.5 172.5 214.5 120 214.5Z"
-          fill="white"
-        />
-      </svg>
+          <Sun className="size-5 text-white" />
+        </motion.div>
+        <motion.div
+          initial={false}
+          animate={{
+            scale: isDark ? 1 : 0,
+            opacity: isDark ? 1 : 0,
+            rotate: isDark ? 0 : -90,
+          }}
+          transition={{
+            duration: 0.25,
+            ease: "easeInOut",
+          }}
+          style={{
+            position: "absolute",
+          }}
+        >
+          <Moon className="size-5 text-white scale-x-[-1]" />
+        </motion.div>
+      </motion.div>
     </button>
   );
 };
