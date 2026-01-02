@@ -1,22 +1,24 @@
 import { buttonVariants } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { CheckIcon, ChevronLeft } from "lucide-react";
 import Link from "next/link";
 
 export default function PaymentSuccess() {
   return (
-    <div className="relative flex min-h-svh flex-col items-center justify-center">
-      <Card className="max-w-87.5">
-        <CardContent className="space-y-4">
-          <div className=" flex justify-center">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
-              <CheckIcon className="size-6 text-green-600" />
-            </div>
+    <div className="flex min-h-svh flex-col items-center justify-center p-4">
+      <Card className="w-full max-w-md text-center">
+        <CardHeader className="flex flex-col items-center gap-2">
+          <div className="rounded-full bg-green-100 p-3">
+            <CheckIcon className="h-10 w-10 text-green-600" />
           </div>
-          <div className="mt-3 text-center sm:mt-5 w-full">
-            <h2 className="text-xl font-semibold">Payment Successfully</h2>
-            <p className="text-sm mt-2 text-muted-foreground text-balance">Thank you for purchasing, your payment was successful, you should now have access to the course </p>
-          </div>
+          <CardTitle className="text-2xl font-semibold mt-1">Payment Successful</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <CardDescription className="text-base">
+            Thank you for purchasing! Your payment was successful, and you should now have access to the course.
+          </CardDescription>
+        </CardContent>
+        <CardFooter className="flex justify-center">
           <Link
             className={buttonVariants({
               className: "w-full",
@@ -26,7 +28,7 @@ export default function PaymentSuccess() {
             <ChevronLeft className="size-4" />
             Go to dashboard
           </Link>
-        </CardContent>
+        </CardFooter>
       </Card>
     </div>
   );
