@@ -6,7 +6,14 @@ import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTi
 import Link from "next/link";
 import { buttonVariants } from "../ui/button";
 
-export function EmptyCourseState() {
+interface EmptyCourseStateProps {
+  title?: string;
+  description?: string;
+  buttonText?: string;
+  href?: string;
+}
+
+export function EmptyCourseState({ title = "No courses found", description = "Get started by creating a new course.", buttonText = "Create Course", href = "/admin/courses/create" }: EmptyCourseStateProps) {
   return (
     <Empty className="min-h-100 flex-col items-center justify-center border-none">
       <EmptyHeader className="mb-4">
@@ -24,15 +31,18 @@ export function EmptyCourseState() {
             <BookOpen className="size-8" />
           </EmptyMedia>
         </motion.div>
-        <EmptyTitle className="mt-4 text-xl font-bold">No courses found</EmptyTitle>
-        <EmptyDescription className="text-base text-muted-foreground">Get started by creating a new course.</EmptyDescription>
+        <EmptyTitle className="mt-4 text-xl font-bold">{title}</EmptyTitle>
+        <EmptyDescription className="text-base text-muted-foreground">{description}</EmptyDescription>
       </EmptyHeader>
       <EmptyContent>
-        <Link className={buttonVariants({
-          variant:"outline"
-        })} href="/admin/courses/create">
+        <Link
+          className={buttonVariants({
+            variant: "outline",
+          })}
+          href={href}
+        >
           <PlusCircle className="size-4 " />
-          Create Course
+          {buttonText}
         </Link>
       </EmptyContent>
     </Empty>
