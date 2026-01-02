@@ -91,7 +91,6 @@ export async function EnrollmentCourseAction(
     const result = await prisma.$transaction(async (tx) => {
       const existingEnrollment = await tx.enrollment.findUnique({
         where: {
-          id: courseId,
           userId_courseId: {
             userId: user.id,
             courseId: courseId,
@@ -129,7 +128,7 @@ export async function EnrollmentCourseAction(
             userId: user.id,
             courseId: course.id,
             amount: course.price,
-            status: "Active",
+            status: "Pending",
           },
         });
       }
@@ -138,13 +137,19 @@ export async function EnrollmentCourseAction(
         customer: stripeCustomerId,
         line_items: [
           {
-            price: "price_1SkSDp1aGySl2NyC37rqJldZ",
+            price_data: {
+              currency: "php",
+              product_data: {
+                name: course.title,
+              },
+              unit_amount: Math.round(course.price * 100), // Convert to cents
+            },
             quantity: 1,
           },
         ],
         mode: "payment",
         success_url: `${env.BETTER_AUTH_URL}/payment/success`,
-        cancel_url: `${env.BETTER_AUTH_URL}/payment/cancel`,
+        cancel_url: `${env.BETTER_AUTH_URL}/payment/cancel?slug=${course.slug}`,
         metadata: {
           userId: user.id,
           courseId: course.id,
