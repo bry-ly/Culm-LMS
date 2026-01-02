@@ -102,7 +102,7 @@ export async function EnrollmentCourseAction(
         },
       });
 
-      if (existingEnrollment?.status === "Active") {
+      if (existingEnrollment?.status == "Active") {
         return {
           status: "success",
           message: "Your are already enrolled in this course",
@@ -118,7 +118,7 @@ export async function EnrollmentCourseAction(
           },
           data: {
             amount: course.price,
-            status: "Pending",
+            status: "Active",
             updatedAt: new Date(),
           },
         });
@@ -148,7 +148,7 @@ export async function EnrollmentCourseAction(
           },
         ],
         mode: "payment",
-        success_url: `${env.BETTER_AUTH_URL}/payment/success`,
+        success_url: `${env.BETTER_AUTH_URL}/payment/success?=${enrollment.id}`,
         cancel_url: `${env.BETTER_AUTH_URL}/payment/cancel?slug=${course.slug}`,
         metadata: {
           userId: user.id,
