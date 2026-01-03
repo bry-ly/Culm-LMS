@@ -1,4 +1,4 @@
-import { BookOpenIcon, ChevronDownIcon, Home, LayoutDashboardIcon, LogOutIcon, UserPenIcon } from "lucide-react";
+import { BookOpenIcon, ChevronDownIcon, Home, LayoutDashboardIcon, LogOutIcon } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
