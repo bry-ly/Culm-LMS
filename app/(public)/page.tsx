@@ -1,7 +1,5 @@
-
-
 import Link from "next/link";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { BookCopy, Gamepad2Icon, AlignEndHorizontalIcon, User2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -70,9 +68,11 @@ export default function Home() {
           <Card key={index} className="hover:shadow-lg transition-shadow">
             <CardHeader>
               <div className="text-4xl mb-4">{feature.icon}</div>
-               <CardTitle className="">{feature.title}</CardTitle>
+              <CardTitle className="">{feature.title}</CardTitle>
             </CardHeader>
-            <CardContent><p className="text-muted-foreground">{feature.description}</p></CardContent>
+            <CardContent>
+              <p className="text-muted-foreground">{feature.description}</p>
+            </CardContent>
           </Card>
         ))}
       </section>
