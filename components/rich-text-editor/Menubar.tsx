@@ -3,7 +3,7 @@
 import { Editor } from "@tiptap/react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
 import { Toggle } from "../ui/toggle";
-import { AlignCenter, AlignLeft, AlignRight, Bold, Heading1, Heading1Icon, Heading2Icon, Heading3Icon, Italic, ListIcon, ListOrderedIcon, Redo2Icon, Strikethrough, Undo2Icon } from "lucide-react";
+import { AlignCenter, AlignLeft, AlignRight, Bold, Heading1Icon, Heading2Icon, Heading3Icon, Italic, ListIcon, ListOrderedIcon, Redo2Icon, Strikethrough, Undo2Icon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 
@@ -164,7 +164,7 @@ export function Menubar({ editor }: Menubar) {
           <Tooltip>
             <TooltipTrigger asChild>
               <Button size="sm" variant="ghost" type="button" onClick={() => editor.chain().focus().undo().run()} disabled={!editor.can().undo()}>
-                <Undo2Icon/>
+                <Undo2Icon />
               </Button>
             </TooltipTrigger>
             <TooltipContent>Undo</TooltipContent>
@@ -172,7 +172,7 @@ export function Menubar({ editor }: Menubar) {
           <Tooltip>
             <TooltipTrigger asChild>
               <Button size="sm" variant="ghost" type="button" onClick={() => editor.chain().focus().redo().run()} disabled={!editor.can().redo()}>
-                <Redo2Icon/>
+                <Redo2Icon />
               </Button>
             </TooltipTrigger>
             <TooltipContent>Redo</TooltipContent>
