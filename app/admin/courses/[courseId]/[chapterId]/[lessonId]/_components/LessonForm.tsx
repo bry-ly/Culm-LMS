@@ -12,7 +12,7 @@ import { lessonSchema, LessonSchemaType } from "@/lib/zodSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import {  useTransition } from "react";
+import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { updateLesson } from "../actions";
@@ -24,7 +24,7 @@ interface iAppProps {
 }
 
 export function LessonForm({ chapterId, data, courseId }: iAppProps) {
-  const [pending, startTransition] = useTransition()
+  const [pending, startTransition] = useTransition();
   const form = useForm<LessonSchemaType>({
     resolver: zodResolver(lessonSchema),
     defaultValues: {
@@ -48,7 +48,6 @@ export function LessonForm({ chapterId, data, courseId }: iAppProps) {
 
       if (result.status === "success") {
         toast.success(result.message);
-
       } else if (result.status === "error") {
         toast.error(result.message);
       }
@@ -78,7 +77,7 @@ export function LessonForm({ chapterId, data, courseId }: iAppProps) {
               <FormField
                 control={form.control}
                 name="name"
-                render={(field) => (
+                render={({ field }) => (
                   <FormItem>
                     <FormLabel>Lesson Name</FormLabel>
                     <FormControl>
@@ -91,7 +90,7 @@ export function LessonForm({ chapterId, data, courseId }: iAppProps) {
               <FormField
                 control={form.control}
                 name="description"
-                render={(field) => (
+                render={({ field }) => (
                   <FormItem>
                     <FormLabel>Description</FormLabel>
                     <FormControl>
@@ -121,14 +120,14 @@ export function LessonForm({ chapterId, data, courseId }: iAppProps) {
                   <FormItem>
                     <FormLabel>Video File</FormLabel>
                     <FormControl>
-                      <Uploader value={field.value} onChange={field.onChange} fileTypeAccepted="video"/>
+                      <Uploader value={field.value} onChange={field.onChange} fileTypeAccepted="video" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
               <Button type="submit" disabled={pending}>
-                {pending ? 'Saving...' : 'Save Lesson'}
+                {pending ? "Saving..." : "Save Lesson"}
               </Button>
             </form>
           </Form>
