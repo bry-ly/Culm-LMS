@@ -1,6 +1,6 @@
 "use client";
 
-import { BookOpen, FileQuestion, PlusCircle, PlusIcon } from "lucide-react";
+import { BookOpen, FileQuestion, PlusCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import Link from "next/link";
