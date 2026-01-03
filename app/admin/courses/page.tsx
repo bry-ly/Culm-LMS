@@ -4,7 +4,6 @@ import Link from "next/link";
 import { AdminCourseCard, AdminCoursesCardSekeleton } from "./_components/AdminCourseCard";
 import { EmptyCourseState } from "@/components/general/EmptyState";
 import { Suspense } from "react";
-import { Loader } from "lucide-react";
 
 export default function CoursesPage() {
   return (
