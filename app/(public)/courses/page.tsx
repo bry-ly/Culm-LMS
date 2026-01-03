@@ -2,6 +2,8 @@ import { getAllCourses } from "@/app/data/course/get-all-courses";
 import { PublicCourseCard, PublicCourseCardSkeleton } from "../_components/PublicCourseCard";
 import { Suspense } from "react";
 
+export const dynamic = "force-dynamic";
+
 export default function PublicCoursesRoute() {
   return (
     <div className="mt-5">
@@ -9,7 +11,7 @@ export default function PublicCoursesRoute() {
         <h1 className="text-3xl md:text-4xl tracking-tight font-bold">Explore Courses</h1>
         <p className="text-muted-foreground max-w-lg">Browse our courses and start learning today.</p>
       </div>
-      <Suspense fallback={<LoadingSkeletonLayout/>}>
+      <Suspense fallback={<LoadingSkeletonLayout />}>
         <RenderCourses />
       </Suspense>
     </div>
