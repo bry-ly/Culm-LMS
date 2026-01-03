@@ -53,7 +53,9 @@ async function protect(req: NextRequest): Promise<ArcjetDecision> {
   if (session?.user.id) {
     userId = session.user.id;
   } else {
-    userId = req.ip || "127.0.0.1"; // Fall back to local IP if none
+    // Get IP from headers since NextRequest.ip doesn't exist in Next.js 15+
+    const forwardedFor = req.headers.get("x-forwarded-for");
+    userId = forwardedFor?.split(",")[0]?.trim() || "127.0.0.1";
   }
 
   // If this is a signup then use the special protectSignup rule
