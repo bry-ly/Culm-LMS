@@ -8,15 +8,12 @@ import React, { useCallback, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
 const DarkMode = () => {
-  const [variant, setVariant] = useState<AnimationVariant>("rectangle");
-  const [start, setStart] = useState<AnimationStart>("bottom-up");
-  const [blur, setBlur] = useState<boolean>(false);
-  const [gifType, setGifType] = useState<"1" | "2" | "3" | "custom">("1");
-  return <ThemeToggleButton variant={variant} start={start} blur={blur} />;
+  return <ThemeToggleButton variant="circle" start="center" />;
 };
 
 export { DarkMode };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const Options = ({
   variant,
   start,
@@ -292,6 +289,7 @@ export const useThemeToggle = ({
       document.head.appendChild(styleElement);
     }
 
+    styleElement.setAttribute("data-animation", name);
     styleElement.textContent = css;
   }, []);
 
@@ -416,10 +414,7 @@ export const ThemeToggleButton = ({
   return (
     <button
       type="button"
-      className={cn(
-        "relative size-10 cursor-pointer rounded-full bg-black p-0 transition-all duration-300 active:scale-95 flex items-center justify-center overflow-hidden",
-        className,
-      )}
+      className={cn("relative size-10 cursor-pointer rounded-full bg-black p-0 transition-all duration-300 active:scale-95 flex items-center justify-center overflow-hidden", className)}
       onClick={toggleTheme}
       aria-label="Toggle theme"
     >
@@ -473,7 +468,6 @@ export const ThemeToggleButton = ({
     </button>
   );
 };
-
 
 // ///////////////////////////////////////////////////////////////////////////
 
