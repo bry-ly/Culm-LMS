@@ -5,10 +5,10 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
 import { S3 } from "@/lib/S3Client";
-import arcjet, { detectBot, fixedWindow } from "@/lib/arcjet";
+import arcjet, { fixedWindow } from "@/lib/arcjet";
 import { requireAdmin } from "@/app/data/admin/require-admin";
 
-export const fileUploadSchema = z.object({
+const fileUploadSchema = z.object({
   fileName: z.string().min(1, { message: "Filename is required" }),
   contentType: z.string().min(1, { message: "Content type required" }),
   size: z.number().min(1, { message: "Size required" }),
