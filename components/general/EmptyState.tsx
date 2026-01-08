@@ -9,11 +9,13 @@ import { buttonVariants } from "../ui/button";
 interface EmptyCourseStateProps {
   title?: string;
   description?: string;
-  buttonText?: string;
-  href?: string;
+  buttonText?: string | null;
+  href?: string | null;
 }
 
-export function EmptyCourseState({ title = "No courses found", description = "Get started by creating a new course.", buttonText = "Create Course", href = "/admin/courses/create" }: EmptyCourseStateProps) {
+export function EmptyCourseState({ title = "No courses found", description = "Get started by creating a new course.", buttonText, href }: EmptyCourseStateProps) {
+  const showButton = buttonText && href;
+
   return (
     <Empty className="min-h-100 flex-col items-center justify-center border-none">
       <EmptyHeader className="mb-4">
@@ -34,17 +36,19 @@ export function EmptyCourseState({ title = "No courses found", description = "Ge
         <EmptyTitle className="mt-4 text-xl font-bold">{title}</EmptyTitle>
         <EmptyDescription className="text-base text-muted-foreground">{description}</EmptyDescription>
       </EmptyHeader>
-      <EmptyContent>
-        <Link
-          className={buttonVariants({
-            variant: "outline",
-          })}
-          href={href}
-        >
-          <PlusCircle className="size-4 " />
-          {buttonText}
-        </Link>
-      </EmptyContent>
+      {showButton && (
+        <EmptyContent>
+          <Link
+            className={buttonVariants({
+              variant: "outline",
+            })}
+            href={href}
+          >
+            <PlusCircle className="size-4 " />
+            {buttonText}
+          </Link>
+        </EmptyContent>
+      )}
     </Empty>
   );
 }
