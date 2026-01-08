@@ -1,4 +1,4 @@
-import { BookOpenIcon, ChevronDownIcon, Home, LayoutDashboardIcon, LogOutIcon } from "lucide-react";
+import { BookOpenIcon, ChevronDownIcon, Home, LayoutDashboardIcon, LogOutIcon, ShieldIcon } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -10,9 +10,10 @@ interface user {
   name: string;
   email: string;
   image: string;
+  role: string;
 }
 
-export function UserDropdown({ email, name, image }: user) {
+export function UserDropdown({ email, name, image, role }: user) {
   const handleSignOut = useSignout();
 
   return (
@@ -33,6 +34,14 @@ export function UserDropdown({ email, name, image }: user) {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
+          {role === "admin" && (
+            <DropdownMenuItem asChild>
+              <Link href="/admin">
+                <ShieldIcon aria-hidden="true" className="opacity-60" size={16} />
+                <span>Admin</span>
+              </Link>
+            </DropdownMenuItem>
+          )}
           <DropdownMenuItem asChild>
             <Link href="/">
               <Home aria-hidden="true" className="opacity-60" size={16} />

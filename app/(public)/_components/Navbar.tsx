@@ -34,7 +34,7 @@ export const Navbar = () => {
         <div className="flex items-center gap-2 ml-auto">
           <ThemeToggleButton className="size-7"/>
           {isPending ? null : session ? (
-            <UserDropdown email={session.user.email} image={session?.user.image ?? `https://avatar.vercel.sh/rauchg?size=30/${session?.user.email}`} name={session?.user.name && session.user.name.length > 0 ? session.user.name : session?.user.email.split("@")[0]} />
+            <UserDropdown email={session.user.email} image={session?.user.image ?? `https://avatar.vercel.sh/rauchg?size=30/${session?.user.email}`} name={session?.user.name && session.user.name.length > 0 ? session.user.name : session?.user.email.split("@")[0]} role={session.user.role ?? ""} />
           ) : (
             <>
               <Link
