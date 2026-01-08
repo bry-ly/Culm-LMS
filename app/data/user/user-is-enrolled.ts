@@ -1,8 +1,10 @@
+import "server-only";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/db";
 import { headers } from "next/headers";
+import { cache } from "react";
 
-export async function checkIfCourseBought(courseId: string): Promise<boolean> {
+export const checkIfCourseBought = cache(async (courseId: string): Promise<boolean> => {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -21,4 +23,4 @@ export async function checkIfCourseBought(courseId: string): Promise<boolean> {
     },
   });
   return enrollment?.status === "Active" ? true : false;
-}
+});

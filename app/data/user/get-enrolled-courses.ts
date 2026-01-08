@@ -1,8 +1,9 @@
 import "server-only";
 import { requireUser } from "./require-user";
 import prisma from "@/lib/db";
+import { cache } from "react";
 
-export async function getEnrolledCourses() {
+export const getEnrolledCourses = cache(async () => {
   const user = await requireUser();
 
   const data = await prisma.enrollment.findMany({
@@ -48,7 +49,7 @@ export async function getEnrolledCourses() {
   });
 
   return data;
-}
+});
 
 export type EnrolledCourseType = Awaited<
   ReturnType<typeof getEnrolledCourses>
