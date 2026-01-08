@@ -1,6 +1,9 @@
 import { getAllCourses } from "@/app/data/course/get-all-courses";
+import { EmptyCourseState } from "@/components/general/EmptyState";
 import { PublicCourseCard, PublicCourseCardSkeleton } from "../_components/PublicCourseCard";
 import { Suspense } from "react";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 
 export const dynamic = "force-dynamic";
 
@@ -20,6 +23,20 @@ export default function PublicCoursesRoute() {
 
 async function RenderCourses() {
   const courses = await getAllCourses();
+
+  if (courses.length === 0) {
+    const session = await auth.api.getSession({ headers: await headers() });
+    const isAdmin = session?.user?.role === "admin";
+
+    return (
+      <EmptyCourseState
+        title="No courses available"
+        description="Check back later for new courses."
+        buttonText={isAdmin ? "Create Course" : null}
+        href={isAdmin ? "/admin/courses/create" : null}
+      />
+    );
+  }
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
