@@ -11,7 +11,7 @@ import {
 } from "./RenderState";
 import { toast } from "sonner";
 import { v4 as uuidv4 } from "uuid";
-import { useConstructUrl } from "@/hooks/use-constract-url";
+import { useConstructUrl } from "@/hooks/use-construct-url";
 
 interface UploaderState {
   id: string | null;
@@ -124,85 +124,8 @@ export function Uploader({ onChange, value, fileTypeAccepted }: iAppprops) {
         }));
       }
     },
-    [fileTypeAccepted, onChange]
+    [fileTypeAccepted, onChange],
   );
-  // async function uploadFile(file: File) {
-  //   setFileState((prev) => ({
-  //     ...prev,
-  //     uploading: true,
-  //     progress: 0,
-  //   }));
-
-  //   try {
-  //     const presignedResponse = await fetch("/api/s3/upload", {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify({
-  //         fileName: file.name,
-  //         contentType: file.type,
-  //         size: file.size,
-  //         isImage: fileTypeAccepted === "image" ? true : false,
-  //       }),
-  //     });
-
-  //     if (!presignedResponse.ok) {
-  //       toast.error("Failed to get presigned URL");
-  //       setFileState((prev) => ({
-  //         ...prev,
-  //         uploading: false,
-  //         progress: 0,
-  //         error: true,
-  //       }));
-  //       return;
-  //     }
-
-  //     const { presignedUrl, key } = await presignedResponse.json();
-
-  //     await new Promise<void>((resolve, reject) => {
-  //       const xhr = new XMLHttpRequest();
-  //       xhr.open("PUT", presignedUrl);
-  //       xhr.upload.onprogress = (event) => {
-  //         if (event.lengthComputable) {
-  //           const progress = Math.round((event.loaded / event.total) * 100);
-  //           setFileState((prev) => ({
-  //             ...prev,
-  //             progress,
-  //           }));
-  //         }
-  //       };
-  //       xhr.onload = () => {
-  //         if (xhr.status === 200 || xhr.status === 204) {
-  //           setFileState((prev) => ({
-  //             ...prev,
-  //             progress: 100,
-  //             uploading: false,
-  //             key: key,
-  //           }));
-
-  //           onChange?.(key);
-
-  //           toast.success("File uploaded Successfully");
-  //           resolve();
-  //         } else {
-  //           reject(new Error("Upload Failed"));
-  //         }
-  //       };
-  //       xhr.onerror = () => {
-  //         reject(new Error("Upload Failed"));
-  //       };
-  //       xhr.setRequestHeader("Content-Type", file.type);
-  //       xhr.send(file);
-  //     });
-  //   } catch {
-  //     toast.error("Something went wrong");
-  //     setFileState((prev) => ({
-  //       ...prev,
-  //       uploading: false,
-  //       progress: 0,
-  //       error: true,
-  //     }));
-  //   }
-  // }
 
   const onDrop = (acceptedFiles: File[]) => {
     if (acceptedFiles.length > 0) {
@@ -284,10 +207,10 @@ export function Uploader({ onChange, value, fileTypeAccepted }: iAppprops) {
   function rejectedFiles(fileRejection: FileRejection[]) {
     if (fileRejection.length) {
       const tooManyFiles = fileRejection.find(
-        (rejection) => rejection.errors[0].code === "to-many-files"
+        (rejection) => rejection.errors[0].code === "to-many-files",
       );
       const filesSizeToBig = fileRejection.find(
-        (rejection) => rejection.errors[0].code === "file-too-large"
+        (rejection) => rejection.errors[0].code === "file-too-large",
       );
 
       if (filesSizeToBig) {
@@ -348,7 +271,7 @@ export function Uploader({ onChange, value, fileTypeAccepted }: iAppprops) {
         "relative border-2 border-dashed transition-colors duration-200 ease-in-out w-full h-64",
         isDragActive
           ? " border-primary bg-primary/10 border-solid"
-          : "border-border hover:border-primary"
+          : "border-border hover:border-primary",
       )}
     >
       <CardContent className="flex items-center justify-center h-full w-full p-4">
