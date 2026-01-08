@@ -3,7 +3,7 @@
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ShimmeringText } from "@/components/ui/shimmering-text";
-import { useConstructUrl } from "@/hooks/use-constract-url";
+import { useConstructUrl } from "@/hooks/use-construct-url";
 import Image from "next/image";
 import Link from "next/link";
 import { EnrolledCourseType } from "@/app/data/user/get-enrolled-courses";
