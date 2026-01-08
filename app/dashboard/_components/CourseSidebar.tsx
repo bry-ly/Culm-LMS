@@ -8,6 +8,7 @@ import { ChevronDown, Play } from "lucide-react";
 import { LessonItem } from "./LessonItem";
 import { usePathname } from "next/navigation";
 import { useCourseProgress } from "@/hooks/use-course-progress";
+import { useMemo } from "react";
 
 interface iAppProps {
   course: CourseSidebarDataType;
@@ -18,6 +19,19 @@ export function CourseSidebar({ course }: iAppProps) {
   const currentLessonId = pathname.split("/").pop();
 
   const { completedLessons, totalLessons, progressPercentage } = useCourseProgress({ courseData: course });
+
+  // Build O(1) lookup map for lesson completion status
+  const completedLessonsMap = useMemo(() => {
+    const map = new Set<string>();
+    course.chapter.forEach((chapter) => {
+      chapter.lesson.forEach((lesson) => {
+        if (lesson.lessonProgress.some((p) => p.completed)) {
+          map.add(lesson.id);
+        }
+      });
+    });
+    return map;
+  }, [course]);
   return (
     <div className="flex flex-col h-full ">
       <div className="pb-4 pr-4 border-b border-border ">
@@ -64,7 +78,7 @@ export function CourseSidebar({ course }: iAppProps) {
                   lesson={lesson}
                   slug={course.slug}
                   isActive={currentLessonId === lesson.id}
-                  completed={lesson.lessonProgress.find((progress) => progress.lessonId === lesson.id)?.completed || false}
+                  completed={completedLessonsMap.has(lesson.id)}
                 />
               ))}
             </CollapsibleContent>
