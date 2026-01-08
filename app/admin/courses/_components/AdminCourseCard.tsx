@@ -3,7 +3,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useConstructUrl } from "@/hooks/use-constract-url";
+import { useConstructUrl } from "@/hooks/use-construct-url";
 import { ArrowRight, Edit, Eye, MoreVertical, School, TimerIcon, Trash2Icon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
