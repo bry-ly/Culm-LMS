@@ -1,7 +1,9 @@
+import "server-only";
 import prisma from "@/lib/db";
 import { requireAdmin } from "./require-admin";
+import { cache } from "react";
 
-export async function adminGetDashboardStats() {
+export const adminGetDashboardStats = cache(async () => {
   await requireAdmin();
 
   const [totalSignups, totalCustomers, totalCourses, totalLessons] =
@@ -31,4 +33,4 @@ export async function adminGetDashboardStats() {
     totalSignups,
     totalCustomers,
   };
-}
+});
