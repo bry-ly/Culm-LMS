@@ -2,8 +2,9 @@ import "server-only";
 import { requireUser } from "../user/require-user";
 import prisma from "@/lib/db";
 import { notFound } from "next/navigation";
+import { cache } from "react";
 
-export async function getLessonContent(lessonId: string) {
+export const getLessonContent = cache(async (lessonId: string) => {
   const session = await requireUser();
 
   const lesson = await prisma.lesson.findUnique({
@@ -32,6 +33,16 @@ export async function getLessonContent(lessonId: string) {
           course: {
             select: {
               slug: true,
+              enrollment: {
+                where: {
+                  userId: session.id,
+                  status: "Active",
+                },
+                select: {
+                  status: true,
+                },
+                take: 1,
+              },
             },
           },
         },
@@ -43,23 +54,13 @@ export async function getLessonContent(lessonId: string) {
     return notFound();
   }
 
-  const enrollment = await prisma.enrollment.findUnique({
-    where: {
-      userId_courseId: {
-        userId: session.id,
-        courseId: lesson.chapter.courseId,
-      },
-    },
-    select: {
-      status: true,
-    },
-  });
+  const isEnrolled = lesson.chapter.course.enrollment.length > 0;
 
-  if (!enrollment || enrollment.status !== "Active") {
+  if (!isEnrolled) {
     return notFound();
   }
 
   return lesson;
-}
+});
 
 export type LessonContentType = Awaited<ReturnType<typeof getLessonContent>>;

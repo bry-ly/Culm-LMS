@@ -1,8 +1,7 @@
 import prisma from "@/lib/db";
+import { cache } from "react";
 
-export async function getAllCourses() {
-  await new Promise((resolve) => setTimeout(resolve, 2000));
-
+export const getAllCourses = cache(async () => {
   const data = await prisma.course.findMany({
     where: {
       status: "Published",
@@ -24,6 +23,6 @@ export async function getAllCourses() {
   });
 
   return data;
-}
+});
 
 export type PublicCourseType = Awaited<ReturnType<typeof getAllCourses>>[0];
