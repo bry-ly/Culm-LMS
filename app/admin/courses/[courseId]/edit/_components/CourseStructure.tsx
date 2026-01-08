@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, ReactNode, useEffect } from "react";
+import { useState, ReactNode, useEffect, useMemo } from "react";
 import { DndContext, rectIntersection, KeyboardSensor, PointerSensor, useSensor, useSensors, DraggableSyntheticListeners, DragEndEvent } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy, useSortable, sortableKeyboardCoordinates, arrayMove } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
@@ -32,8 +32,23 @@ interface SortableItemProps {
   };
 }
 
+function SortableItem({ children, className, id, data }: SortableItemProps) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: id, data: data });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
+  return (
+    <div ref={setNodeRef} style={style} {...attributes} className={cn("touch-none", className, isDragging ? "z-10" : "")}>
+      {children(listeners)}
+    </div>
+  );
+}
+
 export function CourseStructure({ data }: iAppProps) {
-  const initialItems =
+  const initialItems = useMemo(() =>
     data.chapter.map((chapter) => ({
       id: chapter.id,
       title: chapter.title,
@@ -44,7 +59,7 @@ export function CourseStructure({ data }: iAppProps) {
         title: lesson.title,
         order: lesson.position,
       })),
-    })) || [];
+    })) || [], [data.chapter]);
 
   const [items, setItems] = useState(initialItems);
 
@@ -66,21 +81,6 @@ export function CourseStructure({ data }: iAppProps) {
       return updatedItems;
     });
   }, [data]);
-
-  function SortableItem({ children, className, id, data }: SortableItemProps) {
-    const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: id, data: data });
-
-    const style = {
-      transform: CSS.Transform.toString(transform),
-      transition,
-    };
-
-    return (
-      <div ref={setNodeRef} style={style} {...attributes} className={cn("touch-none", className, isDragging ? "z-10" : "")}>
-        {children(listeners)}
-      </div>
-    );
-  }
 
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
