@@ -1,5 +1,8 @@
+import "server-only";
 import prisma from "@/lib/db";
 import { requireAdmin } from "./require-admin";
+import { cache } from "react";
+import { Prisma } from "@/lib/generated/prisma/client";
 
 export type ChartDataPoint = {
   date: string;
@@ -14,80 +17,66 @@ export type TrendingCourse = {
   enrollmentCount: number;
 };
 
-export async function adminGetChartData(year: number, month: number) {
+type DailyCount = {
+  date: Date;
+  count: bigint;
+};
+
+export const adminGetChartData = cache(async (year: number, month: number) => {
   await requireAdmin();
 
   // month is 0-indexed (0 = January, 11 = December)
   const startOfMonth = new Date(year, month, 1);
   const endOfMonth = new Date(year, month + 1, 0, 23, 59, 59, 999);
 
-  // Get all signups for the month
-  const signups = await prisma.user.findMany({
-    where: {
-      createdAt: {
-        gte: startOfMonth,
-        lte: endOfMonth,
-      },
-    },
-    select: {
-      createdAt: true,
-    },
+  // Use database-level aggregation with raw SQL for better performance
+  const [signupCounts, enrollmentCounts] = await Promise.all([
+    prisma.$queryRaw<DailyCount[]>`
+      SELECT DATE("createdAt") as date, COUNT(*) as count
+      FROM "user"
+      WHERE "createdAt" >= ${startOfMonth} AND "createdAt" <= ${endOfMonth}
+      GROUP BY DATE("createdAt")
+    `,
+    prisma.$queryRaw<DailyCount[]>`
+      SELECT DATE("createdAt") as date, COUNT(*) as count
+      FROM "Enrollment"
+      WHERE "createdAt" >= ${startOfMonth} AND "createdAt" <= ${endOfMonth}
+      GROUP BY DATE("createdAt")
+    `,
+  ]);
+
+  // Build lookup maps from aggregated results
+  const signupMap = new Map<string, number>();
+  const enrollmentMap = new Map<string, number>();
+
+  signupCounts.forEach((row) => {
+    const dateStr = row.date.toISOString().split("T")[0];
+    signupMap.set(dateStr, Number(row.count));
   });
 
-  // Get all enrollments for the month
-  const enrollments = await prisma.enrollment.findMany({
-    where: {
-      createdAt: {
-        gte: startOfMonth,
-        lte: endOfMonth,
-      },
-    },
-    select: {
-      createdAt: true,
-    },
+  enrollmentCounts.forEach((row) => {
+    const dateStr = row.date.toISOString().split("T")[0];
+    enrollmentMap.set(dateStr, Number(row.count));
   });
 
-  // Initialize daily data for the month
+  // Initialize daily data for the month and merge with aggregated counts
   const daysInMonth = new Date(year, month + 1, 0).getDate();
-  const dailyData = new Map<string, { signups: number; enrollments: number }>();
+  const chartData: ChartDataPoint[] = [];
 
   for (let day = 1; day <= daysInMonth; day++) {
     const date = new Date(year, month, day);
     const dateStr = date.toISOString().split("T")[0];
-    dailyData.set(dateStr, { signups: 0, enrollments: 0 });
+    chartData.push({
+      date: dateStr,
+      signups: signupMap.get(dateStr) ?? 0,
+      enrollments: enrollmentMap.get(dateStr) ?? 0,
+    });
   }
 
-  // Aggregate signups by day
-  signups.forEach((signup) => {
-    const dateStr = signup.createdAt.toISOString().split("T")[0];
-    const existing = dailyData.get(dateStr);
-    if (existing) {
-      existing.signups += 1;
-    }
-  });
-
-  // Aggregate enrollments by day
-  enrollments.forEach((enrollment) => {
-    const dateStr = enrollment.createdAt.toISOString().split("T")[0];
-    const existing = dailyData.get(dateStr);
-    if (existing) {
-      existing.enrollments += 1;
-    }
-  });
-
-  // Convert to array and sort by date
-  const chartData: ChartDataPoint[] = Array.from(dailyData.entries())
-    .map(([date, counts]) => ({
-      date,
-      signups: counts.signups,
-      enrollments: counts.enrollments,
-    }))
-    .sort((a, b) => a.date.localeCompare(b.date));
-
   return chartData;
-}
+});
 
-export async function adminGetTrendingCourses(limit: number = 5) {
+export const adminGetTrendingCourses = cache(async (limit: number = 5) => {
   await requireAdmin();
 
   const trendingCourses = await prisma.course.findMany({
@@ -118,4 +107,4 @@ export async function adminGetTrendingCourses(limit: number = 5) {
     slug: course.slug,
     enrollmentCount: course._count.enrollment,
   })) as TrendingCourse[];
-}
+});
