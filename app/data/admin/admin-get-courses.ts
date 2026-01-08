@@ -1,11 +1,8 @@
 import prisma from "@/lib/db";
 import { requireAdmin } from "./require-admin";
+import { cache } from "react";
 
-export async function adminGetCourses() {
-  
-
-  await new Promise((resolve) => setTimeout(resolve, 2000));
-
+export const adminGetCourses = cache(async () => {
   await requireAdmin();
 
   const data = await prisma.course.findMany({
@@ -27,6 +24,6 @@ export async function adminGetCourses() {
   });
 
   return data;
-}
+});
 
 export type AdminCourseType = Awaited<ReturnType<typeof adminGetCourses>>[0];
