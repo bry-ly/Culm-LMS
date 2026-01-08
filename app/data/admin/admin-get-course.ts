@@ -2,8 +2,9 @@ import "server-only";
 import { requireAdmin } from "./require-admin";
 import prisma from "@/lib/db";
 import { notFound } from "next/navigation";
+import { cache } from "react";
 
-export async function adminGetCourse(courseId: string) {
+export const adminGetCourse = cache(async (courseId: string) => {
   await requireAdmin();
 
   const data = await prisma.course.findUnique({
@@ -46,6 +47,6 @@ export async function adminGetCourse(courseId: string) {
   }
 
   return data;
-}
+});
 
 export type AdminCourseSingularType = Awaited<ReturnType<typeof adminGetCourse>>;
