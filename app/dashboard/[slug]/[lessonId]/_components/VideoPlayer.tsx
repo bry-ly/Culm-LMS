@@ -1,7 +1,7 @@
 "use client";
 
 import { Slider } from "@/components/ui/slider";
-import { useConstructUrl } from "@/hooks/use-constract-url";
+import { useConstructUrl } from "@/hooks/use-construct-url";
 import { cn } from "@/lib/utils";
 import { BookIcon, Loader2, Maximize, Minimize, Pause, Play, Settings, Volume2, VolumeX } from "lucide-react";
 import { KeyboardEvent, useCallback, useEffect, useRef, useState } from "react";
@@ -215,6 +215,9 @@ export function VideoPlayer({ thumbnailKey, videoKey }: VideoPlayerProps) {
       video.removeEventListener("waiting", handleWaiting);
       video.removeEventListener("canplay", handleCanPlay);
       document.removeEventListener("fullscreenchange", handleFullscreenChange);
+      if (controlsTimeoutRef.current) {
+        clearTimeout(controlsTimeoutRef.current);
+      }
     };
   }, []);
 
