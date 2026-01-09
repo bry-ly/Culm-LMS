@@ -10,15 +10,14 @@ export default async function CourseSlugRoute({ params }: iAppProps) {
   const course = await getCourseSidebarData(slug);
 
   const firstChapter = course.chapter[0];
-  const firstLesson = firstChapter.lesson[0];
+  const firstLesson = firstChapter?.lesson[0];
 
   if (firstLesson) {
     redirect(`/dashboard/${slug}/${firstLesson.id}`);
   }
-  return(
+  return (
     <div className="flex items-center justify-center h-full text-center">
       <h2 className="text-2xl font-bold mb-2">No lessons available</h2>
-      <p className="text-muted-foreground">This course does not have any lessons yet!</p>
     </div>
   );
 }

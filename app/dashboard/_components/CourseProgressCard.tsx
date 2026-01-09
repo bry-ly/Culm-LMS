@@ -43,7 +43,8 @@ const getLevelShimmerColors = (level: string) => {
 
 export function CourseProgressCard({ data }: iAppProps) {
   const thumbnailUrl = useConstructUrl(data.course.filekey);
-  const { progressPercentage, totalLessons, completedLessons } = useCourseProgress({ courseData: data.course });
+  const { progressPercentage, totalLessons, completedLessons } =
+    useCourseProgress({ courseData: data.course });
 
   return (
     <Card className="group relative py-0 gap-0 hover:shadow-xl hover:border-primary transition-all duration-300">
@@ -57,18 +58,30 @@ export function CourseProgressCard({ data }: iAppProps) {
             style={
               {
                 "--color": getLevelShimmerColors(data.course.level).baseColor,
-                "--shimmering-color": getLevelShimmerColors(data.course.level).shimmeringColor,
+                "--shimmering-color": getLevelShimmerColors(data.course.level)
+                  .shimmeringColor,
               } as React.CSSProperties
             }
           />
         </div>
       </div>
-      <Image src={thumbnailUrl} alt="Thumbnail" width={600} height={400} className="w-full rounded-t-xl aspect-video h-full object-cover" />
+      <Image
+        src={thumbnailUrl}
+        alt="Thumbnail"
+        width={600}
+        height={400}
+        className="w-full aspect-video h-full object-cover"
+      />
       <CardContent className="p-4">
-        <Link className="font-medium text-lg line-clamp-2 hover:underline group-hover:text-primary transition-colors" href={`/courses/${data.course.slug}`}>
+        <Link
+          className="font-medium text-lg line-clamp-2 hover:underline group-hover:text-primary transition-colors"
+          href={`/courses/${data.course.slug}`}
+        >
           {data.course.title}
         </Link>
-        <p className="line-clamp-2 text-sm text-muted-foreground leading-tight mt-2 ">{data.course.smallDescription}</p>
+        <p className="line-clamp-2 text-sm text-muted-foreground leading-tight mt-2 ">
+          {data.course.smallDescription}
+        </p>
         <div className="space-y-4 mt-5">
           <div className="flex justify-between mb-1 text-sm ">
             <span>Progress:</span>
