@@ -118,7 +118,7 @@ export async function EnrollmentCourseAction(
           },
           data: {
             amount: course.price,
-            status: "Active",
+            status: "Pending",
             updatedAt: new Date(),
           },
         });
@@ -128,7 +128,7 @@ export async function EnrollmentCourseAction(
             userId: user.id,
             courseId: course.id,
             amount: course.price,
-            status: "Pending",
+            status: "Active",
           },
         });
       }

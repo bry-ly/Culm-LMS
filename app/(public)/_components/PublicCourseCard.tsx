@@ -14,27 +14,27 @@ interface iAppProps {
 
 const getLevelShimmerColors = (level: string) => {
   const levelLower = level.toLowerCase();
-  
-  switch(levelLower) {
-    case 'beginner':
+
+  switch (levelLower) {
+    case "beginner":
       return {
-        baseColor: '#059669',
-        shimmeringColor: '#34d399',
+        baseColor: "#059669",
+        shimmeringColor: "#34d399",
       };
-    case 'intermediate':
+    case "intermediate":
       return {
-        baseColor: '#2563eb',
-        shimmeringColor: '#60a5fa',
+        baseColor: "#2563eb",
+        shimmeringColor: "#60a5fa",
       };
-    case 'advanced':
+    case "advanced":
       return {
-        baseColor: '#7c3aed',
-        shimmeringColor: '#a78bfa',
+        baseColor: "#7c3aed",
+        shimmeringColor: "#a78bfa",
       };
     default:
       return {
-        baseColor: '#4b5563',
-        shimmeringColor: '#9ca3af',
+        baseColor: "#4b5563",
+        shimmeringColor: "#9ca3af",
       };
   }
 };
@@ -43,29 +43,41 @@ export function PublicCourseCard({ data }: iAppProps) {
   const thumbnailUrl = useConstructUrl(data.filekey);
 
   return (
-    <Card className="group relative py-0 gap-0 hover:shadow-xl hover:border-primary transition-all duration-300">
+    <Card className="group relative py-0 gap-0 hover:shadow-xl hover:border-primary transition-all duration-300 bg-pattern-stripe">
       <div className="absolute top-2 right-2 z-10">
         <div className="backdrop-blur-md bg-white/20 border border-white/30 dark:bg-black/30 dark:border-white/10 rounded-md px-3 py-1.5 shadow-sm">
-          <ShimmeringText 
+          <ShimmeringText
             text={data.level}
             duration={1}
             isStopped={false}
             className="text-xs font-semibold uppercase"
             style={
               {
-                '--color': getLevelShimmerColors(data.level).baseColor,
-                '--shimmering-color': getLevelShimmerColors(data.level).shimmeringColor,
+                "--color": getLevelShimmerColors(data.level).baseColor,
+                "--shimmering-color": getLevelShimmerColors(data.level)
+                  .shimmeringColor,
               } as React.CSSProperties
             }
           />
         </div>
       </div>
-      <Image src={thumbnailUrl} alt="Thumbnail" width={600} height={400} className="w-full rounded-t-xl aspect-video h-full object-cover" />
+      <Image
+        src={thumbnailUrl}
+        alt="Thumbnail"
+        width={600}
+        height={400}
+        className="w-full aspect-video h-full object-cover"
+      />
       <CardContent className="p-4">
-        <Link className="font-medium text-lg line-clamp-2 hover:underline group-hover:text-primary transition-colors" href={`/courses/${data.slug}`}>
+        <Link
+          className="font-medium text-lg line-clamp-2 hover:underline group-hover:text-primary transition-colors"
+          href={`/courses/${data.slug}`}
+        >
           {data.title}
         </Link>
-        <p className="line-clamp-2 text-sm text-muted-foreground leading-tight mt-2 ">{data.smallDescription}</p>
+        <p className="line-clamp-2 text-sm text-muted-foreground leading-tight mt-2 ">
+          {data.smallDescription}
+        </p>
         <div className="mt-4 flex items-center gap-x-5">
           <div className="flex items-center gap-x-2 ">
             <TimerIcon className="size-6 p-1 rounded-md text-primary bg-primary/10" />
