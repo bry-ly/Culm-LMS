@@ -1,8 +1,27 @@
 "use client";
 
 import { Editor } from "@tiptap/react";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
-import { AlignCenter, AlignLeft, AlignRight, Bold, Heading1Icon, Heading2Icon, Heading3Icon, Italic, ListIcon, ListOrderedIcon, Redo2Icon, Strikethrough, Undo2Icon } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../ui/tooltip";
+import {
+  AlignCenter,
+  AlignLeft,
+  AlignRight,
+  Bold,
+  Heading1Icon,
+  Heading2Icon,
+  Heading3Icon,
+  Italic,
+  ListIcon,
+  ListOrderedIcon,
+  Redo2Icon,
+  Strikethrough,
+  Undo2Icon,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { useEffect, useState } from "react";
@@ -20,7 +39,9 @@ export function Menubar({ editor }: Menubar) {
   const [isH3, setIsH3] = useState(false);
   const [isBulletList, setIsBulletList] = useState(false);
   const [isOrderedList, setIsOrderedList] = useState(false);
-  const [textAlign, setTextAlign] = useState<"left" | "center" | "right" | null>(null);
+  const [textAlign, setTextAlign] = useState<
+    "left" | "center" | "right" | null
+  >(null);
 
   useEffect(() => {
     if (!editor) return;
@@ -34,7 +55,7 @@ export function Menubar({ editor }: Menubar) {
       setIsH3(editor.isActive("heading", { level: 3 }));
       setIsBulletList(editor.isActive("bulletList"));
       setIsOrderedList(editor.isActive("orderedList"));
-      
+
       if (editor.isActive({ textAlign: "left" })) setTextAlign("left");
       else if (editor.isActive({ textAlign: "center" })) setTextAlign("center");
       else if (editor.isActive({ textAlign: "right" })) setTextAlign("right");
@@ -208,7 +229,9 @@ export function Menubar({ editor }: Menubar) {
                   editor.chain().focus().setTextAlign("left").run();
                   setTextAlign("left");
                 }}
-                className={cn(textAlign === "left" && "bg-muted text-muted-foreground")}
+                className={cn(
+                  textAlign === "left" && "bg-muted text-muted-foreground",
+                )}
               >
                 <AlignLeft />
               </Button>
@@ -225,7 +248,9 @@ export function Menubar({ editor }: Menubar) {
                   editor.chain().focus().setTextAlign("center").run();
                   setTextAlign("center");
                 }}
-                className={cn(textAlign === "center" && "bg-muted text-muted-foreground")}
+                className={cn(
+                  textAlign === "center" && "bg-muted text-muted-foreground",
+                )}
               >
                 <AlignCenter />
               </Button>
@@ -242,7 +267,9 @@ export function Menubar({ editor }: Menubar) {
                   editor.chain().focus().setTextAlign("right").run();
                   setTextAlign("right");
                 }}
-                className={cn(textAlign === "right" && "bg-muted text-muted-foreground")}
+                className={cn(
+                  textAlign === "right" && "bg-muted text-muted-foreground",
+                )}
               >
                 <AlignRight />
               </Button>
@@ -254,7 +281,13 @@ export function Menubar({ editor }: Menubar) {
         <div className="flex flex-wrap gap-1">
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button size="sm" variant="ghost" type="button" onClick={() => editor.chain().focus().undo().run()} disabled={!editor.can().undo()}>
+              <Button
+                size="sm"
+                variant="ghost"
+                type="button"
+                onClick={() => editor.chain().focus().undo().run()}
+                disabled={!editor.can().undo()}
+              >
                 <Undo2Icon />
               </Button>
             </TooltipTrigger>
@@ -262,7 +295,13 @@ export function Menubar({ editor }: Menubar) {
           </Tooltip>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button size="sm" variant="ghost" type="button" onClick={() => editor.chain().focus().redo().run()} disabled={!editor.can().redo()}>
+              <Button
+                size="sm"
+                variant="ghost"
+                type="button"
+                onClick={() => editor.chain().focus().redo().run()}
+                disabled={!editor.can().redo()}
+              >
                 <Redo2Icon />
               </Button>
             </TooltipTrigger>
