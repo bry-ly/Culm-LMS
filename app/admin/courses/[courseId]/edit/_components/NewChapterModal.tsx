@@ -1,6 +1,21 @@
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { tryCatch } from "@/hooks/try-catch";
 import { chapterSchema, ChapterSchemaType } from "@/lib/zodSchemas";
@@ -10,6 +25,7 @@ import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { createChapter } from "../actions";
 import { toast } from "sonner";
+import { CornerBorders } from "@/components/ui/corner-borders";
 
 export function NewChapterModal({ courseId }: { courseId: string }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -52,14 +68,17 @@ export function NewChapterModal({ courseId }: { courseId: string }) {
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button variant="outline" size="sm" className="gap-2">
+        <Button variant="outline" size="sm" className="gap-2 relative">
+          <CornerBorders />
           <PlusIcon className="size-4" /> New Chapter
         </Button>
       </DialogTrigger>
       <DialogContent className="sm: max-w-425px">
         <DialogHeader>
           <DialogTitle>Create new chapter</DialogTitle>
-          <DialogDescription>What would you like to name your chapter?</DialogDescription>
+          <DialogDescription>
+            What would you like to name your chapter?
+          </DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>
