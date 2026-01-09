@@ -1,10 +1,24 @@
 import { AdminCourseType } from "@/app/data/admin/admin-get-courses";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useConstructUrl } from "@/hooks/use-construct-url";
-import { ArrowRight, Edit, Eye, MoreVertical, School, TimerIcon, Trash2Icon } from "lucide-react";
+import {
+  ArrowRight,
+  Edit,
+  Eye,
+  MoreVertical,
+  School,
+  TimerIcon,
+  Trash2Icon,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -15,7 +29,7 @@ interface Course {
 export function AdminCourseCard({ data }: Course) {
   const thumbnailUrl = useConstructUrl(data.filekey);
   return (
-    <Card className="group relative py-0 gap-0 ">
+    <Card className="group relative py-0 gap-0 bg-pattern-striped">
       {/*Absolute dropdown*/}
       <div className="absolute top-2 right-2 z-10">
         <DropdownMenu>
@@ -47,12 +61,23 @@ export function AdminCourseCard({ data }: Course) {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <Image src={thumbnailUrl} alt="Thumbnail Url" width={600} height={400} className="w-full rounded-t-lg aspect-video h-full object-cover" />
+      <Image
+        src={thumbnailUrl}
+        alt="Thumbnail Url"
+        width={600}
+        height={400}
+        className="w-full aspect-video h-full object-cover"
+      />
       <CardContent className="p-4">
-        <Link href={`/admin/courses/${data.id}/edit`} className="font-medium text-lg line-clamp-2 hover:underline group-hover:text-primary transition-colors">
+        <Link
+          href={`/admin/courses/${data.id}/edit`}
+          className="font-medium text-lg line-clamp-2 hover:underline group-hover:text-primary transition-colors"
+        >
           {data.title}
         </Link>
-        <p className="line-clamp-2 text-sm text-muted-foreground leading-tight">{data.smallDescription}</p>
+        <p className="line-clamp-2 text-sm text-muted-foreground leading-tight">
+          {data.smallDescription}
+        </p>
         <div className="mt-4 flex items-center gap-x-5 ">
           <div className="flex items-center gap-2">
             <TimerIcon className="size-6 p-1 rounded-md  text-primary bg-primary/10" />
@@ -100,7 +125,7 @@ export function AdminCoursesCardSekeleton() {
             <Skeleton className="h-4 w-10 rounded " />
           </div>
         </div>
-        <Skeleton className="mt-4 h-10 w-full rounded"/>
+        <Skeleton className="mt-4 h-10 w-full rounded" />
       </CardContent>
     </Card>
   );
