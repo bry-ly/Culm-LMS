@@ -4,6 +4,7 @@ import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { Menubar } from "./Menubar";
 import TextAlign from "@tiptap/extension-text-align";
+import { CornerBorders } from "../ui/corner-borders";
 
 type RichTextField = {
   value: string | null | undefined;
@@ -33,7 +34,8 @@ export function RichTextEditor({ field }: { field: RichTextField }) {
   });
 
   return (
-    <div className="w-full border border-input border-t-0 border-x-0 rounded-lg overflow-hidden dark:bg-input/30">
+    <div className="w-full border border-input rounded-none overflow-hidden dark:bg-input/30 relative">
+      <CornerBorders />
       <Menubar editor={editor} />
       <EditorContent editor={editor} />
     </div>

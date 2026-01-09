@@ -80,7 +80,7 @@ export function Menubar({ editor }: Menubar) {
   }
   return (
     <TooltipProvider>
-      <div className="border border-input rounded-t-lg p-2 bg-card flex flex-wrap items-center gap-1">
+      <div className="border-b border-input p-2 bg-card flex flex-wrap items-center gap-1">
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
@@ -230,7 +230,7 @@ export function Menubar({ editor }: Menubar) {
                   setTextAlign("left");
                 }}
                 className={cn(
-                  textAlign === "left" && "bg-muted text-muted-foreground",
+                  textAlign === "left" && "bg-muted text-muted-foreground"
                 )}
               >
                 <AlignLeft />
@@ -249,7 +249,7 @@ export function Menubar({ editor }: Menubar) {
                   setTextAlign("center");
                 }}
                 className={cn(
-                  textAlign === "center" && "bg-muted text-muted-foreground",
+                  textAlign === "center" && "bg-muted text-muted-foreground"
                 )}
               >
                 <AlignCenter />
@@ -268,7 +268,7 @@ export function Menubar({ editor }: Menubar) {
                   setTextAlign("right");
                 }}
                 className={cn(
-                  textAlign === "right" && "bg-muted text-muted-foreground",
+                  textAlign === "right" && "bg-muted text-muted-foreground"
                 )}
               >
                 <AlignRight />
