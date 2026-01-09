@@ -1,7 +1,13 @@
 "use client";
 import { Google, Github } from "@aliimam/logos";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Send } from "lucide-react";
@@ -62,7 +68,7 @@ export function LoginForm() {
             router.push(`/verify-request?email=${email}`);
           },
           onError: () => {
-            toast.error("Error sending email"); 
+            toast.error("Error sending email");
           },
         },
       });
@@ -70,14 +76,21 @@ export function LoginForm() {
   }
 
   return (
-    <Card>
+    <Card className="bg-pattern-striped">
       <CardHeader>
         <CardTitle>Welcome Back!</CardTitle>
-        <CardDescription>Login with your Github or Google account</CardDescription>
+        <CardDescription>
+          Login with your Github or Google account
+        </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
         <div className="flex flex-col gap-2">
-          <Button onClick={signInWithGithub} className="w-full" variant="outline" disabled={isPending}>
+          <Button
+            onClick={signInWithGithub}
+            className="w-full"
+            variant="default"
+            disabled={isPending}
+          >
             {isPending ? (
               <>
                 <Spinner className="mr-2" />
@@ -90,7 +103,12 @@ export function LoginForm() {
               </>
             )}
           </Button>
-          <Button onClick={signInWithGoogle} className="w-full" variant="outline" disabled={isPending}>
+          <Button
+            onClick={signInWithGoogle}
+            className="w-full"
+            variant="default"
+            disabled={isPending}
+          >
             {isPending ? (
               <>
                 <Spinner className="mr-2" />
@@ -104,13 +122,23 @@ export function LoginForm() {
             )}
           </Button>
         </div>
-        <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
-          <span className="relative z-10 bg-card px-2 text-muted-foreground">Or Continue With</span>
+        <div className="flex items-center gap-4 text-sm w-full">
+          <div className="h-px flex-1 bg-border" />
+          <span className="text-muted-foreground">Or Continue With</span>
+          <div className="h-px flex-1 bg-border" />
         </div>
         <div className="grid gap-3">
           <div className="grid gap-2">
             <Label htmlFor="email">Email</Label>
-            <Input id="email" type="email" placeholder="m@example.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
+            <Input
+              className="bg-secondary"
+              id="email"
+              type="email"
+              placeholder="m@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
           </div>
           <Button onClick={signInWithEmail} disabled={emailPending}>
             {emailPending ? (
