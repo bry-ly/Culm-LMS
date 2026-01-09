@@ -1,7 +1,6 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
 import { FileRejection, useDropzone } from "react-dropzone";
-import { Card, CardContent } from "../ui/card";
 import { cn } from "@/lib/utils";
 import {
   RenderEmptyState,
@@ -124,7 +123,7 @@ export function Uploader({ onChange, value, fileTypeAccepted }: iAppprops) {
         }));
       }
     },
-    [fileTypeAccepted, onChange],
+    [fileTypeAccepted, onChange]
   );
 
   const onDrop = (acceptedFiles: File[]) => {
@@ -207,10 +206,10 @@ export function Uploader({ onChange, value, fileTypeAccepted }: iAppprops) {
   function rejectedFiles(fileRejection: FileRejection[]) {
     if (fileRejection.length) {
       const tooManyFiles = fileRejection.find(
-        (rejection) => rejection.errors[0].code === "to-many-files",
+        (rejection) => rejection.errors[0].code === "to-many-files"
       );
       const filesSizeToBig = fileRejection.find(
-        (rejection) => rejection.errors[0].code === "file-too-large",
+        (rejection) => rejection.errors[0].code === "file-too-large"
       );
 
       if (filesSizeToBig) {
@@ -265,19 +264,19 @@ export function Uploader({ onChange, value, fileTypeAccepted }: iAppprops) {
   });
 
   return (
-    <Card
+    <div
       {...getRootProps()}
       className={cn(
-        "relative border-2 border-dashed transition-colors duration-200 ease-in-out w-full h-64",
+        "relative border-2 border-dashed transition-colors duration-200 ease-in-out w-full h-64 bg-card text-card-foreground rounded-xl flex flex-col justify-center items-center gap-6 shadow-sm",
         isDragActive
           ? " border-primary bg-primary/10 border-solid"
-          : "border-border hover:border-primary",
+          : "border-border hover:border-primary"
       )}
     >
-      <CardContent className="flex items-center justify-center h-full w-full p-4">
+      <div className="flex items-center justify-center h-full w-full p-4">
         <input {...getInputProps()} />
         {renderContent()}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
