@@ -3,6 +3,7 @@ import { getAllCourses } from "../data/course/get-all-courses";
 import { getEnrolledCourses } from "../data/user/get-enrolled-courses";
 import { PublicCourseCard } from "../(public)/_components/PublicCourseCard";
 import { CourseProgressCard } from "./_components/CourseProgressCard";
+import { ProgressStats } from "./_components/ProgressStats";
 
 export default async function DashboardPage() {
   const [enrolledCourses, courses] = await Promise.all([
@@ -12,6 +13,10 @@ export default async function DashboardPage() {
 
   return (
     <>
+      {enrolledCourses.length > 0 && (
+        <ProgressStats enrolledCourses={enrolledCourses} />
+      )}
+      
       <div className="flex flex-col gap-2">
         <h1 className="text-3xl font-bold">Enrolled Courses</h1>
         <p className="text-muted-foreground">
