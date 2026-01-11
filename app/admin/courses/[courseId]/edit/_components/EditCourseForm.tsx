@@ -9,6 +9,7 @@ import { tryCatch } from "@/hooks/try-catch";
 import { courseCategory, courseLevels, courseSchema, CourseSchemaType, courseStatus } from "@/lib/zodSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 import { Edit2Icon, Loader, SparkleIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
@@ -34,6 +35,7 @@ export function EditCourseForm({ data }: iAppProps) {
       title: data.title,
       description: data.description,
       filekey: data.filekey,
+      isFree: data.isFree ?? false,
       price: data.price,
       duration: data.duration,
       smallDescription: data.smallDescription,
@@ -43,6 +45,8 @@ export function EditCourseForm({ data }: iAppProps) {
       category: data.category as CourseSchemaType["category"],
     },
   });
+
+  const isFree = form.watch("isFree");
 
   function onSubmit(values: CourseSchemaType) {
     startTransition(async () => {
@@ -206,17 +210,45 @@ export function EditCourseForm({ data }: iAppProps) {
           />
           <FormField
             control={form.control}
-            name="price"
+            name="isFree"
             render={({ field }) => (
               <FormItem className="w-full">
-                <FormLabel>Price (₱)</FormLabel>
+                <FormLabel>Free Course</FormLabel>
                 <FormControl>
-                  <Input placeholder="Price" type="number" {...field} />
+                  <div className="flex items-center space-x-2 pt-2">
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={(checked) => {
+                        field.onChange(checked);
+                        if (checked) {
+                          form.setValue("price", 0);
+                        }
+                      }}
+                    />
+                    <span className="text-sm text-muted-foreground">
+                      {field.value ? "This course is free" : "This course is paid"}
+                    </span>
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
+          {!isFree && (
+            <FormField
+              control={form.control}
+              name="price"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel>Price (₱)</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Price" type="number" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
         </div>
         <FormField
           control={form.control}
