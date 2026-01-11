@@ -28,6 +28,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
 import slugify from "slugify";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -55,12 +56,15 @@ export default function CourseCreationPage() {
       title: "",
       description: "",
       filekey: "",
+      isFree: false,
       price: 0,
       duration: 0,
       smallDescription: "",
       slug: "",
     },
   });
+
+  const isFree = form.watch("isFree");
   function onSubmit(values: CourseFormValues) {
     startTransition(async () => {
       const { data: result, error } = await tryCatch(CreateCourse(values));
@@ -258,17 +262,45 @@ export default function CourseCreationPage() {
                 />
                 <FormField
                   control={form.control}
-                  name="price"
+                  name="isFree"
                   render={({ field }) => (
                     <FormItem className="w-full">
-                      <FormLabel>Price (₱)</FormLabel>
+                      <FormLabel>Free Course</FormLabel>
                       <FormControl>
-                        <Input placeholder="Price" type="number" {...field} />
+                        <div className="flex items-center space-x-2 pt-2">
+                          <Switch
+                            checked={field.value}
+                            onCheckedChange={(checked) => {
+                              field.onChange(checked);
+                              if (checked) {
+                                form.setValue("price", 0);
+                              }
+                            }}
+                          />
+                          <span className="text-sm text-muted-foreground">
+                            {field.value ? "This course is free" : "This course is paid"}
+                          </span>
+                        </div>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
+                {!isFree && (
+                  <FormField
+                    control={form.control}
+                    name="price"
+                    render={({ field }) => (
+                      <FormItem className="w-full">
+                        <FormLabel>Price (₱)</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Price" type="number" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
               </div>
               <FormField
                 control={form.control}
