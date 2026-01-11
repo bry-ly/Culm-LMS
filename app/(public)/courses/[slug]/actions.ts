@@ -44,6 +44,7 @@ export async function EnrollmentCourseAction(
         title: true,
         price: true,
         slug: true,
+        isFree: true,
       },
     });
 
@@ -54,6 +55,56 @@ export async function EnrollmentCourseAction(
       };
     }
 
+    // Check for existing enrollment
+    const existingEnrollment = await prisma.enrollment.findUnique({
+      where: {
+        userId_courseId: {
+          userId: user.id,
+          courseId: courseId,
+        },
+      },
+      select: {
+        status: true,
+        id: true,
+      },
+    });
+
+    if (existingEnrollment?.status === "Active") {
+      return {
+        status: "success",
+        message: "You are already enrolled in this course",
+      };
+    }
+
+    // Handle free course enrollment
+    if (course.isFree) {
+      if (existingEnrollment) {
+        await prisma.enrollment.update({
+          where: { id: existingEnrollment.id },
+          data: {
+            amount: 0,
+            status: "Active",
+            updatedAt: new Date(),
+          },
+        });
+      } else {
+        await prisma.enrollment.create({
+          data: {
+            userId: user.id,
+            courseId: course.id,
+            amount: 0,
+            status: "Active",
+          },
+        });
+      }
+
+      return {
+        status: "success",
+        message: "Successfully enrolled in free course!",
+      };
+    }
+
+    // Handle paid course enrollment with Stripe
     let stripeCustomerId: string;
 
     const userWithStripeCustomerId = await prisma.user.findUnique({

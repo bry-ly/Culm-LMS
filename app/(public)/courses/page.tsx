@@ -1,37 +1,63 @@
-import { getAllCourses } from "@/app/data/course/get-all-courses";
+import { CourseFilters as CourseFiltersType, getAllCourses } from "@/app/data/course/get-all-courses";
 import { EmptyCourseState } from "@/components/general/EmptyState";
 import { PublicCourseCard, PublicCourseCardSkeleton } from "../_components/PublicCourseCard";
+import { CourseFilters } from "../_components/CourseFilters";
 import { Suspense } from "react";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 
 export const dynamic = "force-dynamic";
 
-export default function PublicCoursesRoute() {
+type SearchParams = Promise<{
+  search?: string;
+  category?: string;
+  level?: string;
+  priceType?: string;
+}>;
+
+export default async function PublicCoursesRoute({
+  searchParams,
+}: {
+  searchParams: SearchParams;
+}) {
+  const params = await searchParams;
+  
   return (
     <div className="mt-5">
-      <div className="flex flex-col space-y-2 mb-10">
+      <div className="flex flex-col space-y-2 mb-6">
         <h1 className="text-3xl md:text-4xl tracking-tight font-bold">Explore Courses</h1>
         <p className="text-muted-foreground max-w-lg">Browse our courses and start learning today.</p>
       </div>
+      <Suspense fallback={null}>
+        <CourseFilters />
+      </Suspense>
       <Suspense fallback={<LoadingSkeletonLayout />}>
-        <RenderCourses />
+        <RenderCourses filters={params} />
       </Suspense>
     </div>
   );
 }
 
-async function RenderCourses() {
-  const courses = await getAllCourses();
+async function RenderCourses({ filters }: { filters: { search?: string; category?: string; level?: string; priceType?: string } }) {
+  const courseFilters: CourseFiltersType = {
+    search: filters.search,
+    category: filters.category,
+    level: filters.level,
+    priceType: filters.priceType as "all" | "free" | "paid" | undefined,
+  };
+  
+  const courses = await getAllCourses(courseFilters);
 
   if (courses.length === 0) {
     const session = await auth.api.getSession({ headers: await headers() });
     const isAdmin = session?.user?.role === "admin";
 
+    const hasFilters = courseFilters.search || courseFilters.category || courseFilters.level || courseFilters.priceType;
+
     return (
       <EmptyCourseState
-        title="No courses available"
-        description="Check back later for new courses."
+        title={hasFilters ? "No courses match your filters" : "No courses available"}
+        description={hasFilters ? "Try adjusting your search or filters." : "Check back later for new courses."}
         buttonText={isAdmin ? "Create Course" : null}
         href={isAdmin ? "/admin/courses/create" : null}
       />

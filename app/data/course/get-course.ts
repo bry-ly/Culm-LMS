@@ -18,6 +18,7 @@ export const getIndividualCourse = cache(async (slug: string) => {
       level: true,
       category: true,
       smallDescription: true,
+      isFree: true,
       chapter: {
         select: {
           id: true,

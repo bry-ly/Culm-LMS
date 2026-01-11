@@ -7,7 +7,12 @@ import { EnrollmentCourseAction } from "../actions";
 import { toast } from "sonner";
 import { Loader } from "lucide-react";
 
-export function EnrollmentButton({ courseId }: { courseId: string }) {
+interface EnrollmentButtonProps {
+  courseId: string;
+  isFree?: boolean;
+}
+
+export function EnrollmentButton({ courseId, isFree = false }: EnrollmentButtonProps) {
   const [isPending, startTransition] = useTransition();
 
   function onSubmit() {
@@ -28,6 +33,10 @@ export function EnrollmentButton({ courseId }: { courseId: string }) {
           window.location.href = result.checkoutUrl as string;
         } else {
           toast.success(result.message);
+          // For free courses, redirect to dashboard after enrollment
+          if (isFree) {
+            window.location.href = "/dashboard";
+          }
         }
       } else if (result?.status === "error") {
         toast.error(result.message);
@@ -42,6 +51,8 @@ export function EnrollmentButton({ courseId }: { courseId: string }) {
           <Loader className="size-4 animate-spin" />
           <span>Loading...</span>
         </>
+      ) : isFree ? (
+        "Enroll for Free!"
       ) : (
         "Enroll Now!"
       )}

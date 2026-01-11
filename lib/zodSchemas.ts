@@ -25,7 +25,8 @@ export const courseSchema = z.object({
     .string()
     .min(3, { message: "Description must be at least 3 characters" }),
   filekey: z.string().min(1, { message: "Thumbnail Image is required" }),
-  price: z.coerce.number().min(1, { message: "Price must be at least 1" }),
+  isFree: z.boolean().default(false),
+  price: z.coerce.number().min(0, { message: "Price must be at least 0" }),
   duration: z.coerce
     .number()
     .min(1, { message: "Duration must be at least 1" })
@@ -72,4 +73,5 @@ export type LessonSchemaType = z.infer<typeof lessonSchema>;
 export type CourseFormValues = Omit<CourseSchemaType, "price" | "duration"> & {
   price: number;
   duration: number;
+  isFree: boolean;
 };

@@ -1,4 +1,5 @@
 import { PublicCourseType } from "@/app/data/course/get-all-courses";
+import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -44,7 +45,12 @@ export function PublicCourseCard({ data }: iAppProps) {
 
   return (
     <Card className="group relative py-0 gap-0 hover:shadow-xl hover:border-primary transition-all duration-300 bg-pattern-stripe">
-      <div className="absolute top-2 right-2 z-10">
+      <div className="absolute top-2 right-2 z-10 flex gap-2">
+        {data.isFree && (
+          <Badge variant="secondary" className="bg-green-500/90 text-white border-0 font-semibold">
+            Free
+          </Badge>
+        )}
         <div className="backdrop-blur-md bg-white/20 border border-white/30 dark:bg-black/30 dark:border-white/10 rounded-md px-3 py-1.5 shadow-sm">
           <ShimmeringText
             text={data.level}

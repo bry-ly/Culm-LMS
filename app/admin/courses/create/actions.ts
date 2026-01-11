@@ -48,27 +48,34 @@ export async function CreateCourse(values: CourseSchemaType): Promise<ApiRespons
       };
     }
 
-    const data = await stripe.products.create({
-      name: validation.data.title,
-      description: validation.data.smallDescription,
-      default_price_data: {
-        currency: "php",
-        unit_amount: validation.data.price * 100,
-      },
-    });
-    
-    if (!data.default_price || typeof data.default_price !== "string") {
-      return {
-        status: "error",
-        message: "Failed to create Stripe price",
-      };
+    let stripePriceId: string | null = null;
+
+    // Only create Stripe product for paid courses
+    if (!validation.data.isFree && validation.data.price > 0) {
+      const data = await stripe.products.create({
+        name: validation.data.title,
+        description: validation.data.smallDescription,
+        default_price_data: {
+          currency: "php",
+          unit_amount: validation.data.price * 100,
+        },
+      });
+      
+      if (!data.default_price || typeof data.default_price !== "string") {
+        return {
+          status: "error",
+          message: "Failed to create Stripe price",
+        };
+      }
+      
+      stripePriceId = data.default_price;
     }
     
     await prisma.course.create({
       data: {
         ...validation.data,
         userId: session.user.id as string,
-        stripePriceId: data.default_price,
+        stripePriceId: stripePriceId,
       },
     });
 

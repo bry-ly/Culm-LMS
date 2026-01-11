@@ -23,6 +23,7 @@ export const adminGetCourse = cache(async (courseId: string) => {
       slug: true,
       level: true,
       category: true,
+      isFree: true,
       chapter: {
         select: {
           id: true,

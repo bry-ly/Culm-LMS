@@ -118,10 +118,14 @@ export default async function SlugPage({ params }: { params: Params }) {
               <div className="items-center flex justify-between mb-6">
                 <span className="text-lg font-medium">Price:</span>
                 <span className="text-2xl text-primary font-bold">
-                  {new Intl.NumberFormat("en-US", {
-                    style: "currency",
-                    currency: "PHP",
-                  }).format(course.price)}
+                  {course.isFree ? (
+                    <span className="text-green-500">Free</span>
+                  ) : (
+                    new Intl.NumberFormat("en-US", {
+                      style: "currency",
+                      currency: "PHP",
+                    }).format(course.price)
+                  )}
                 </span>
               </div>
               <div className="mb-6 space-y-3 rounded-lg bg-muted p-4">
@@ -206,7 +210,7 @@ export default async function SlugPage({ params }: { params: Params }) {
                   Watch Course
                 </Link>
               ) : (
-                <EnrollmentButton courseId={course.id} />
+                <EnrollmentButton courseId={course.id} isFree={course.isFree} />
               )}
               <p className="mt-3 text-center text-xs text-muted-foreground">30-day money-back guarantee</p>
             </CardContent>
