@@ -1,6 +1,12 @@
-import { CourseFilters as CourseFiltersType, getAllCourses } from "@/app/data/course/get-all-courses";
+import {
+  CourseFilters as CourseFiltersType,
+  getAllCourses,
+} from "@/app/data/course/get-all-courses";
 import { EmptyCourseState } from "@/components/general/EmptyState";
-import { PublicCourseCard, PublicCourseCardSkeleton } from "../_components/PublicCourseCard";
+import {
+  PublicCourseCard,
+  PublicCourseCardSkeleton,
+} from "../_components/PublicCourseCard";
 import { CourseFilters } from "../_components/CourseFilters";
 import { Suspense } from "react";
 import { auth } from "@/lib/auth";
@@ -21,12 +27,16 @@ export default async function PublicCoursesRoute({
   searchParams: SearchParams;
 }) {
   const params = await searchParams;
-  
+
   return (
     <div className="mt-5">
-      <div className="flex flex-col space-y-2 mb-6">
-        <h1 className="text-3xl md:text-4xl tracking-tight font-bold">Explore Courses</h1>
-        <p className="text-muted-foreground max-w-lg">Browse our courses and start learning today.</p>
+      <div className="mb-6 flex flex-col space-y-2">
+        <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
+          Explore Courses
+        </h1>
+        <p className="text-muted-foreground max-w-lg">
+          Browse our courses and start learning today.
+        </p>
       </div>
       <Suspense fallback={null}>
         <CourseFilters />
@@ -38,26 +48,45 @@ export default async function PublicCoursesRoute({
   );
 }
 
-async function RenderCourses({ filters }: { filters: { search?: string; category?: string; level?: string; priceType?: string } }) {
+async function RenderCourses({
+  filters,
+}: {
+  filters: {
+    search?: string;
+    category?: string;
+    level?: string;
+    priceType?: string;
+  };
+}) {
   const courseFilters: CourseFiltersType = {
     search: filters.search,
     category: filters.category,
     level: filters.level,
     priceType: filters.priceType as "all" | "free" | "paid" | undefined,
   };
-  
+
   const courses = await getAllCourses(courseFilters);
 
   if (courses.length === 0) {
     const session = await auth.api.getSession({ headers: await headers() });
     const isAdmin = session?.user?.role === "admin";
 
-    const hasFilters = courseFilters.search || courseFilters.category || courseFilters.level || courseFilters.priceType;
+    const hasFilters =
+      courseFilters.search ||
+      courseFilters.category ||
+      courseFilters.level ||
+      courseFilters.priceType;
 
     return (
       <EmptyCourseState
-        title={hasFilters ? "No courses match your filters" : "No courses available"}
-        description={hasFilters ? "Try adjusting your search or filters." : "Check back later for new courses."}
+        title={
+          hasFilters ? "No courses match your filters" : "No courses available"
+        }
+        description={
+          hasFilters
+            ? "Try adjusting your search or filters."
+            : "Check back later for new courses."
+        }
         buttonText={isAdmin ? "Create Course" : null}
         href={isAdmin ? "/admin/courses/create" : null}
       />
@@ -65,7 +94,7 @@ async function RenderCourses({ filters }: { filters: { search?: string; category
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
       {courses.map((course) => (
         <PublicCourseCard key={course.id} data={course} />
       ))}
@@ -75,7 +104,7 @@ async function RenderCourses({ filters }: { filters: { search?: string; category
 
 function LoadingSkeletonLayout() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
       {Array.from({ length: 9 }).map((_, index) => (
         <PublicCourseCardSkeleton key={index} />
       ))}

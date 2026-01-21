@@ -12,7 +12,10 @@ interface EnrollmentButtonProps {
   isFree?: boolean;
 }
 
-export function EnrollmentButton({ courseId, isFree = false }: EnrollmentButtonProps) {
+export function EnrollmentButton({
+  courseId,
+  isFree = false,
+}: EnrollmentButtonProps) {
   const [isPending, startTransition] = useTransition();
 
   function onSubmit() {

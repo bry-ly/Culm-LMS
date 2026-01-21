@@ -45,17 +45,17 @@ const features: Feature[] = [
 export default function Home() {
   return (
     <>
-      <section className=" relative py-20">
-        <div className="flex flex-col items-center text-center space-y-8">
+      <section className="relative py-20">
+        <div className="flex flex-col items-center space-y-8 text-center">
           <Badge variant="outline">Hyperlinking you to a bright future!</Badge>
-          <h1 className="text-4xl md:text-6xl tracking-tight font-semibold">
+          <h1 className="text-4xl font-semibold tracking-tight md:text-6xl">
             Elevate your learning experience
           </h1>
-          <p className="max-w-2xl text-muted-foreground md:text-xl">
+          <p className="text-muted-foreground max-w-2xl md:text-xl">
             Discover a new way to learn with our modern, interactive learning
             management system. Access high-quality courses anytime, anywhere.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 mt-8">
+          <div className="mt-8 flex flex-col gap-4 sm:flex-row">
             <Link
               className={buttonVariants({
                 size: "lg",
@@ -77,14 +77,14 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <section className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
         {features.map((feature, index) => (
           <Card
             key={index}
-            className="hover:shadow-lg transition-shadow bg-pattern-striped"
+            className="bg-pattern-striped transition-shadow hover:shadow-lg"
           >
             <CardHeader>
-              <div className="text-4xl mb-4">{feature.icon}</div>
+              <div className="mb-4 text-4xl">{feature.icon}</div>
               <CardTitle className="">{feature.title}</CardTitle>
             </CardHeader>
             <CardContent>

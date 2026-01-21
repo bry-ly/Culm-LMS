@@ -20,9 +20,13 @@ export function CourseFilters() {
   const [isPending, startTransition] = useTransition();
 
   const [search, setSearch] = useState(searchParams.get("search") || "");
-  const [category, setCategory] = useState(searchParams.get("category") || "all");
+  const [category, setCategory] = useState(
+    searchParams.get("category") || "all"
+  );
   const [level, setLevel] = useState(searchParams.get("level") || "all");
-  const [priceType, setPriceType] = useState(searchParams.get("priceType") || "all");
+  const [priceType, setPriceType] = useState(
+    searchParams.get("priceType") || "all"
+  );
 
   const createQueryString = useCallback(
     (params: Record<string, string>) => {
@@ -64,13 +68,16 @@ export function CourseFilters() {
   };
 
   const hasFilters =
-    search !== "" || category !== "all" || level !== "all" || priceType !== "all";
+    search !== "" ||
+    category !== "all" ||
+    level !== "all" ||
+    priceType !== "all";
 
   return (
-    <div className="space-y-4 mb-8">
-      <div className="flex flex-col md:flex-row gap-4">
+    <div className="mb-8 space-y-4">
+      <div className="flex flex-col gap-4 md:flex-row">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+          <Search className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
           <Input
             placeholder="Search courses..."
             value={search}
@@ -130,7 +137,7 @@ export function CourseFilters() {
         </Button>
         {hasFilters && (
           <Button variant="outline" onClick={clearFilters} disabled={isPending}>
-            <X className="size-4 mr-1" />
+            <X className="mr-1 size-4" />
             Clear Filters
           </Button>
         )}

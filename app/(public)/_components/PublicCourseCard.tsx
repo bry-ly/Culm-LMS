@@ -44,14 +44,17 @@ export function PublicCourseCard({ data }: iAppProps) {
   const thumbnailUrl = useConstructUrl(data.filekey);
 
   return (
-    <Card className="group relative py-0 gap-0 hover:shadow-xl hover:border-primary transition-all duration-300 bg-pattern-stripe">
+    <Card className="group hover:border-primary bg-pattern-stripe relative gap-0 py-0 transition-all duration-300 hover:shadow-xl">
       <div className="absolute top-2 right-2 z-10 flex gap-2">
         {data.isFree && (
-          <Badge variant="secondary" className="bg-green-500/90 text-white border-0 font-semibold">
+          <Badge
+            variant="secondary"
+            className="border-0 bg-green-500/90 font-semibold text-white"
+          >
             Free
           </Badge>
         )}
-        <div className="backdrop-blur-md bg-white/20 border border-white/30 dark:bg-black/30 dark:border-white/10 rounded-md px-3 py-1.5 shadow-sm">
+        <div className="rounded-md border border-white/30 bg-white/20 px-3 py-1.5 shadow-sm backdrop-blur-md dark:border-white/10 dark:bg-black/30">
           <ShimmeringText
             text={data.level}
             duration={1}
@@ -72,32 +75,32 @@ export function PublicCourseCard({ data }: iAppProps) {
         alt="Thumbnail"
         width={600}
         height={400}
-        className="w-full aspect-video h-full object-cover"
+        className="aspect-video h-full w-full object-cover"
       />
       <CardContent className="p-4">
         <Link
-          className="font-medium text-lg line-clamp-2 hover:underline group-hover:text-primary transition-colors"
+          className="group-hover:text-primary line-clamp-2 text-lg font-medium transition-colors hover:underline"
           href={`/courses/${data.slug}`}
         >
           {data.title}
         </Link>
-        <p className="line-clamp-2 text-sm text-muted-foreground leading-tight mt-2 ">
+        <p className="text-muted-foreground mt-2 line-clamp-2 text-sm leading-tight">
           {data.smallDescription}
         </p>
         <div className="mt-4 flex items-center gap-x-5">
-          <div className="flex items-center gap-x-2 ">
-            <TimerIcon className="size-6 p-1 rounded-md text-primary bg-primary/10" />
-            <p className="text-sm text-muted-foreground">{data.duration}h</p>
+          <div className="flex items-center gap-x-2">
+            <TimerIcon className="text-primary bg-primary/10 size-6 rounded-md p-1" />
+            <p className="text-muted-foreground text-sm">{data.duration}h</p>
           </div>
-          <div className="flex items-center gap-x-2 ">
-            <SchoolIcon className="size-6 p-1 rounded-md text-primary bg-primary/10" />
-            <p className="text-sm text-muted-foreground">{data.category}</p>
+          <div className="flex items-center gap-x-2">
+            <SchoolIcon className="text-primary bg-primary/10 size-6 rounded-md p-1" />
+            <p className="text-muted-foreground text-sm">{data.category}</p>
           </div>
         </div>
         <Link
           href={`/courses/${data.slug}`}
           className={buttonVariants({
-            className: "w-full mt-4",
+            className: "mt-4 w-full",
           })}
         >
           Learn More
@@ -109,19 +112,19 @@ export function PublicCourseCard({ data }: iAppProps) {
 
 export function PublicCourseCardSkeleton() {
   return (
-    <Card className="group relative py-0 gap-0">
+    <Card className="group relative gap-0 py-0">
       <div className="absolute top-2 right-2 z-10">
-        <div className="backdrop-blur-md bg-white/20 border border-white/30 dark:bg-black/30 dark:border-white/10 rounded-full px-3 py-1.5 shadow-sm">
+        <div className="rounded-full border border-white/30 bg-white/20 px-3 py-1.5 shadow-sm backdrop-blur-md dark:border-white/10 dark:bg-black/30">
           <Skeleton className="h-4 w-16 rounded-full" />
         </div>
       </div>
-      <div className="w-full relative h-fit">
-        <Skeleton className="w-full rounded-t-xl aspect-video" />
+      <div className="relative h-fit w-full">
+        <Skeleton className="aspect-video w-full rounded-t-xl" />
       </div>
       <CardContent className="p-4">
-        <div className="space-y-2 ">
-          <Skeleton className="h-6 w-full " />
-          <Skeleton className="h-6 w-3/4 " />
+        <div className="space-y-2">
+          <Skeleton className="h-6 w-full" />
+          <Skeleton className="h-6 w-3/4" />
         </div>
         <div className="mt-4 flex items-center gap-x-5">
           <div className="flex items-center gap-x-2">
@@ -133,7 +136,7 @@ export function PublicCourseCardSkeleton() {
             <Skeleton className="h-4 w-8" />
           </div>
         </div>
-        <Skeleton className="mt-4 w-full h-10 rounded-md" />
+        <Skeleton className="mt-4 h-10 w-full rounded-md" />
       </CardContent>
     </Card>
   );
