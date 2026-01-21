@@ -180,7 +180,7 @@
     /* Default (Light) - Black with 5% opacity */
     --pattern-fg: rgba(0, 0, 0, 0.05);
 
-    @apply border rounded-none;
+    @apply rounded-none border;
     border-color: var(--pattern-fg); /* Ensure border uses the pattern color */
 
     background-image: repeating-linear-gradient(

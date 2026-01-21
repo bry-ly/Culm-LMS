@@ -18,9 +18,7 @@ export const metadata: Metadata = {
   title: "Culm LMS",
   description: "Hyperlinking you to a bright future!",
   icons: {
-    icon: [
-      { url: "/icon.svg", type: "image/svg+xml" },
-    ],
+    icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
     apple: [{ url: "/apple-icon.svg", type: "image/svg+xml" }],
   },
 };

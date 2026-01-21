@@ -1,5 +1,12 @@
 import { buttonVariants } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { CheckIcon, ChevronLeft } from "lucide-react";
 import Link from "next/link";
 
@@ -11,11 +18,14 @@ export default function PaymentSuccess() {
           <div className="rounded-full bg-green-100 p-3">
             <CheckIcon className="h-10 w-10 text-green-600" />
           </div>
-          <CardTitle className="text-2xl font-semibold mt-1">Payment Successful</CardTitle>
+          <CardTitle className="mt-1 text-2xl font-semibold">
+            Payment Successful
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <CardDescription className="text-base">
-            Thank you for purchasing! Your payment was successful, and you should now have access to the course.
+            Thank you for purchasing! Your payment was successful, and you
+            should now have access to the course.
           </CardDescription>
         </CardContent>
         <CardFooter className="flex justify-center">

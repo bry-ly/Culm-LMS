@@ -15,10 +15,10 @@ export default function PaymentCancelled() {
     <div className="flex min-h-svh flex-col items-center justify-center p-4">
       <Card className="w-full max-w-md text-center">
         <CardHeader className="flex flex-col items-center gap-2">
-          <div className="rounded-full bg-destructive/10 p-3">
-            <X className="h-10 w-10 text-destructive" />
+          <div className="bg-destructive/10 rounded-full p-3">
+            <X className="text-destructive h-10 w-10" />
           </div>
-          <CardTitle className="text-2xl font-semibold mt-1">
+          <CardTitle className="mt-1 text-2xl font-semibold">
             Payment Cancelled
           </CardTitle>
         </CardHeader>
