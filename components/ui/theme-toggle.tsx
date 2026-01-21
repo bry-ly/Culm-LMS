@@ -38,43 +38,76 @@ const Options = ({
   setGifUrl: (url: string) => void;
 }) => {
   return (
-    <motion.div drag className="top-30 border-foreground/10 bg-muted2 absolute right-1/2 flex w-245px translate-x-1/2 flex-col gap-3 rounded-3xl border p-3 backdrop-blur-sm lg:right-4 lg:translate-x-0">
+    <motion.div
+      drag
+      className="border-foreground/10 bg-muted2 w-245px absolute top-30 right-1/2 flex translate-x-1/2 flex-col gap-3 rounded-3xl border p-3 backdrop-blur-sm lg:right-4 lg:translate-x-0"
+    >
       <div className="flex items-center justify-between">
         <span className="size-4 cursor-grab active:cursor-grabbing">
           <GripHorizontal className="size-4 opacity-50" />
         </span>
 
-        <p className="group flex cursor-pointer items-center justify-center gap-1 rounded-lg px-2 py-1 text-sm opacity-50">Options</p>
+        <p className="group flex cursor-pointer items-center justify-center gap-1 rounded-lg px-2 py-1 text-sm opacity-50">
+          Options
+        </p>
       </div>
 
       <div className="flex flex-col">
         <div className="mt-1 flex justify-between py-1">
-          <p className="w-20 whitespace-nowrap text-sm opacity-50">variant :</p>
+          <p className="w-20 text-sm whitespace-nowrap opacity-50">variant :</p>
           <div className="flex flex-wrap items-center justify-end gap-1">
             <button
               onClick={() => setVariant("circle")}
-              className={cn("cursor-pointer px-1 text-sm transition-opacity", variant === "circle" ? "opacity-100" : "hover:bg-foreground/10 opacity-50 hover:opacity-100")}
+              className={cn(
+                "cursor-pointer px-1 text-sm transition-opacity",
+                variant === "circle"
+                  ? "opacity-100"
+                  : "hover:bg-foreground/10 opacity-50 hover:opacity-100"
+              )}
             >
               circle
             </button>
             <button
               onClick={() => setVariant("rectangle")}
-              className={cn("cursor-pointer px-1 text-sm transition-opacity", variant === "rectangle" ? "opacity-100" : "hover:bg-foreground/10 opacity-50 hover:opacity-100")}
+              className={cn(
+                "cursor-pointer px-1 text-sm transition-opacity",
+                variant === "rectangle"
+                  ? "opacity-100"
+                  : "hover:bg-foreground/10 opacity-50 hover:opacity-100"
+              )}
             >
               rectangle
             </button>
-            <button onClick={() => setVariant("gif")} className={cn("cursor-pointer px-1 text-sm transition-opacity", variant === "gif" ? "opacity-100" : "hover:bg-foreground/10 opacity-50 hover:opacity-100")}>
+            <button
+              onClick={() => setVariant("gif")}
+              className={cn(
+                "cursor-pointer px-1 text-sm transition-opacity",
+                variant === "gif"
+                  ? "opacity-100"
+                  : "hover:bg-foreground/10 opacity-50 hover:opacity-100"
+              )}
+            >
               gif
             </button>
             <button
               onClick={() => setVariant("polygon")}
-              className={cn("cursor-pointer px-1 text-sm transition-opacity", variant === "polygon" ? "opacity-100" : "hover:bg-foreground/10 opacity-50 hover:opacity-100")}
+              className={cn(
+                "cursor-pointer px-1 text-sm transition-opacity",
+                variant === "polygon"
+                  ? "opacity-100"
+                  : "hover:bg-foreground/10 opacity-50 hover:opacity-100"
+              )}
             >
               polygon
             </button>
             <button
               onClick={() => setVariant("circle-blur")}
-              className={cn("cursor-pointer px-1 text-sm transition-opacity", variant === "circle-blur" ? "opacity-100" : "hover:bg-foreground/10 opacity-50 hover:opacity-100")}
+              className={cn(
+                "cursor-pointer px-1 text-sm transition-opacity",
+                variant === "circle-blur"
+                  ? "opacity-100"
+                  : "hover:bg-foreground/10 opacity-50 hover:opacity-100"
+              )}
             >
               circle-blur
             </button>
@@ -82,27 +115,51 @@ const Options = ({
         </div>
 
         <div className="mt-1 flex justify-between py-1">
-          <p className="w-20 whitespace-nowrap text-sm opacity-50">blur :</p>
+          <p className="w-20 text-sm whitespace-nowrap opacity-50">blur :</p>
           <div className="flex flex-wrap items-center justify-end gap-1">
-            <button onClick={() => setBlur(false)} className={cn("cursor-pointer px-1 text-sm transition-opacity", !blur ? "opacity-100" : "hover:bg-foreground/10 opacity-50 hover:opacity-100")}>
+            <button
+              onClick={() => setBlur(false)}
+              className={cn(
+                "cursor-pointer px-1 text-sm transition-opacity",
+                !blur
+                  ? "opacity-100"
+                  : "hover:bg-foreground/10 opacity-50 hover:opacity-100"
+              )}
+            >
               off
             </button>
-            <button onClick={() => setBlur(true)} className={cn("cursor-pointer px-1 text-sm transition-opacity", blur ? "opacity-100" : "hover:bg-foreground/10 opacity-50 hover:opacity-100")}>
+            <button
+              onClick={() => setBlur(true)}
+              className={cn(
+                "cursor-pointer px-1 text-sm transition-opacity",
+                blur
+                  ? "opacity-100"
+                  : "hover:bg-foreground/10 opacity-50 hover:opacity-100"
+              )}
+            >
               on
             </button>
           </div>
         </div>
 
         {/* Show start options for circle, rectangle, polygon, and circle-blur */}
-        {(variant === "circle" || variant === "rectangle" || variant === "polygon" || variant === "circle-blur") && (
+        {(variant === "circle" ||
+          variant === "rectangle" ||
+          variant === "polygon" ||
+          variant === "circle-blur") && (
           <div className="mt-1 flex justify-between py-1">
-            <p className="w-20 whitespace-nowrap text-sm opacity-50">start :</p>
+            <p className="w-20 text-sm whitespace-nowrap opacity-50">start :</p>
             <div className="flex flex-wrap items-center justify-end gap-1">
               {/* Show center option only for circle and circle-blur */}
               {(variant === "circle" || variant === "circle-blur") && (
                 <button
                   onClick={() => setStart("center")}
-                  className={cn("cursor-pointer px-1 text-sm transition-opacity", start === "center" ? "opacity-100" : "hover:bg-foreground/10 opacity-50 hover:opacity-100")}
+                  className={cn(
+                    "cursor-pointer px-1 text-sm transition-opacity",
+                    start === "center"
+                      ? "opacity-100"
+                      : "hover:bg-foreground/10 opacity-50 hover:opacity-100"
+                  )}
                 >
                   center
                 </button>
@@ -113,25 +170,45 @@ const Options = ({
                 <>
                   <button
                     onClick={() => setStart("bottom-up")}
-                    className={cn("cursor-pointer px-1 text-sm transition-opacity", start === "bottom-up" ? "opacity-100" : "hover:bg-foreground/10 opacity-50 hover:opacity-100")}
+                    className={cn(
+                      "cursor-pointer px-1 text-sm transition-opacity",
+                      start === "bottom-up"
+                        ? "opacity-100"
+                        : "hover:bg-foreground/10 opacity-50 hover:opacity-100"
+                    )}
                   >
                     bottom-up
                   </button>
                   <button
                     onClick={() => setStart("top-down")}
-                    className={cn("cursor-pointer px-1 text-sm transition-opacity", start === "top-down" ? "opacity-100" : "hover:bg-foreground/10 opacity-50 hover:opacity-100")}
+                    className={cn(
+                      "cursor-pointer px-1 text-sm transition-opacity",
+                      start === "top-down"
+                        ? "opacity-100"
+                        : "hover:bg-foreground/10 opacity-50 hover:opacity-100"
+                    )}
                   >
                     top-down
                   </button>
                   <button
                     onClick={() => setStart("left-right")}
-                    className={cn("cursor-pointer px-1 text-sm transition-opacity", start === "left-right" ? "opacity-100" : "hover:bg-foreground/10 opacity-50 hover:opacity-100")}
+                    className={cn(
+                      "cursor-pointer px-1 text-sm transition-opacity",
+                      start === "left-right"
+                        ? "opacity-100"
+                        : "hover:bg-foreground/10 opacity-50 hover:opacity-100"
+                    )}
                   >
                     left-right
                   </button>
                   <button
                     onClick={() => setStart("right-left")}
-                    className={cn("cursor-pointer px-1 text-sm transition-opacity", start === "right-left" ? "opacity-100" : "hover:bg-foreground/10 opacity-50 hover:opacity-100")}
+                    className={cn(
+                      "cursor-pointer px-1 text-sm transition-opacity",
+                      start === "right-left"
+                        ? "opacity-100"
+                        : "hover:bg-foreground/10 opacity-50 hover:opacity-100"
+                    )}
                   >
                     right-left
                   </button>
@@ -139,17 +216,29 @@ const Options = ({
               )}
 
               {/* Show corner options for circle, polygon, and circle-blur variants */}
-              {(variant === "circle" || variant === "polygon" || variant === "circle-blur") && (
+              {(variant === "circle" ||
+                variant === "polygon" ||
+                variant === "circle-blur") && (
                 <>
                   <button
                     onClick={() => setStart("top-left")}
-                    className={cn("cursor-pointer px-1 text-sm transition-opacity", start === "top-left" ? "opacity-100" : "hover:bg-foreground/10 opacity-50 hover:opacity-100")}
+                    className={cn(
+                      "cursor-pointer px-1 text-sm transition-opacity",
+                      start === "top-left"
+                        ? "opacity-100"
+                        : "hover:bg-foreground/10 opacity-50 hover:opacity-100"
+                    )}
                   >
                     top-left
                   </button>
                   <button
                     onClick={() => setStart("top-right")}
-                    className={cn("cursor-pointer px-1 text-sm transition-opacity", start === "top-right" ? "opacity-100" : "hover:bg-foreground/10 opacity-50 hover:opacity-100")}
+                    className={cn(
+                      "cursor-pointer px-1 text-sm transition-opacity",
+                      start === "top-right"
+                        ? "opacity-100"
+                        : "hover:bg-foreground/10 opacity-50 hover:opacity-100"
+                    )}
                   >
                     top-right
                   </button>
@@ -158,13 +247,23 @@ const Options = ({
                     <>
                       <button
                         onClick={() => setStart("bottom-left")}
-                        className={cn("cursor-pointer px-1 text-sm transition-opacity", start === "bottom-left" ? "opacity-100" : "hover:bg-foreground/10 opacity-50 hover:opacity-100")}
+                        className={cn(
+                          "cursor-pointer px-1 text-sm transition-opacity",
+                          start === "bottom-left"
+                            ? "opacity-100"
+                            : "hover:bg-foreground/10 opacity-50 hover:opacity-100"
+                        )}
                       >
                         bottom-left
                       </button>
                       <button
                         onClick={() => setStart("bottom-right")}
-                        className={cn("cursor-pointer px-1 text-sm transition-opacity", start === "bottom-right" ? "opacity-100" : "hover:bg-foreground/10 opacity-50 hover:opacity-100")}
+                        className={cn(
+                          "cursor-pointer px-1 text-sm transition-opacity",
+                          start === "bottom-right"
+                            ? "opacity-100"
+                            : "hover:bg-foreground/10 opacity-50 hover:opacity-100"
+                        )}
                       >
                         bottom-right
                       </button>
@@ -178,13 +277,23 @@ const Options = ({
                 <>
                   <button
                     onClick={() => setStart("top-center")}
-                    className={cn("cursor-pointer px-1 text-sm transition-opacity", start === "top-center" ? "opacity-100" : "hover:bg-foreground/10 opacity-50 hover:opacity-100")}
+                    className={cn(
+                      "cursor-pointer px-1 text-sm transition-opacity",
+                      start === "top-center"
+                        ? "opacity-100"
+                        : "hover:bg-foreground/10 opacity-50 hover:opacity-100"
+                    )}
                   >
                     top-center
                   </button>
                   <button
                     onClick={() => setStart("bottom-center")}
-                    className={cn("cursor-pointer px-1 text-sm transition-opacity", start === "bottom-center" ? "opacity-100" : "hover:bg-foreground/10 opacity-50 hover:opacity-100")}
+                    className={cn(
+                      "cursor-pointer px-1 text-sm transition-opacity",
+                      start === "bottom-center"
+                        ? "opacity-100"
+                        : "hover:bg-foreground/10 opacity-50 hover:opacity-100"
+                    )}
                   >
                     bottom-center
                   </button>
@@ -202,33 +311,59 @@ const Options = ({
               <button
                 onClick={() => {
                   setGifType("1");
-                  setGifUrl("https://media.giphy.com/media/KBbr4hHl9DSahKvInO/giphy.gif?cid=790b76112m5eeeydoe7et0cr3j3ekb1erunxozyshuhxx2vl&ep=v1_stickers_search&rid=giphy.gif&ct=s");
+                  setGifUrl(
+                    "https://media.giphy.com/media/KBbr4hHl9DSahKvInO/giphy.gif?cid=790b76112m5eeeydoe7et0cr3j3ekb1erunxozyshuhxx2vl&ep=v1_stickers_search&rid=giphy.gif&ct=s"
+                  );
                 }}
-                className={cn("cursor-pointer px-1 text-sm transition-opacity", gifType === "1" ? "opacity-100" : "hover:bg-foreground/10 opacity-50 hover:opacity-100")}
+                className={cn(
+                  "cursor-pointer px-1 text-sm transition-opacity",
+                  gifType === "1"
+                    ? "opacity-100"
+                    : "hover:bg-foreground/10 opacity-50 hover:opacity-100"
+                )}
               >
                 1
               </button>
               <button
                 onClick={() => {
                   setGifType("2");
-                  setGifUrl("https://media.giphy.com/media/5PncuvcXbBuIZcSiQo/giphy.gif?cid=ecf05e47j7vdjtytp3fu84rslaivdun4zvfhej6wlvl6qqsz&ep=v1_stickers_search&rid=giphy.gif&ct=s");
+                  setGifUrl(
+                    "https://media.giphy.com/media/5PncuvcXbBuIZcSiQo/giphy.gif?cid=ecf05e47j7vdjtytp3fu84rslaivdun4zvfhej6wlvl6qqsz&ep=v1_stickers_search&rid=giphy.gif&ct=s"
+                  );
                 }}
-                className={cn("cursor-pointer px-1 text-sm transition-opacity", gifType === "2" ? "opacity-100" : "hover:bg-foreground/10 opacity-50 hover:opacity-100")}
+                className={cn(
+                  "cursor-pointer px-1 text-sm transition-opacity",
+                  gifType === "2"
+                    ? "opacity-100"
+                    : "hover:bg-foreground/10 opacity-50 hover:opacity-100"
+                )}
               >
                 2
               </button>
               <button
                 onClick={() => {
                   setGifType("3");
-                  setGifUrl("https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZ3JwcXdzcHd5MW92NWprZXVpcTBtNXM5cG9obWh0N3I4NzFpaDE3byZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/WgsVx6C4N8tjy/giphy.gif");
+                  setGifUrl(
+                    "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZ3JwcXdzcHd5MW92NWprZXVpcTBtNXM5cG9obWh0N3I4NzFpaDE3byZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/WgsVx6C4N8tjy/giphy.gif"
+                  );
                 }}
-                className={cn("cursor-pointer px-1 text-sm transition-opacity", gifType === "3" ? "opacity-100" : "hover:bg-foreground/10 opacity-50 hover:opacity-100")}
+                className={cn(
+                  "cursor-pointer px-1 text-sm transition-opacity",
+                  gifType === "3"
+                    ? "opacity-100"
+                    : "hover:bg-foreground/10 opacity-50 hover:opacity-100"
+                )}
               >
                 3
               </button>
               <button
                 onClick={() => setGifType("custom")}
-                className={cn("cursor-pointer px-1 text-sm transition-opacity", gifType === "custom" ? "opacity-100" : "hover:bg-foreground/10 opacity-50 hover:opacity-100")}
+                className={cn(
+                  "cursor-pointer px-1 text-sm transition-opacity",
+                  gifType === "custom"
+                    ? "opacity-100"
+                    : "hover:bg-foreground/10 opacity-50 hover:opacity-100"
+                )}
               >
                 custom
               </button>
@@ -312,7 +447,17 @@ export const useThemeToggle = ({
     }
 
     document.startViewTransition(switchTheme);
-  }, [theme, setTheme, variant, start, blur, gifUrl, updateStyles, isDark, setIsDark]);
+  }, [
+    theme,
+    setTheme,
+    variant,
+    start,
+    blur,
+    gifUrl,
+    updateStyles,
+    isDark,
+    setIsDark,
+  ]);
 
   const setCrazyLightTheme = useCallback(() => {
     setIsDark(false);
@@ -360,7 +505,9 @@ export const useThemeToggle = ({
     if (typeof window === "undefined") return;
 
     // Check system preference for dark mode
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
     setIsDark(prefersDark);
 
     const animation = createAnimation(variant, start, blur, gifUrl);
@@ -414,7 +561,10 @@ export const ThemeToggleButton = ({
   return (
     <button
       type="button"
-      className={cn("relative size-10 cursor-pointer rounded-full bg-black p-0 transition-all duration-300 active:scale-95 flex items-center justify-center overflow-hidden", className)}
+      className={cn(
+        "relative flex size-10 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-black p-0 transition-all duration-300 active:scale-95",
+        className
+      )}
       onClick={toggleTheme}
       aria-label="Toggle theme"
     >
@@ -462,7 +612,7 @@ export const ThemeToggleButton = ({
             position: "absolute",
           }}
         >
-          <Moon className="size-5 text-white scale-x-[-1]" />
+          <Moon className="size-5 scale-x-[-1] text-white" />
         </motion.div>
       </motion.div>
     </button>
@@ -471,8 +621,24 @@ export const ThemeToggleButton = ({
 
 // ///////////////////////////////////////////////////////////////////////////
 
-export type AnimationVariant = "circle" | "rectangle" | "gif" | "polygon" | "circle-blur";
-export type AnimationStart = "top-left" | "top-right" | "bottom-left" | "bottom-right" | "center" | "top-center" | "bottom-center" | "bottom-up" | "top-down" | "left-right" | "right-left";
+export type AnimationVariant =
+  | "circle"
+  | "rectangle"
+  | "gif"
+  | "polygon"
+  | "circle-blur";
+export type AnimationStart =
+  | "top-left"
+  | "top-right"
+  | "bottom-left"
+  | "bottom-right"
+  | "center"
+  | "top-center"
+  | "bottom-center"
+  | "bottom-up"
+  | "top-down"
+  | "left-right"
+  | "right-left";
 
 interface Animation {
   name: string;
@@ -557,7 +723,12 @@ const getTransformOrigin = (start: AnimationStart) => {
   }
 };
 
-export const createAnimation = (variant: AnimationVariant, start: AnimationStart = "center", blur = false, url?: string): Animation => {
+export const createAnimation = (
+  variant: AnimationVariant,
+  start: AnimationStart = "center",
+  blur = false,
+  url?: string
+): Animation => {
   const svg = generateSVG(variant, start);
   const transformOrigin = getTransformOrigin(start);
 

@@ -14,7 +14,7 @@ export function PatternCard({
 }: PatternCardProps) {
   return (
     <div
-      className={cn("bg-pattern-striped p-6 relative", className)}
+      className={cn("bg-pattern-striped relative p-6", className)}
       {...props}
     >
       <CornerBorders />
