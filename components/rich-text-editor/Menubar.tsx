@@ -80,7 +80,7 @@ export function Menubar({ editor }: Menubar) {
   }
   return (
     <TooltipProvider>
-      <div className="border-b border-input p-2 bg-card flex flex-wrap items-center gap-1">
+      <div className="border-input bg-card flex flex-wrap items-center gap-1 border-b p-2">
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
@@ -217,7 +217,7 @@ export function Menubar({ editor }: Menubar) {
           </TooltipTrigger>
           <TooltipContent>Ordered List</TooltipContent>
         </Tooltip>
-        <div className="w-px h-6 bg-border mx-2" />
+        <div className="bg-border mx-2 h-6 w-px" />
         <div className="flex flex-wrap gap-1">
           <Tooltip>
             <TooltipTrigger asChild>
@@ -277,7 +277,7 @@ export function Menubar({ editor }: Menubar) {
             <TooltipContent>Align Right</TooltipContent>
           </Tooltip>
         </div>
-        <div className="w-px h-6 bg-border mx-2"></div>
+        <div className="bg-border mx-2 h-6 w-px"></div>
         <div className="flex flex-wrap gap-1">
           <Tooltip>
             <TooltipTrigger asChild>

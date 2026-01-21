@@ -1,8 +1,19 @@
 import React from "react";
 
-export const GoogleLogo = ({ className, ...props }: React.SVGProps<SVGSVGElement>) => {
+export const GoogleLogo = ({
+  className,
+  ...props
+}: React.SVGProps<SVGSVGElement>) => {
   return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className} {...props}>
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      {...props}
+    >
       <g clipPath="url(#clip0_google)">
         <path
           d="M22.9891 12.2245C22.9891 11.2413 22.9108 10.5238 22.7415 9.77966H11.7291V14.2176H18.1931C18.0628 15.3205 17.3591 16.9815 15.7952 18.0976L15.7733 18.2462L19.2552 20.9964L19.4964 21.0209C21.7118 18.9347 22.9891 15.8653 22.9891 12.2245Z"

@@ -267,13 +267,13 @@ export function Uploader({ onChange, value, fileTypeAccepted }: iAppprops) {
     <div
       {...getRootProps()}
       className={cn(
-        "relative border-2 border-dashed transition-colors duration-200 ease-in-out w-full h-64 bg-card text-card-foreground rounded-xl flex flex-col justify-center items-center gap-6 shadow-sm",
+        "bg-card text-card-foreground relative flex h-64 w-full flex-col items-center justify-center gap-6 rounded-xl border-2 border-dashed shadow-sm transition-colors duration-200 ease-in-out",
         isDragActive
-          ? " border-primary bg-primary/10 border-solid"
+          ? "border-primary bg-primary/10 border-solid"
           : "border-border hover:border-primary"
       )}
     >
-      <div className="flex items-center justify-center h-full w-full p-4">
+      <div className="flex h-full w-full items-center justify-center p-4">
         <input {...getInputProps()} />
         {renderContent()}
       </div>

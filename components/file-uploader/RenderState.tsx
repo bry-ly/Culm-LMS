@@ -7,17 +7,17 @@ import { ShimmeringText } from "@/components/ui/shimmering-text";
 export function RenderEmptyState({ isDragActive }: { isDragActive: boolean }) {
   return (
     <div className="text-center">
-      <div className="flex items-center mx-auto justify-center size-12 rounded-full bg-muted mb-4">
+      <div className="bg-muted mx-auto mb-4 flex size-12 items-center justify-center rounded-full">
         <CloudUploadIcon
           className={cn(
-            "size-6 text-muted-foreground",
+            "text-muted-foreground size-6",
             isDragActive && "text-primary"
           )}
         />
       </div>
-      <p className="text-base font-semibold text-foreground">
+      <p className="text-foreground text-base font-semibold">
         Drop your files here or{" "}
-        <span className="text-primary font-bold cursor-pointer">
+        <span className="text-primary cursor-pointer font-bold">
           click to upload
         </span>
       </p>
@@ -30,12 +30,12 @@ export function RenderEmptyState({ isDragActive }: { isDragActive: boolean }) {
 
 export function RenderErrorState() {
   return (
-    <div className=" text-center">
-      <div className="flex items-center mx-auto justify-center size-12 rounded-full bg-destructive/30 mb-4">
-        <ImageIcon className={cn("size-6 text-destructive-foreground")} />
+    <div className="text-center">
+      <div className="bg-destructive/30 mx-auto mb-4 flex size-12 items-center justify-center rounded-full">
+        <ImageIcon className={cn("text-destructive-foreground size-6")} />
       </div>
       <p className="text-base font-semibold"> Upload Failed</p>
-      <p className="text-xs mt-1 text-muted-foreground ">
+      <p className="text-muted-foreground mt-1 text-xs">
         Something went wrong{" "}
       </p>
       <Button className="mt-4" type="button">
@@ -54,13 +54,13 @@ export function RenderUploadedState({
   previewUrl: string;
   isDeleting: boolean;
   handleRemoveFile: () => void;
-    fileType: "image" | "video";
+  fileType: "image" | "video";
 }) {
   return (
-    <div className="relative group w-full h-full flex items-center justify center">
-      {fileType === 'video' ?(
-        <video src={ previewUrl} controls className="rounded-md w-full h-full "  />
-      ): (
+    <div className="group justify center relative flex h-full w-full items-center">
+      {fileType === "video" ? (
+        <video src={previewUrl} controls className="h-full w-full rounded-md" />
+      ) : (
         <Image
           src={previewUrl}
           alt="Uploaded File"
@@ -86,11 +86,7 @@ export function RenderUploadedState({
   );
 }
 
-export function RenderUploadingState({
-  progress,
-}: {
-  progress: number;
-}) {
+export function RenderUploadingState({ progress }: { progress: number }) {
   const size = 80;
   const strokeWidth = 8;
   const radius = (size - strokeWidth) / 2;
@@ -98,14 +94,10 @@ export function RenderUploadingState({
   const offset = circumference - (progress / 100) * circumference;
 
   return (
-    <div className="flex flex-col items-center justify-center w-full h-full">
+    <div className="flex h-full w-full flex-col items-center justify-center">
       <div className="flex flex-col items-center">
         <div className="relative inline-flex items-center justify-center">
-          <svg
-            width={size}
-            height={size}
-            className="transform -rotate-90"
-          >
+          <svg width={size} height={size} className="-rotate-90 transform">
             {/* Background circle */}
             <circle
               cx={size / 2}
@@ -131,15 +123,12 @@ export function RenderUploadingState({
             />
           </svg>
           {/* Progress percentage in center */}
-          <span className="absolute text-sm font-semibold text-foreground">
+          <span className="text-foreground absolute text-sm font-semibold">
             {progress}%
           </span>
         </div>
         <div className="mt-4 text-center">
-          <ShimmeringText
-            text="Uploading..."
-            className="text-sm font-medium"
-          />
+          <ShimmeringText text="Uploading..." className="text-sm font-medium" />
         </div>
       </div>
     </div>

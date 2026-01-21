@@ -135,7 +135,7 @@ export function ChartAreaInteractive({
       </CardHeader>
       <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
         {isLoading ? (
-          <div className="flex items-center justify-center h-[250px]">
+          <div className="flex h-[250px] items-center justify-center">
             <span className="text-muted-foreground">Loading...</span>
           </div>
         ) : (
