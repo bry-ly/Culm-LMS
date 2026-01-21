@@ -14,7 +14,9 @@ interface CourseProgressResult {
   progressPercentage: number;
 }
 
-export function useCourseProgress({ courseData }: iAppProps): CourseProgressResult {
+export function useCourseProgress({
+  courseData,
+}: iAppProps): CourseProgressResult {
   return useMemo(() => {
     let totalLessons = 0;
     let completedLessons = 0;
@@ -23,7 +25,9 @@ export function useCourseProgress({ courseData }: iAppProps): CourseProgressResu
       chapter.lesson.forEach((lesson) => {
         totalLessons++;
         //check if this lesson is completed
-        const isCompleted = lesson.lessonProgress.some((progress) => progress.lessonId === lesson.id && progress.completed);
+        const isCompleted = lesson.lessonProgress.some(
+          (progress) => progress.lessonId === lesson.id && progress.completed
+        );
 
         if (isCompleted) {
           completedLessons++;
@@ -31,7 +35,10 @@ export function useCourseProgress({ courseData }: iAppProps): CourseProgressResu
       });
     });
 
-    const progressPercentage = totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0;
+    const progressPercentage =
+      totalLessons > 0
+        ? Math.round((completedLessons / totalLessons) * 100)
+        : 0;
 
     return {
       totalLessons,

@@ -27,6 +27,7 @@ export const env = createEnv({
   },
   experimental__runtimeEnv: {
     NEXT_PUBLIC_BETTER_AUTH_URL: process.env.NEXT_PUBLIC_BETTER_AUTH_URL,
-    NEXT_PUBLIC_S3_BUCKET_NAME_IMAGES: process.env.NEXT_PUBLIC_S3_BUCKET_NAME_IMAGES,
+    NEXT_PUBLIC_S3_BUCKET_NAME_IMAGES:
+      process.env.NEXT_PUBLIC_S3_BUCKET_NAME_IMAGES,
   },
 });
