@@ -5,7 +5,10 @@ import prisma from "@/lib/db";
 import { ApiResponse } from "@/lib/types";
 import { revalidatePath } from "next/cache";
 
-export async function MarkLessonComplete(lessonId: string, slug: string): Promise<ApiResponse> {
+export async function MarkLessonComplete(
+  lessonId: string,
+  slug: string
+): Promise<ApiResponse> {
   const session = await requireUser();
 
   try {

@@ -18,7 +18,9 @@ export function CourseContent({ data }: iAppProps) {
   const [pending, startTransition] = useTransition();
   function onSubmit() {
     startTransition(async () => {
-      const { data: result, error } = await tryCatch(MarkLessonComplete(data.id, data.chapter.course.slug));
+      const { data: result, error } = await tryCatch(
+        MarkLessonComplete(data.id, data.chapter.course.slug)
+      );
 
       if (error) {
         toast.error("An unexpected error occurred. Please try again.");
@@ -33,24 +35,34 @@ export function CourseContent({ data }: iAppProps) {
     });
   }
   return (
-    <div className="flex flex-col h-full bg-background pl-6">
-      <VideoPlayer thumbnailKey={data.thumbnailKey ?? ""} videoKey={data.videoKey ?? ""} />
-      <div className="py-4 border-b">
+    <div className="bg-background flex h-full flex-col pl-6">
+      <VideoPlayer
+        thumbnailKey={data.thumbnailKey ?? ""}
+        videoKey={data.videoKey ?? ""}
+      />
+      <div className="border-b py-4">
         {data.lessonProgress.length > 0 ? (
-          <Button variant="outline" className="bg-green-500/10 text-green-500 hover:text-green-500 ">
-            <CheckCircle className="size-4 mr-2 text-green-500" />
+          <Button
+            variant="outline"
+            className="bg-green-500/10 text-green-500 hover:text-green-500"
+          >
+            <CheckCircle className="mr-2 size-4 text-green-500" />
             Completed
           </Button>
         ) : (
           <Button variant="outline" onClick={onSubmit} disabled={pending}>
-            <CheckCircle className="size-4 mr-2 text-green-500" />
+            <CheckCircle className="mr-2 size-4 text-green-500" />
             Mark as Complete
           </Button>
         )}
       </div>
       <div className="space-y-3 pt-3">
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">{data.title}</h1>
-        {data.description && <RenderDescription json={JSON.parse(data.description)} />}
+        <h1 className="text-foreground text-3xl font-bold tracking-tight">
+          {data.title}
+        </h1>
+        {data.description && (
+          <RenderDescription json={JSON.parse(data.description)} />
+        )}
       </div>
     </div>
   );

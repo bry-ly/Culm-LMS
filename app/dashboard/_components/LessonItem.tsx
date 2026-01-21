@@ -16,38 +16,68 @@ interface iAppProps {
 }
 
 export function LessonItem({ lesson, slug, isActive, completed }: iAppProps) {
-  
-
   return (
     <Link
       className={buttonVariants({
         variant: completed ? "secondary" : "outline",
         className: cn(
-          "w-full p-2.5 h-auto justify-start transition-all",
-          completed && "bg-green-200  border-green-300 dark:border-green-700 hover:bg-green-200 dark:bg-green-900/30  dark:hover:bg-green-900/50 text-green-800 dark:text-green-200",
-          isActive && !completed && "bg-primary/10 dark:bg-primary/20 border-primary/50 hover:bg-primary/20  dark:hover:bg-primary/30 text-primary",
+          "h-auto w-full justify-start p-2.5 transition-all",
+          completed &&
+            "border-green-300 bg-green-200 text-green-800 hover:bg-green-200 dark:border-green-700 dark:bg-green-900/30 dark:text-green-200 dark:hover:bg-green-900/50",
+          isActive &&
+            !completed &&
+            "bg-primary/10 dark:bg-primary/20 border-primary/50 hover:bg-primary/20 dark:hover:bg-primary/30 text-primary"
         ),
       })}
       href={`/dashboard/${slug}/${lesson.id}`}
     >
-      <div className="flex items-center gap-2.5 w-full min-w-0">
-        <div className="shrink-0 ">
+      <div className="flex w-full min-w-0 items-center gap-2.5">
+        <div className="shrink-0">
           {completed ? (
-            <div className="size-5 rounded-full bg-green-600 dark:bg-green-600 flex items-center justify-center">
+            <div className="flex size-5 items-center justify-center rounded-full bg-green-600 dark:bg-green-600">
               <Check className="size-3 text-white" />
             </div>
           ) : (
-            <div className={cn("size-6 rounded-full border-2 bg-background flex justify-center items-center", isActive ? "border-primary bg-primary/10 dark:bg-primary/20 " : "border-muted-foreground/60")}>
-              <Play className={cn("size-4 fill-current", isActive ? "text-primary" : "text-muted-foreground")} />
+            <div
+              className={cn(
+                "bg-background flex size-6 items-center justify-center rounded-full border-2",
+                isActive
+                  ? "border-primary bg-primary/10 dark:bg-primary/20"
+                  : "border-muted-foreground/60"
+              )}
+            >
+              <Play
+                className={cn(
+                  "size-4 fill-current",
+                  isActive ? "text-primary" : "text-muted-foreground"
+                )}
+              />
             </div>
           )}
         </div>
-        <div className="flex-1 text-left m-w-0">
-          <p className={cn("text-xs font-medium text-muted-foreground", completed ? "text-green-800 dark:text-green-200 " : isActive ? "text-primary font-semibold" : "text-muted-foreground")}>
+        <div className="m-w-0 flex-1 text-left">
+          <p
+            className={cn(
+              "text-muted-foreground text-xs font-medium",
+              completed
+                ? "text-green-800 dark:text-green-200"
+                : isActive
+                  ? "text-primary font-semibold"
+                  : "text-muted-foreground"
+            )}
+          >
             {lesson.position}.{lesson.title}
           </p>
-          {completed && <p className="text-[10px] text-green-700 dark:text-green-200 font-medium">Completed</p>}
-          {isActive && !completed && <p className="text-[10px] text-primary font-medium">Currently Watching</p>}
+          {completed && (
+            <p className="text-[10px] font-medium text-green-700 dark:text-green-200">
+              Completed
+            </p>
+          )}
+          {isActive && !completed && (
+            <p className="text-primary text-[10px] font-medium">
+              Currently Watching
+            </p>
+          )}
         </div>
       </div>
     </Link>

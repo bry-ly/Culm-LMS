@@ -16,7 +16,7 @@ export default async function DashboardPage() {
       {enrolledCourses.length > 0 && (
         <ProgressStats enrolledCourses={enrolledCourses} />
       )}
-      
+
       <div className="flex flex-col gap-2">
         <h1 className="text-3xl font-bold">Enrolled Courses</h1>
         <p className="text-muted-foreground">
@@ -31,14 +31,14 @@ export default async function DashboardPage() {
           href="/courses"
         />
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {enrolledCourses.map((enrollment) => (
             <CourseProgressCard key={enrollment.course.id} data={enrollment} />
           ))}
         </div>
       )}
       <section className="mt-10">
-        <div className="flex flex-col gap-2 mb-5">
+        <div className="mb-5 flex flex-col gap-2">
           <h1 className="text-3xl font-bold">Available Courses</h1>
           <p className="text-muted-foreground">
             Here you can see all the courses you can purchase
@@ -57,7 +57,7 @@ export default async function DashboardPage() {
             href="/courses"
           />
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 ">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             {courses
               .filter(
                 (course) =>

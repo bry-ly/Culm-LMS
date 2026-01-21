@@ -47,9 +47,9 @@ export function CourseProgressCard({ data }: iAppProps) {
     useCourseProgress({ courseData: data.course });
 
   return (
-    <Card className="group relative py-0 gap-0 hover:shadow-xl hover:border-primary transition-all duration-300">
+    <Card className="group hover:border-primary relative gap-0 py-0 transition-all duration-300 hover:shadow-xl">
       <div className="absolute top-2 right-2 z-10">
-        <div className="backdrop-blur-md bg-white/20 border border-white/30 dark:bg-black/30 dark:border-white/10 rounded-md px-3 py-1.5 shadow-sm">
+        <div className="rounded-md border border-white/30 bg-white/20 px-3 py-1.5 shadow-sm backdrop-blur-md dark:border-white/10 dark:bg-black/30">
           <ShimmeringText
             text={data.course.level}
             duration={1}
@@ -70,32 +70,32 @@ export function CourseProgressCard({ data }: iAppProps) {
         alt="Thumbnail"
         width={600}
         height={400}
-        className="w-full aspect-video h-full object-cover"
+        className="aspect-video h-full w-full object-cover"
       />
       <CardContent className="p-4">
         <Link
-          className="font-medium text-lg line-clamp-2 hover:underline group-hover:text-primary transition-colors"
+          className="group-hover:text-primary line-clamp-2 text-lg font-medium transition-colors hover:underline"
           href={`/courses/${data.course.slug}`}
         >
           {data.course.title}
         </Link>
-        <p className="line-clamp-2 text-sm text-muted-foreground leading-tight mt-2 ">
+        <p className="text-muted-foreground mt-2 line-clamp-2 text-sm leading-tight">
           {data.course.smallDescription}
         </p>
-        <div className="space-y-4 mt-5">
-          <div className="flex justify-between mb-1 text-sm ">
+        <div className="mt-5 space-y-4">
+          <div className="mb-1 flex justify-between text-sm">
             <span>Progress:</span>
             <p className="font-medium">{progressPercentage}%</p>
           </div>
           <Progress value={progressPercentage} className="h-1.5" />
-          <p className="text-xs text-muted-foreground mt-1">
+          <p className="text-muted-foreground mt-1 text-xs">
             {completedLessons} of {totalLessons}
           </p>
         </div>
         <Link
           href={`/dashboard/${data.course.slug}`}
           className={buttonVariants({
-            className: "w-full mt-4",
+            className: "mt-4 w-full",
           })}
         >
           Learn More

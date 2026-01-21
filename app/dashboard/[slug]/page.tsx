@@ -16,8 +16,8 @@ export default async function CourseSlugRoute({ params }: iAppProps) {
     redirect(`/dashboard/${slug}/${firstLesson.id}`);
   }
   return (
-    <div className="flex items-center justify-center h-full text-center">
-      <h2 className="text-2xl font-bold mb-2">No lessons available</h2>
+    <div className="flex h-full items-center justify-center text-center">
+      <h2 className="mb-2 text-2xl font-bold">No lessons available</h2>
     </div>
   );
 }

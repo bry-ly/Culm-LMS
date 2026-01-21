@@ -3,7 +3,17 @@
 import { Slider } from "@/components/ui/slider";
 import { useConstructUrl } from "@/hooks/use-construct-url";
 import { cn } from "@/lib/utils";
-import { BookIcon, Loader2, Maximize, Minimize, Pause, Play, Settings, Volume2, VolumeX } from "lucide-react";
+import {
+  BookIcon,
+  Loader2,
+  Maximize,
+  Minimize,
+  Pause,
+  Play,
+  Settings,
+  Volume2,
+  VolumeX,
+} from "lucide-react";
 import { KeyboardEvent, useCallback, useEffect, useRef, useState } from "react";
 
 interface VideoPlayerProps {
@@ -134,7 +144,7 @@ export function VideoPlayer({ thumbnailKey, videoKey }: VideoPlayerProps) {
           break;
       }
     },
-    [togglePlay, toggleMute, toggleFullscreen, skip, handleVolumeChange, volume],
+    [togglePlay, toggleMute, toggleFullscreen, skip, handleVolumeChange, volume]
   );
 
   const handleMouseMove = useCallback(() => {
@@ -158,23 +168,39 @@ export function VideoPlayer({ thumbnailKey, videoKey }: VideoPlayerProps) {
     const handleTimeUpdate = () => {
       setCurrentTime(video.currentTime);
       // Also update duration in case it wasn't available before
-      if (video.duration && !isNaN(video.duration) && video.duration !== Infinity) {
+      if (
+        video.duration &&
+        !isNaN(video.duration) &&
+        video.duration !== Infinity
+      ) {
         setDuration(video.duration);
       }
     };
     const handleLoadedMetadata = () => {
-      if (video.duration && !isNaN(video.duration) && video.duration !== Infinity) {
+      if (
+        video.duration &&
+        !isNaN(video.duration) &&
+        video.duration !== Infinity
+      ) {
         setDuration(video.duration);
       }
       setIsLoading(false);
     };
     const handleDurationChange = () => {
-      if (video.duration && !isNaN(video.duration) && video.duration !== Infinity) {
+      if (
+        video.duration &&
+        !isNaN(video.duration) &&
+        video.duration !== Infinity
+      ) {
         setDuration(video.duration);
       }
     };
     const handleLoadedData = () => {
-      if (video.duration && !isNaN(video.duration) && video.duration !== Infinity) {
+      if (
+        video.duration &&
+        !isNaN(video.duration) &&
+        video.duration !== Infinity
+      ) {
         setDuration(video.duration);
       }
     };
@@ -182,7 +208,11 @@ export function VideoPlayer({ thumbnailKey, videoKey }: VideoPlayerProps) {
     const handleCanPlay = () => {
       setIsBuffering(false);
       // Try to get duration when video is ready to play
-      if (video.duration && !isNaN(video.duration) && video.duration !== Infinity) {
+      if (
+        video.duration &&
+        !isNaN(video.duration) &&
+        video.duration !== Infinity
+      ) {
         setDuration(video.duration);
       }
     };
@@ -201,7 +231,11 @@ export function VideoPlayer({ thumbnailKey, videoKey }: VideoPlayerProps) {
     document.addEventListener("fullscreenchange", handleFullscreenChange);
 
     // Try to get duration if video is already loaded
-    if (video.duration && !isNaN(video.duration) && video.duration !== Infinity) {
+    if (
+      video.duration &&
+      !isNaN(video.duration) &&
+      video.duration !== Infinity
+    ) {
       setDuration(video.duration);
     }
 
@@ -223,13 +257,15 @@ export function VideoPlayer({ thumbnailKey, videoKey }: VideoPlayerProps) {
 
   if (!videoKey) {
     return (
-      <div className="aspect-video bg-muted rounded-lg flex flex-col items-center justify-center gap-4 border border-dashed">
-        <div className="rounded-full bg-primary/10 p-4">
-          <BookIcon className="size-10 text-primary" />
+      <div className="bg-muted flex aspect-video flex-col items-center justify-center gap-4 rounded-lg border border-dashed">
+        <div className="bg-primary/10 rounded-full p-4">
+          <BookIcon className="text-primary size-10" />
         </div>
         <div className="text-center">
-          <p className="font-medium text-foreground">No video available</p>
-          <p className="text-sm text-muted-foreground">This lesson does not have a video yet</p>
+          <p className="text-foreground font-medium">No video available</p>
+          <p className="text-muted-foreground text-sm">
+            This lesson does not have a video yet
+          </p>
         </div>
       </div>
     );
@@ -238,32 +274,47 @@ export function VideoPlayer({ thumbnailKey, videoKey }: VideoPlayerProps) {
   return (
     <div
       ref={containerRef}
-      className="relative aspect-video w-full rounded-lg overflow-hidden bg-black group"
+      className="group relative aspect-video w-full overflow-hidden rounded-lg bg-black"
       onMouseMove={handleMouseMove}
       onMouseLeave={() => isPlaying && setShowControls(false)}
       onKeyDown={handleKeyDown}
       tabIndex={0}
     >
-      <video ref={videoRef} className="w-full h-full object-contain" poster={thumbnailUrl} src={videoUrl} onClick={togglePlay} playsInline />
+      <video
+        ref={videoRef}
+        className="h-full w-full object-contain"
+        poster={thumbnailUrl}
+        src={videoUrl}
+        onClick={togglePlay}
+        playsInline
+      />
 
       {/* Buffering Indicator - only show when video is playing and buffering */}
       {isBuffering && isPlaying && (
         <div className="absolute inset-0 flex items-center justify-center bg-black/30">
-          <Loader2 className="size-12 text-white animate-spin" />
+          <Loader2 className="size-12 animate-spin text-white" />
         </div>
       )}
 
       {/* Play/Pause overlay on click */}
       {!isPlaying && !isLoading && (
-        <button onClick={togglePlay} className="absolute inset-0 flex items-center justify-center bg-black/30 transition-opacity">
-          <div className="rounded-full bg-primary/90 p-4 hover:bg-primary transition-colors">
-            <Play className="size-12 text-primary-foreground fill-current" />
+        <button
+          onClick={togglePlay}
+          className="absolute inset-0 flex items-center justify-center bg-black/30 transition-opacity"
+        >
+          <div className="bg-primary/90 hover:bg-primary rounded-full p-4 transition-colors">
+            <Play className="text-primary-foreground size-12 fill-current" />
           </div>
         </button>
       )}
 
       {/* Controls */}
-      <div className={cn("absolute bottom-0 left-0 right-0 bg-linear-to-t from-black/80 to-transparent p-4 transition-opacity duration-300", showControls || !isPlaying ? "opacity-100" : "opacity-0")}>
+      <div
+        className={cn(
+          "absolute right-0 bottom-0 left-0 bg-linear-to-t from-black/80 to-transparent p-4 transition-opacity duration-300",
+          showControls || !isPlaying ? "opacity-100" : "opacity-0"
+        )}
+      >
         {/* Progress Bar */}
         <div className="mb-3">
           <Slider
@@ -272,7 +323,7 @@ export function VideoPlayer({ thumbnailKey, videoKey }: VideoPlayerProps) {
             max={duration || 100}
             step={0.1}
             onValueChange={handleSeek}
-            className="cursor-pointer **:data-[slot=slider-track]:h-1 **:data-[slot=slider-track]:bg-white/30 **:data-[slot=slider-range]:bg-primary **:data-[slot=slider-thumb]:size-3 **:data-[slot=slider-thumb]:opacity-0 group-hover:**:data-[slot=slider-thumb]:opacity-100"
+            className="**:data-[slot=slider-range]:bg-primary cursor-pointer **:data-[slot=slider-thumb]:size-3 **:data-[slot=slider-thumb]:opacity-0 group-hover:**:data-[slot=slider-thumb]:opacity-100 **:data-[slot=slider-track]:h-1 **:data-[slot=slider-track]:bg-white/30"
           />
         </div>
 
@@ -280,29 +331,45 @@ export function VideoPlayer({ thumbnailKey, videoKey }: VideoPlayerProps) {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             {/* Play/Pause */}
-            <button onClick={togglePlay} className="p-2 rounded-full hover:bg-white/20 transition-colors text-white" aria-label={isPlaying ? "Pause" : "Play"}>
-              {isPlaying ? <Pause className="size-5 fill-current" /> : <Play className="size-5 fill-current" />}
+            <button
+              onClick={togglePlay}
+              className="rounded-full p-2 text-white transition-colors hover:bg-white/20"
+              aria-label={isPlaying ? "Pause" : "Play"}
+            >
+              {isPlaying ? (
+                <Pause className="size-5 fill-current" />
+              ) : (
+                <Play className="size-5 fill-current" />
+              )}
             </button>
 
             {/* Volume Controls */}
-            <div className="flex items-center gap-1 group/volume">
-              <button onClick={toggleMute} className="p-2 rounded-full hover:bg-white/20 transition-colors text-white" aria-label={isMuted ? "Unmute" : "Mute"}>
-                {isMuted || volume === 0 ? <VolumeX className="size-5" /> : <Volume2 className="size-5" />}
+            <div className="group/volume flex items-center gap-1">
+              <button
+                onClick={toggleMute}
+                className="rounded-full p-2 text-white transition-colors hover:bg-white/20"
+                aria-label={isMuted ? "Unmute" : "Mute"}
+              >
+                {isMuted || volume === 0 ? (
+                  <VolumeX className="size-5" />
+                ) : (
+                  <Volume2 className="size-5" />
+                )}
               </button>
-              <div className="w-0 overflow-hidden group-hover/volume:w-20 transition-all duration-200">
+              <div className="w-0 overflow-hidden transition-all duration-200 group-hover/volume:w-20">
                 <Slider
                   value={[isMuted ? 0 : volume]}
                   min={0}
                   max={1}
                   step={0.01}
                   onValueChange={handleVolumeChange}
-                  className="cursor-pointer **:data-[slot=slider-track]:h-1 **:data-[slot=slider-track]:bg-white/30 **:data-[slot=slider-range]:bg-white **:data-[slot=slider-thumb]:size-3"
+                  className="cursor-pointer **:data-[slot=slider-range]:bg-white **:data-[slot=slider-thumb]:size-3 **:data-[slot=slider-track]:h-1 **:data-[slot=slider-track]:bg-white/30"
                 />
               </div>
             </div>
 
             {/* Time Display */}
-            <span className="text-white text-sm ml-2 tabular-nums">
+            <span className="ml-2 text-sm text-white tabular-nums">
               {formatTime(currentTime)} / {formatTime(duration)}
             </span>
           </div>
@@ -310,17 +377,24 @@ export function VideoPlayer({ thumbnailKey, videoKey }: VideoPlayerProps) {
           <div className="flex items-center gap-2">
             {/* Playback Speed */}
             <div className="relative">
-              <button onClick={() => setShowSettings(!showSettings)} className="p-2 rounded-full hover:bg-white/20 transition-colors text-white" aria-label="Settings">
+              <button
+                onClick={() => setShowSettings(!showSettings)}
+                className="rounded-full p-2 text-white transition-colors hover:bg-white/20"
+                aria-label="Settings"
+              >
                 <Settings className="size-5" />
               </button>
               {showSettings && (
-                <div className="absolute bottom-full right-0 mb-2 bg-black/90 rounded-lg py-2 min-w-30">
-                  <p className="text-xs text-white/60 px-3 py-1">Speed</p>
+                <div className="absolute right-0 bottom-full mb-2 min-w-30 rounded-lg bg-black/90 py-2">
+                  <p className="px-3 py-1 text-xs text-white/60">Speed</p>
                   {playbackRates.map((rate) => (
                     <button
                       key={rate}
                       onClick={() => handlePlaybackRateChange(rate)}
-                      className={cn("w-full px-3 py-1.5 text-left text-sm hover:bg-white/20 transition-colors", playbackRate === rate ? "text-primary" : "text-white")}
+                      className={cn(
+                        "w-full px-3 py-1.5 text-left text-sm transition-colors hover:bg-white/20",
+                        playbackRate === rate ? "text-primary" : "text-white"
+                      )}
                     >
                       {rate === 1 ? "Normal" : `${rate}x`}
                     </button>
@@ -330,15 +404,23 @@ export function VideoPlayer({ thumbnailKey, videoKey }: VideoPlayerProps) {
             </div>
 
             {/* Fullscreen */}
-            <button onClick={toggleFullscreen} className="p-2 rounded-full hover:bg-white/20 transition-colors text-white" aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}>
-              {isFullscreen ? <Minimize className="size-5" /> : <Maximize className="size-5" />}
+            <button
+              onClick={toggleFullscreen}
+              className="rounded-full p-2 text-white transition-colors hover:bg-white/20"
+              aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+            >
+              {isFullscreen ? (
+                <Minimize className="size-5" />
+              ) : (
+                <Maximize className="size-5" />
+              )}
             </button>
           </div>
         </div>
       </div>
 
       {/* Keyboard shortcuts hint */}
-      <div className="absolute top-4 right-4 opacity-0 group-focus:opacity-100 transition-opacity bg-black/70 text-white text-xs px-3 py-2 rounded-lg">
+      <div className="absolute top-4 right-4 rounded-lg bg-black/70 px-3 py-2 text-xs text-white opacity-0 transition-opacity group-focus:opacity-100">
         <p>Space/K: Play/Pause</p>
         <p>M: Mute</p>
         <p>F: Fullscreen</p>
