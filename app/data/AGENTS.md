@@ -36,12 +36,14 @@ import { requireAdmin } from "./require-admin";
 
 export const myDataFunction = cache(async (param: string) => {
   await requireAdmin(); // or requireUser()
-  
+
   const data = await prisma.model.findUnique({
     where: { id: param },
-    select: { /* explicit fields */ }
+    select: {
+      /* explicit fields */
+    },
   });
-  
+
   if (!data) return notFound();
   return data;
 });

@@ -45,18 +45,19 @@ function Button({ variant, size, className, ...props }: Props) {
 ## Custom Props
 
 Some components have project-specific additions:
+
 - `DialogContent` - `showCloseButton?: boolean` (default true)
 
 ## Where to Look
 
-| Need | File |
-|------|------|
-| Buttons | `button.tsx` |
-| Forms | `form.tsx`, `input.tsx`, `select.tsx`, `checkbox.tsx` |
-| Modals | `dialog.tsx`, `alert-dialog.tsx`, `sheet.tsx`, `drawer.tsx` |
-| Navigation | `sidebar.tsx`, `navigation-menu.tsx`, `tabs.tsx` |
-| Feedback | `sonner.tsx` (toasts), `skeleton.tsx`, `spinner.tsx` |
-| Layout | `card.tsx`, `separator.tsx`, `scroll-area.tsx` |
+| Need       | File                                                        |
+| ---------- | ----------------------------------------------------------- |
+| Buttons    | `button.tsx`                                                |
+| Forms      | `form.tsx`, `input.tsx`, `select.tsx`, `checkbox.tsx`       |
+| Modals     | `dialog.tsx`, `alert-dialog.tsx`, `sheet.tsx`, `drawer.tsx` |
+| Navigation | `sidebar.tsx`, `navigation-menu.tsx`, `tabs.tsx`            |
+| Feedback   | `sonner.tsx` (toasts), `skeleton.tsx`, `spinner.tsx`        |
+| Layout     | `card.tsx`, `separator.tsx`, `scroll-area.tsx`              |
 
 ## Anti-Patterns
 

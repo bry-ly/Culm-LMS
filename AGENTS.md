@@ -30,17 +30,17 @@ lms-saas/
 
 ## Where to Look
 
-| Task | Location | Notes |
-|------|----------|-------|
-| Auth logic | `lib/auth.ts`, `lib/auth-client.ts` | Better Auth config |
-| Protected routes | `app/data/admin/require-admin.ts`, `app/data/user/require-user.ts` | Use `cache()` wrapper |
-| Data fetching | `app/data/{admin,course,user}/` | Server-only, Prisma queries |
-| Server actions | `app/**/actions.ts` | Colocated with pages |
-| API routes | `app/api/` | S3 upload/delete, Stripe webhook |
-| UI primitives | `components/ui/` | Shadcn pattern |
-| Zod schemas | `lib/zodSchemas.ts` | All form validation |
-| Stripe | `lib/stripe.ts` | Payment processing |
-| S3 | `lib/S3Client.ts` | File storage |
+| Task             | Location                                                           | Notes                            |
+| ---------------- | ------------------------------------------------------------------ | -------------------------------- |
+| Auth logic       | `lib/auth.ts`, `lib/auth-client.ts`                                | Better Auth config               |
+| Protected routes | `app/data/admin/require-admin.ts`, `app/data/user/require-user.ts` | Use `cache()` wrapper            |
+| Data fetching    | `app/data/{admin,course,user}/`                                    | Server-only, Prisma queries      |
+| Server actions   | `app/**/actions.ts`                                                | Colocated with pages             |
+| API routes       | `app/api/`                                                         | S3 upload/delete, Stripe webhook |
+| UI primitives    | `components/ui/`                                                   | Shadcn pattern                   |
+| Zod schemas      | `lib/zodSchemas.ts`                                                | All form validation              |
+| Stripe           | `lib/stripe.ts`                                                    | Payment processing               |
+| S3               | `lib/S3Client.ts`                                                  | File storage                     |
 
 ## Commands
 
@@ -55,25 +55,30 @@ npx prisma db push   # Sync schema to DB
 ## Conventions
 
 ### Imports
+
 - Use `@/*` path alias for all internal imports
 - External imports first, then internal (alphabetical within groups)
 
 ### Components
+
 - `export function ComponentName()` - named exports
 - Props interface above component
 - Server components by default, `"use client";` only when needed
 
 ### Data Fetching
+
 - Server-side only in `app/data/` directory
 - Wrap with `cache()` from React
 - Return type exports: `export type FooType = Awaited<ReturnType<typeof foo>>`
 
 ### Error Handling
+
 - `tryCatch()` from `@/hooks/try-catch` for promise handling
 - `toast.error()` / `toast.success()` from sonner for user feedback
 - Server actions return `ApiResponse` type: `{ status: "success" | "error", message: string }`
 
 ### File Naming
+
 - Components: kebab-case (`Login-Form.tsx`)
 - Utilities: camelCase (`tryCatch.ts`)
 - Data functions: kebab-case descriptive (`admin-get-course.ts`)
@@ -88,6 +93,7 @@ npx prisma db push   # Sync schema to DB
 ## Key Patterns
 
 ### Protected Server Actions
+
 ```typescript
 "use server";
 import { requireAdmin } from "@/app/data/admin/require-admin";
@@ -105,6 +111,7 @@ export async function MyAction(values: SchemaType): Promise<ApiResponse> {
 ```
 
 ### Data Fetching Functions
+
 ```typescript
 import "server-only";
 import { cache } from "react";
@@ -118,6 +125,7 @@ export type DataType = Awaited<ReturnType<typeof getData>>;
 ```
 
 ### Result Type Pattern
+
 ```typescript
 import { tryCatch } from "@/hooks/try-catch";
 
@@ -134,6 +142,7 @@ if (error) {
 Models: `User`, `Session`, `Account`, `Course`, `Chapter`, `Lesson`, `Enrollment`, `lessonProgress`
 
 Key relationships:
+
 - User → Course (creator)
 - User → Enrollment → Course (student)
 - Course → Chapter → Lesson

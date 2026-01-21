@@ -41,6 +41,7 @@ app/admin/
 ## Key Patterns
 
 ### Server Action Structure
+
 ```typescript
 "use server";
 import { requireAdmin } from "@/app/data/admin/require-admin";
@@ -49,16 +50,16 @@ import { request } from "@arcjet/next";
 
 export async function ActionName(values: SchemaType): Promise<ApiResponse> {
   const session = await requireAdmin();
-  
+
   // Rate limiting
   const req = await request();
   const decision = await aj.protect(req, { fingerprint: session.user.id });
   if (decision.isDenied()) return { status: "error", message: "Rate limited" };
-  
+
   // Validation
   const validation = schema.safeParse(values);
   if (!validation.success) return { status: "error", message: "Invalid data" };
-  
+
   // Prisma operation + Stripe sync if needed
   return { status: "success", message: "Done" };
 }
@@ -67,18 +68,19 @@ export async function ActionName(values: SchemaType): Promise<ApiResponse> {
 ### Course Structure DnD
 
 Uses `@dnd-kit` for drag-drop reordering:
+
 - `CourseStructure.tsx` - Main container
 - Chapters and lessons have `position` field
 - Reorder updates all affected positions in DB
 
 ## Where to Look
 
-| Task | Location |
-|------|----------|
-| Course CRUD | `courses/create/actions.ts`, `courses/[courseId]/edit/actions.ts` |
-| Lesson editing | `[courseId]/[chapterId]/[lessonId]/` |
-| Drag-drop logic | `edit/_components/CourseStructure.tsx` |
-| S3 uploads | Uses `components/file-uploader/Uploader.tsx` |
+| Task            | Location                                                          |
+| --------------- | ----------------------------------------------------------------- |
+| Course CRUD     | `courses/create/actions.ts`, `courses/[courseId]/edit/actions.ts` |
+| Lesson editing  | `[courseId]/[chapterId]/[lessonId]/`                              |
+| Drag-drop logic | `edit/_components/CourseStructure.tsx`                            |
+| S3 uploads      | Uses `components/file-uploader/Uploader.tsx`                      |
 
 ## Data Flow
 

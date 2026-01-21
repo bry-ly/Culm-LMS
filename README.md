@@ -1,81 +1,143 @@
-# Culm LMS - The Modern Learning Management System
+# Culm LMS
 
-![Project Preview](https://github.com/user-attachments/assets/placeholder)
+The Modern, Scalable Learning Management System for the Next Generation of Education.
 
-## 🚀 Overview
+![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-38B2AC?logo=tailwind-css)
+![Prisma](https://img.shields.io/badge/Prisma-7-2D3748?logo=prisma)
+![License](https://img.shields.io/badge/License-Private-red)
 
-**Culm LMS** is a robust, scalable, and modern Learning Management System (SaaS) built with Next.js 16 (App Router), Prisma/PostgreSQL, Better Auth, Stripe payments, and S3 storage. It is designed to empower educators and institutions with the tools they need to deliver high-quality digital education.
+## Overview
 
-## 🎯 Our Goal
+Culm LMS is a comprehensive, production-ready Learning Management System designed for a seamless educational experience. It provides a powerful course builder, integrated video hosting, and secure payment processing to enable institutions to launch and manage their digital curriculum efficiently.
 
-Our mission is to bridge the gap between education and technology by providing a platform that is not only powerful for administrators and teachers but also intuitive and engaging for students.
+## Features
 
-## ✨ Key Features
+- **Course Builder**: Intuitive interface for creating courses with structured chapters and lessons.
+- **Video and File Hosting**: Integrated S3 storage for high-performance video delivery and resource management.
+- **Authentication**: Secure identity management using Better Auth with support for Google/GitHub OAuth and email OTP.
+- **Payment Processing**: Integrated Stripe payments for course enrollments and subscription management.
+- **Admin Dashboard**: Comprehensive management tools with analytics and student monitoring.
+- **Progress Tracking**: Detailed tracking of student lesson completion and course advancement.
+- **Advanced Security**: Real-time bot protection and rate limiting powered by Arcjet.
 
-- **Robust Course Builder**: Create rich, multi-chapter courses with ease.
-- **Dynamic Content Management**: Upload lessons, videos, and manage thumbnails with integrated S3 storage.
-- **Secure Auth**: Modern authentication powered by Better Auth with Google/GitHub OAuth + email OTP.
-- **Frictionless Payments**: Secure enrollment via Stripe integration.
-- **Bot Protection**: Layered security with Arcjet integration.
+## Tech Stack
 
-## 🛠️ Tech Stack
+| Category      | Technology                                   |
+| :------------ | :------------------------------------------- |
+| Framework     | Next.js 16 (App Router)                      |
+| Styling       | Tailwind CSS 4, Radix UI, Framer Motion      |
+| Database      | Prisma with PostgreSQL                       |
+| Auth          | Better Auth (Google/GitHub OAuth, Email OTP) |
+| Payments      | Stripe                                       |
+| Security      | Arcjet (Bot protection, Rate limiting)       |
+| UI Components | Shadcn UI                                    |
 
-- **Framework**: [Next.js 16](https://nextjs.org) (App Router, React 19)
-- **Styling**: [Tailwind CSS 4](https://tailwindcss.com) & [Framer Motion](https://www.framer.com/motion/)
-- **Database**: [Prisma](https://www.prisma.io) with PostgreSQL
-- **Authentication**: [Better Auth](https://better-auth.com)
-- **Security**: [Arcjet](https://arcjet.com)
-- **Payments**: [Stripe](https://stripe.com)
-- **UI Components**: [Radix UI](https://www.radix-ui.com), [Lucide Icons](https://lucide.dev), & [Shadcn UI](https://ui.shadcn.com/)
-- **Rich Text Editing**: [Tiptap](https://tiptap.dev)
-
-## 🏁 Getting Started
+## Getting Started
 
 ### Prerequisites
 
-- Node.js 20+
-- pnpm (Recommended)
-- PostgreSQL database
+- Node.js 20 or higher
+- pnpm package manager
+- PostgreSQL database instance
 
 ### Installation
 
-1. **Clone the repository:**
+1. **Clone the repository**
+
    ```bash
-   git clone https://github.com/bry-ly/Fullbright-College-LMS.git
+   git clone https://github.com/your-repo/lms-saas.git
    cd lms-saas
    ```
 
-2. **Install dependencies:**
+2. **Install dependencies**
+
    ```bash
    pnpm install
    ```
 
-3. **Set up environment variables:**
-   Create a `.env` file in the root directory based on `.env.example`.
+3. **Configure environment variables**
+   Copy the example environment file and fill in your credentials.
 
-4. **Initialize the database:**
+   ```bash
+   cp .env.example .env
+   ```
+
+4. **Initialize the database**
+
    ```bash
    npx prisma generate
    npx prisma db push
    ```
 
-5. **Run the development server:**
+5. **Start the development server**
    ```bash
    npm run dev
    ```
 
-## 📁 Project Structure
+## Available Scripts
 
-- `app/`: Next.js App Router (Pages, Layouts, Actions, Data fetching)
-- `components/`: UI Components (Shadcn/UI, Radix, Tiptap, S3 Uploader)
-- `hooks/`: Custom React Hooks
-- `lib/`: Utility functions, clients (Prisma, Stripe, S3, Auth), and config
-- `prisma/`: Database schema and migrations
+| Script         | Description                                             |
+| :------------- | :------------------------------------------------------ |
+| `dev`          | Starts the development server                           |
+| `build`        | Creates an optimized production build                   |
+| `start`        | Starts the production server                            |
+| `lint`         | Runs ESLint to find code issues                         |
+| `lint:fix`     | Runs ESLint and automatically fixes issues              |
+| `format`       | Formats code using Prettier                             |
+| `format:check` | Checks if code follows Prettier formatting              |
+| `typecheck`    | Runs TypeScript compiler to check for types             |
+| `db:generate`  | Generates Prisma client                                 |
+| `db:push`      | Synchronizes the database schema with the Prisma schema |
+| `db:studio`    | Opens Prisma Studio to view and edit data               |
 
-## 📄 License
+## Environment Variables
 
-This project is [Private/Proprietary]. All rights reserved.
+| Variable                            | Description                      |
+| :---------------------------------- | :------------------------------- |
+| `DATABASE_URL`                      | PostgreSQL connection string     |
+| `BETTER_AUTH_SECRET`                | Secret key for Better Auth       |
+| `BETTER_AUTH_URL`                   | URL for Better Auth backend      |
+| `GITHUB_CLIENT_ID`                  | GitHub OAuth client ID           |
+| `GITHUB_CLIENT_SECRET`              | GitHub OAuth client secret       |
+| `GOOGLE_CLIENT_ID`                  | Google OAuth client ID           |
+| `GOOGLE_CLIENT_SECRET`              | Google OAuth client secret       |
+| `NEXT_PUBLIC_BETTER_AUTH_URL`       | Public URL for Better Auth       |
+| `RESEND_API_KEY`                    | API key for Resend email service |
+| `ARCJET_KEY`                        | API key for Arcjet security      |
+| `AWS_ACCESS_KEY_ID`                 | AWS access key for S3            |
+| `AWS_SECRET_ACCESS_KEY`             | AWS secret access key for S3     |
+| `AWS_ENDPOINT_URL_S3`               | S3 endpoint URL                  |
+| `AWS_REGION`                        | AWS region for S3                |
+| `NEXT_PUBLIC_S3_BUCKET_NAME_IMAGES` | S3 bucket name for images        |
+| `STRIPE_SECRET_KEY`                 | Stripe secret API key            |
+| `STRIPE_WEBHOOK_SECRET`             | Stripe webhook signing secret    |
 
----
+## Project Structure
 
-Built with ❤️ by the **Culm Team**.
+```text
+lms-saas/
+├── app/                  # Next.js App Router (Pages, Layouts, Actions)
+│   ├── (auth)/           # Authentication routes
+│   ├── (public)/         # Publicly accessible pages
+│   ├── admin/            # Administrative dashboard and course management
+│   ├── api/              # API route handlers
+│   ├── dashboard/        # Student dashboard and lesson player
+│   └── data/             # Server-side data access layer
+├── components/           # Reusable UI components
+│   ├── ui/               # Base UI primitives (Shadcn/UI)
+│   ├── file-uploader/    # S3 file upload components
+│   └── rich-text-editor/ # Tiptap editor implementation
+├── hooks/                # Custom React hooks
+├── lib/                  # Core utilities and third-party clients
+└── prisma/               # Database schema and configuration
+```
+
+## Contributing
+
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
+
+## License
+
+This project is Private and Proprietary. All rights reserved. Reproduction or distribution of this software is strictly prohibited without prior written consent.
