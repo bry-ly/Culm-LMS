@@ -20,7 +20,7 @@ const aj = arcjet.withRule(
     mode: "LIVE",
     window: "1m",
     max: 5,
-  }),
+  })
 );
 
 export async function POST(request: Request) {
@@ -40,7 +40,10 @@ export async function POST(request: Request) {
     const validation = fileUploadSchema.safeParse(body);
 
     if (!validation.success) {
-      return NextResponse.json({ error: "Invalid Request Body" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Invalid Request Body" },
+        { status: 400 }
+      );
     }
 
     const { fileName, contentType, size } = validation.data;
@@ -65,6 +68,9 @@ export async function POST(request: Request) {
 
     return NextResponse.json(response);
   } catch {
-    return NextResponse.json({ error: "Failed to generate presigned url" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to generate presigned url" },
+      { status: 500 }
+    );
   }
 }

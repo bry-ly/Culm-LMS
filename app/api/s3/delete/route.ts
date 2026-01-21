@@ -16,24 +16,25 @@ const aj = arcjet.withRule(
     mode: "LIVE",
     window: "1m",
     max: 5,
-  }),
+  })
 );
 
 async function verifyKeyOwnership(key: string): Promise<boolean> {
-  const [courseWithKey, lessonWithThumbnail, lessonWithVideo] = await Promise.all([
-    prisma.course.findFirst({
-      where: { filekey: key },
-      select: { id: true },
-    }),
-    prisma.lesson.findFirst({
-      where: { thumbnailKey: key },
-      select: { id: true },
-    }),
-    prisma.lesson.findFirst({
-      where: { videoKey: key },
-      select: { id: true },
-    }),
-  ]);
+  const [courseWithKey, lessonWithThumbnail, lessonWithVideo] =
+    await Promise.all([
+      prisma.course.findFirst({
+        where: { filekey: key },
+        select: { id: true },
+      }),
+      prisma.lesson.findFirst({
+        where: { thumbnailKey: key },
+        select: { id: true },
+      }),
+      prisma.lesson.findFirst({
+        where: { videoKey: key },
+        select: { id: true },
+      }),
+    ]);
 
   return !!(courseWithKey || lessonWithThumbnail || lessonWithVideo);
 }
@@ -47,7 +48,10 @@ export async function DELETE(request: Request) {
     });
 
     if (decision.isDenied()) {
-      return NextResponse.json({ error: "Rate limit exceeded" }, { status: 429 });
+      return NextResponse.json(
+        { error: "Rate limit exceeded" },
+        { status: 429 }
+      );
     }
 
     const body = await request.json();
@@ -55,7 +59,9 @@ export async function DELETE(request: Request) {
 
     if (!validation.success) {
       return NextResponse.json(
-        { error: validation.error.issues[0]?.message || "Invalid request body" },
+        {
+          error: validation.error.issues[0]?.message || "Invalid request body",
+        },
         { status: 400 }
       );
     }
@@ -77,9 +83,15 @@ export async function DELETE(request: Request) {
 
     await S3.send(command);
 
-    return NextResponse.json({ message: "File deleted successfully" }, { status: 200 });
+    return NextResponse.json(
+      { message: "File deleted successfully" },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("S3 deletion error:", error);
-    return NextResponse.json({ error: "Failed to delete file" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to delete file" },
+      { status: 500 }
+    );
   }
 }

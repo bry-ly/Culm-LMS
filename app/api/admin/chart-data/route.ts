@@ -20,7 +20,10 @@ export async function GET(request: Request) {
     });
 
     if (decision.isDenied()) {
-      return NextResponse.json({ error: "Rate limit exceeded" }, { status: 429 });
+      return NextResponse.json(
+        { error: "Rate limit exceeded" },
+        { status: 429 }
+      );
     }
 
     const { searchParams } = new URL(request.url);
