@@ -74,4 +74,6 @@ export const getCourseSidebarData = cache(async (slug: string) => {
   return course;
 });
 
-export type CourseSidebarDataType = Awaited<ReturnType<typeof getCourseSidebarData>>;
+export type CourseSidebarDataType = Awaited<
+  ReturnType<typeof getCourseSidebarData>
+>;

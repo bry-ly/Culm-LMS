@@ -50,4 +50,6 @@ export const adminGetCourse = cache(async (courseId: string) => {
   return data;
 });
 
-export type AdminCourseSingularType = Awaited<ReturnType<typeof adminGetCourse>>;
+export type AdminCourseSingularType = Awaited<
+  ReturnType<typeof adminGetCourse>
+>;

@@ -4,23 +4,25 @@ import prisma from "@/lib/db";
 import { headers } from "next/headers";
 import { cache } from "react";
 
-export const checkIfCourseBought = cache(async (courseId: string): Promise<boolean> => {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+export const checkIfCourseBought = cache(
+  async (courseId: string): Promise<boolean> => {
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
 
-  if (!session?.user) return false;
+    if (!session?.user) return false;
 
-  const enrollment = await prisma.enrollment.findUnique({
-    where: {
-      userId_courseId: {
-        courseId: courseId,
-        userId: session.user.id,
+    const enrollment = await prisma.enrollment.findUnique({
+      where: {
+        userId_courseId: {
+          courseId: courseId,
+          userId: session.user.id,
+        },
       },
-    },
-    select: {
-      status: true,
-    },
-  });
-  return enrollment?.status === "Active" ? true : false;
-});
+      select: {
+        status: true,
+      },
+    });
+    return enrollment?.status === "Active" ? true : false;
+  }
+);

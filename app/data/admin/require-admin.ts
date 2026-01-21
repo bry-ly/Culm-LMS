@@ -20,4 +20,3 @@ export const requireAdmin = cache(async () => {
 
   return session;
 });
-
