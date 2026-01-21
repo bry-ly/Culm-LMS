@@ -122,10 +122,10 @@ export function LoginForm() {
             )}
           </Button>
         </div>
-        <div className="flex items-center gap-4 text-sm w-full">
-          <div className="h-px flex-1 bg-border" />
+        <div className="flex w-full items-center gap-4 text-sm">
+          <div className="bg-border h-px flex-1" />
           <span className="text-muted-foreground">Or Continue With</span>
-          <div className="h-px flex-1 bg-border" />
+          <div className="bg-border h-px flex-1" />
         </div>
         <div className="grid gap-3">
           <div className="grid gap-2">

@@ -48,7 +48,7 @@ function VerifyRequestContent() {
   }
 
   return (
-    <Card className="w-full mx-auto">
+    <Card className="mx-auto w-full">
       <CardHeader className="text-center">
         <CardTitle className="text-xl font-semibold">
           Please check your email
@@ -57,8 +57,8 @@ function VerifyRequestContent() {
           We have sent you a verification email. Please check your inbox.
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-6 ">
-        <div className=" flex flex-col items-center space-y-4">
+      <CardContent className="space-y-6">
+        <div className="flex flex-col items-center space-y-4">
           <InputOTP
             maxLength={6}
             className="gap-2"
@@ -77,7 +77,7 @@ function VerifyRequestContent() {
               <InputOTPSlot index={5} />
             </InputOTPGroup>
           </InputOTP>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground text-sm">
             Enter 6-digit code sent to your email.
           </p>
         </div>
@@ -104,7 +104,7 @@ export default function VerifyRequest() {
   return (
     <Suspense
       fallback={
-        <Card className="w-full mx-auto">
+        <Card className="mx-auto w-full">
           <CardHeader className="text-center">
             <CardTitle className="text-xl font-semibold">Loading...</CardTitle>
           </CardHeader>
