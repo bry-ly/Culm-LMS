@@ -5,7 +5,14 @@ import arcjet, { fixedWindow } from "@/lib/arcjet";
 import { request } from "@arcjet/next";
 import prisma from "@/lib/db";
 import { ApiResponse } from "@/lib/types";
-import { chapterSchema, ChapterSchemaType, courseSchema, CourseSchemaType, lessonSchema, LessonSchemaType } from "@/lib/zodSchemas";
+import {
+  chapterSchema,
+  ChapterSchemaType,
+  courseSchema,
+  CourseSchemaType,
+  lessonSchema,
+  LessonSchemaType,
+} from "@/lib/zodSchemas";
 import { revalidatePath } from "next/cache";
 
 const aj = arcjet.withRule(
@@ -13,10 +20,13 @@ const aj = arcjet.withRule(
     mode: "LIVE",
     window: "1m",
     max: 5,
-  }),
+  })
 );
 
-export async function editCourse(data: CourseSchemaType, courseId: string): Promise<ApiResponse> {
+export async function editCourse(
+  data: CourseSchemaType,
+  courseId: string
+): Promise<ApiResponse> {
   const user = await requireAdmin();
   try {
     const req = await request();
@@ -69,7 +79,11 @@ export async function editCourse(data: CourseSchemaType, courseId: string): Prom
   }
 }
 
-export async function reorderLessons(chapterId: string, lessons: { id: string; position: number }[], courseId: string): Promise<ApiResponse> {
+export async function reorderLessons(
+  chapterId: string,
+  lessons: { id: string; position: number }[],
+  courseId: string
+): Promise<ApiResponse> {
   await requireAdmin();
   try {
     if (!lessons || lessons.length === 0) {
@@ -88,7 +102,7 @@ export async function reorderLessons(chapterId: string, lessons: { id: string; p
         data: {
           position: lesson.position,
         },
-      }),
+      })
     );
 
     revalidatePath(`/admin/courses/${courseId}/edit`);
@@ -107,7 +121,10 @@ export async function reorderLessons(chapterId: string, lessons: { id: string; p
   }
 }
 
-export async function reorderChapter(courseId: string, chapters: { id: string; position: number }[]): Promise<ApiResponse> {
+export async function reorderChapter(
+  courseId: string,
+  chapters: { id: string; position: number }[]
+): Promise<ApiResponse> {
   await requireAdmin();
   try {
     if (!chapters || chapters.length === 0) {
@@ -126,7 +143,7 @@ export async function reorderChapter(courseId: string, chapters: { id: string; p
         data: {
           position: chapter.position,
         },
-      }),
+      })
     );
 
     revalidatePath(`/admin/courses/${courseId}/edit`);
@@ -145,7 +162,9 @@ export async function reorderChapter(courseId: string, chapters: { id: string; p
   }
 }
 
-export async function createChapter(values: ChapterSchemaType): Promise<ApiResponse> {
+export async function createChapter(
+  values: ChapterSchemaType
+): Promise<ApiResponse> {
   await requireAdmin();
   try {
     const result = chapterSchema.safeParse(values);
@@ -192,7 +211,9 @@ export async function createChapter(values: ChapterSchemaType): Promise<ApiRespo
   }
 }
 
-export async function createLesson(values: LessonSchemaType): Promise<ApiResponse> {
+export async function createLesson(
+  values: LessonSchemaType
+): Promise<ApiResponse> {
   await requireAdmin();
   try {
     const result = lessonSchema.safeParse(values);
@@ -242,7 +263,15 @@ export async function createLesson(values: LessonSchemaType): Promise<ApiRespons
   }
 }
 
-export async function deleteLesson({ chapterId, courseId, lessonId }: { chapterId: string; lessonId: string; courseId: string }): Promise<ApiResponse> {
+export async function deleteLesson({
+  chapterId,
+  courseId,
+  lessonId,
+}: {
+  chapterId: string;
+  lessonId: string;
+  courseId: string;
+}): Promise<ApiResponse> {
   await requireAdmin();
 
   try {
@@ -312,7 +341,9 @@ export async function deleteLesson({ chapterId, courseId, lessonId }: { chapterI
 
     return {
       status: "success",
-      message: reorderingOccurred ? "Lesson deleted and position reordered successfully" : "Lesson deleted successfully",
+      message: reorderingOccurred
+        ? "Lesson deleted and position reordered successfully"
+        : "Lesson deleted successfully",
     };
   } catch {
     return {
@@ -322,7 +353,13 @@ export async function deleteLesson({ chapterId, courseId, lessonId }: { chapterI
   }
 }
 
-export async function deleteChapter({ chapterId, courseId }: { chapterId: string; courseId: string }): Promise<ApiResponse> {
+export async function deleteChapter({
+  chapterId,
+  courseId,
+}: {
+  chapterId: string;
+  courseId: string;
+}): Promise<ApiResponse> {
   await requireAdmin();
 
   try {
@@ -352,7 +389,9 @@ export async function deleteChapter({ chapterId, courseId }: { chapterId: string
 
     const chapters = courseWithChapter.chapter;
 
-    const chapterToDelete = chapters.find((chapter) => chapter.id === chapterId);
+    const chapterToDelete = chapters.find(
+      (chapter) => chapter.id === chapterId
+    );
 
     if (!chapterToDelete) {
       return {
@@ -361,7 +400,9 @@ export async function deleteChapter({ chapterId, courseId }: { chapterId: string
       };
     }
 
-    const remainingChapter = chapters.filter((chapter) => chapter.id !== chapterId);
+    const remainingChapter = chapters.filter(
+      (chapter) => chapter.id !== chapterId
+    );
 
     const updates = remainingChapter.map((chapter, index) => {
       return prisma.chapter.update({
@@ -391,7 +432,9 @@ export async function deleteChapter({ chapterId, courseId }: { chapterId: string
 
     return {
       status: "success",
-      message: reorderingOccurred ? "Chapter deleted and position reordered successfully" : "Chapter deleted successfully",
+      message: reorderingOccurred
+        ? "Chapter deleted and position reordered successfully"
+        : "Chapter deleted successfully",
     };
   } catch {
     return {

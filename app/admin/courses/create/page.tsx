@@ -181,14 +181,18 @@ export default function CourseCreationPage() {
                   <FormItem className="w-full">
                     <FormLabel>Thumbnail Image</FormLabel>
                     <FormControl>
-                      <Uploader value={field.value} onChange={field.onChange} fileTypeAccepted="image"/>
+                      <Uploader
+                        value={field.value}
+                        onChange={field.onChange}
+                        fileTypeAccepted="image"
+                      />
                       {/*<Input placeholder="thumbnail url" {...field} />*/}
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <FormField
                   control={form.control}
                   name="category"
@@ -277,8 +281,10 @@ export default function CourseCreationPage() {
                               }
                             }}
                           />
-                          <span className="text-sm text-muted-foreground">
-                            {field.value ? "This course is free" : "This course is paid"}
+                          <span className="text-muted-foreground text-sm">
+                            {field.value
+                              ? "This course is free"
+                              : "This course is paid"}
                           </span>
                         </div>
                       </FormControl>

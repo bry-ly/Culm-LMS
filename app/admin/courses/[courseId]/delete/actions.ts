@@ -12,7 +12,7 @@ const aj = arcjet.withRule(
     mode: "LIVE",
     window: "1m",
     max: 5,
-  }),
+  })
 );
 
 export async function deleteCourse(courseId: string): Promise<ApiResponse> {

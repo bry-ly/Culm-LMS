@@ -4,8 +4,21 @@ import { AdminLessonType } from "@/app/data/admin/admin-get-lesson";
 import { Uploader } from "@/components/file-uploader/Uploader";
 import { RichTextEditor } from "@/components/rich-text-editor/Editor";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { tryCatch } from "@/hooks/try-catch";
 import { lessonSchema, LessonSchemaType } from "@/lib/zodSchemas";
@@ -39,7 +52,9 @@ export function LessonForm({ chapterId, data, courseId }: iAppProps) {
 
   async function onSubmit(values: LessonSchemaType) {
     startTransition(async () => {
-      const { data: result, error } = await tryCatch(updateLesson(values, data.id));
+      const { data: result, error } = await tryCatch(
+        updateLesson(values, data.id)
+      );
 
       if (error) {
         toast.error("An unexpected error occurred. Please try again.");
@@ -69,7 +84,9 @@ export function LessonForm({ chapterId, data, courseId }: iAppProps) {
       <Card>
         <CardHeader>
           <CardTitle>Lesson Creation</CardTitle>
-          <CardDescription>Configure the video and description for this lesson</CardDescription>
+          <CardDescription>
+            Configure the video and description for this lesson
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -107,7 +124,11 @@ export function LessonForm({ chapterId, data, courseId }: iAppProps) {
                   <FormItem>
                     <FormLabel>Thumbnail</FormLabel>
                     <FormControl>
-                      <Uploader value={field.value} onChange={field.onChange} fileTypeAccepted="image" />
+                      <Uploader
+                        value={field.value}
+                        onChange={field.onChange}
+                        fileTypeAccepted="image"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -120,7 +141,11 @@ export function LessonForm({ chapterId, data, courseId }: iAppProps) {
                   <FormItem>
                     <FormLabel>Video File</FormLabel>
                     <FormControl>
-                      <Uploader value={field.value} onChange={field.onChange} fileTypeAccepted="video" />
+                      <Uploader
+                        value={field.value}
+                        onChange={field.onChange}
+                        fileTypeAccepted="video"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

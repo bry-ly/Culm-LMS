@@ -1,6 +1,21 @@
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { tryCatch } from "@/hooks/try-catch";
 import { lessonSchema, LessonSchemaType } from "@/lib/zodSchemas";
@@ -11,7 +26,13 @@ import { useForm } from "react-hook-form";
 import { createLesson } from "../actions";
 import { toast } from "sonner";
 
-export function NewLessonModal({ courseId, chapterId }: { courseId: string; chapterId: string }) {
+export function NewLessonModal({
+  courseId,
+  chapterId,
+}: {
+  courseId: string;
+  chapterId: string;
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const [pending, startTransition] = useTransition();
   const form = useForm<LessonSchemaType>({
@@ -53,14 +74,16 @@ export function NewLessonModal({ courseId, chapterId }: { courseId: string; chap
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button variant="outline" size="sm" className="gap-2 w-full">
+        <Button variant="outline" size="sm" className="w-full gap-2">
           <PlusIcon className="size-4" /> New Lesson
         </Button>
       </DialogTrigger>
       <DialogContent className="sm: max-w-425px">
         <DialogHeader>
           <DialogTitle>Create new lesson</DialogTitle>
-          <DialogDescription>What would you like to name your lesson?</DialogDescription>
+          <DialogDescription>
+            What would you like to name your lesson?
+          </DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>

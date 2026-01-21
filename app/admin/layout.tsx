@@ -3,9 +3,11 @@ import { SiteHeader } from "@/components/sidebar/site-header";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { ReactNode } from "react";
 
-
-
-export default function AdminLayout({ children }: { children: ReactNode }): ReactNode {
+export default function AdminLayout({
+  children,
+}: {
+  children: ReactNode;
+}): ReactNode {
   return (
     <SidebarProvider
       style={
@@ -27,5 +29,5 @@ export default function AdminLayout({ children }: { children: ReactNode }): Reac
         </div>
       </SidebarInset>
     </SidebarProvider>
-  )
+  );
 }

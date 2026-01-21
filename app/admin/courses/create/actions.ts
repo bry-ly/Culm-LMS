@@ -13,10 +13,12 @@ const aj = arcjet.withRule(
     mode: "LIVE",
     window: "1m",
     max: 5,
-  }),
+  })
 );
 
-export async function CreateCourse(values: CourseSchemaType): Promise<ApiResponse> {
+export async function CreateCourse(
+  values: CourseSchemaType
+): Promise<ApiResponse> {
   const session = await requireAdmin();
 
   try {
@@ -60,17 +62,17 @@ export async function CreateCourse(values: CourseSchemaType): Promise<ApiRespons
           unit_amount: validation.data.price * 100,
         },
       });
-      
+
       if (!data.default_price || typeof data.default_price !== "string") {
         return {
           status: "error",
           message: "Failed to create Stripe price",
         };
       }
-      
+
       stripePriceId = data.default_price;
     }
-    
+
     await prisma.course.create({
       data: {
         ...validation.data,

@@ -310,7 +310,7 @@ export function CourseStructure({ data }: iAppProps) {
       sensors={sensors}
     >
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between border-b border-border">
+        <CardHeader className="border-border flex flex-row items-center justify-between border-b">
           <CardTitle>Chapter</CardTitle>
           <NewChapterModal courseId={data.id} />
         </CardHeader>
@@ -328,7 +328,7 @@ export function CourseStructure({ data }: iAppProps) {
                       open={item.isOpen}
                       onOpenChange={() => toggleChapter(item.id)}
                     >
-                      <div className="flex items-center justify-between p-3 border-b border-border">
+                      <div className="border-border flex items-center justify-between border-b p-3">
                         <div className="flex items-center gap-2">
                           <Button
                             className="cursor-grab opacity-60 hover:opacity-100"
@@ -351,7 +351,7 @@ export function CourseStructure({ data }: iAppProps) {
                               )}
                             </Button>
                           </CollapsibleTrigger>
-                          <p className="cursor-pointer hover:text-primary">
+                          <p className="hover:text-primary cursor-pointer">
                             {item.title}
                           </p>
                         </div>
@@ -370,7 +370,7 @@ export function CourseStructure({ data }: iAppProps) {
                                 data={{ type: "lesson", chapterId: item.id }}
                               >
                                 {(lessonListeners) => (
-                                  <div className="flex items-center justify-between p-2 hover:bg-accent rounded-none relative border border-transparent hover:border-border transition-colors">
+                                  <div className="hover:bg-accent hover:border-border relative flex items-center justify-between rounded-none border border-transparent p-2 transition-colors">
                                     <CornerBorders />
                                     <div className="flex items-center gap-2">
                                       <Button

@@ -40,8 +40,8 @@ export default function DeleteCoursePage() {
   }
 
   return (
-    <div className="max-w-lg mx-auto w-full min-h-[calc(100vh-200px)] flex items-center justify-center p-6">
-      <Card className="max-w-5xl w-full">
+    <div className="mx-auto flex min-h-[calc(100vh-200px)] w-full max-w-lg items-center justify-center p-6">
+      <Card className="w-full max-w-5xl">
         <CardHeader>
           <CardTitle>Are you sure you want to delete this course?</CardTitle>
           <CardDescription>This action cannot be undone.</CardDescription>
@@ -52,7 +52,7 @@ export default function DeleteCoursePage() {
               variant: "outline",
             })}
             href="/admin/courses"
-          > 
+          >
             Cancel
           </Link>
           <Button variant="destructive" onClick={onSubmit} disabled={pending}>
