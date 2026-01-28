@@ -1,3 +1,5 @@
+"use client";
+
 import { AdminCourseType } from "@/app/data/admin/admin-get-courses";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -17,10 +19,10 @@ import {
   MoreVertical,
   School,
   TimerIcon,
-  Trash2Icon,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { DeleteCourseModal } from "./DeleteCourseModal";
 
 interface Course {
   data: AdminCourseType;
@@ -52,12 +54,7 @@ export function AdminCourseCard({ data }: Course) {
               </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem asChild>
-              <Link href={`/admin/courses/${data.id}/delete`}>
-                <Trash2Icon className="text-destructive mr-2 size-4" />
-                Delete
-              </Link>
-            </DropdownMenuItem>
+            <DeleteCourseModal courseId={data.id} courseTitle={data.title} />
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

@@ -28,12 +28,12 @@ export async function deleteCourse(courseId: string): Promise<ApiResponse> {
       if (decision.reason.isRateLimit()) {
         return {
           status: "error",
-          message: "You have been block due to rate limiting",
+          message: "You have been blocked due to rate limiting",
         };
       } else {
         return {
           status: "error",
-          message: "You are a bot! if this a mistake contact our support",
+          message: "You are a bot! If this is a mistake, contact our support",
         };
       }
     }
@@ -53,7 +53,7 @@ export async function deleteCourse(courseId: string): Promise<ApiResponse> {
   } catch {
     return {
       status: "error",
-      message: "Failed to delete Course!",
+      message: "Failed to delete course!",
     };
   }
 }

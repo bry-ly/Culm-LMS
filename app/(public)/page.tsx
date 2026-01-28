@@ -8,6 +8,7 @@ import {
   User2,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { env } from "@/lib/env";
 
 type Feature = {
   title: string;
@@ -43,8 +44,45 @@ const features: Feature[] = [
 ];
 
 export default function Home() {
+  const baseUrl = env.BETTER_AUTH_URL;
+
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Culm LMS",
+    url: baseUrl,
+    logo: `${baseUrl}/icon.svg`,
+    description:
+      "A modern, interactive learning management system offering high-quality courses.",
+    sameAs: [],
+  };
+
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Culm LMS",
+    url: baseUrl,
+    description: "Hyperlinking you to a bright future!",
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: `${baseUrl}/courses?search={search_term_string}`,
+      },
+      "query-input": "required name=search_term_string",
+    },
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+      />
       <section className="relative py-20">
         <div className="flex flex-col items-center space-y-8 text-center">
           <Badge variant="outline">Hyperlinking you to a bright future!</Badge>

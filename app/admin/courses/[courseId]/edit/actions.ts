@@ -23,30 +23,44 @@ const aj = arcjet.withRule(
   })
 );
 
+const ajReorder = arcjet.withRule(
+  fixedWindow({
+    mode: "LIVE",
+    window: "1m",
+    max: 30,
+  })
+);
+
+async function checkRateLimit(
+  userId: string,
+  client = aj
+): Promise<ApiResponse | null> {
+  const req = await request();
+  const decision = await client.protect(req, { fingerprint: userId });
+
+  if (decision.isDenied()) {
+    if (decision.reason.isRateLimit()) {
+      return {
+        status: "error",
+        message: "Too many requests. Please try again later.",
+      };
+    }
+    return {
+      status: "error",
+      message: "Request blocked. If this is a mistake, contact support.",
+    };
+  }
+  return null;
+}
+
 export async function editCourse(
   data: CourseSchemaType,
   courseId: string
 ): Promise<ApiResponse> {
   const user = await requireAdmin();
   try {
-    const req = await request();
-    const decision = await aj.protect(req, {
-      fingerprint: user.user.id,
-    });
-
-    if (decision.isDenied()) {
-      if (decision.reason.isRateLimit()) {
-        return {
-          status: "error",
-          message: "You have been block due to rate limiting",
-        };
-      } else {
-        return {
-          status: "error",
-          message: "You are a bot! if this a mistake contact our support",
-        };
-      }
-    }
+    const rateLimitError = await checkRateLimit(user.user.id);
+    if (rateLimitError) return rateLimitError;
 
     const result = courseSchema.safeParse(data);
 
@@ -84,8 +98,11 @@ export async function reorderLessons(
   lessons: { id: string; position: number }[],
   courseId: string
 ): Promise<ApiResponse> {
-  await requireAdmin();
+  const user = await requireAdmin();
   try {
+    const rateLimitError = await checkRateLimit(user.user.id, ajReorder);
+    if (rateLimitError) return rateLimitError;
+
     if (!lessons || lessons.length === 0) {
       return {
         status: "error",
@@ -125,8 +142,11 @@ export async function reorderChapter(
   courseId: string,
   chapters: { id: string; position: number }[]
 ): Promise<ApiResponse> {
-  await requireAdmin();
+  const user = await requireAdmin();
   try {
+    const rateLimitError = await checkRateLimit(user.user.id, ajReorder);
+    if (rateLimitError) return rateLimitError;
+
     if (!chapters || chapters.length === 0) {
       return {
         status: "error",
@@ -165,8 +185,11 @@ export async function reorderChapter(
 export async function createChapter(
   values: ChapterSchemaType
 ): Promise<ApiResponse> {
-  await requireAdmin();
+  const user = await requireAdmin();
   try {
+    const rateLimitError = await checkRateLimit(user.user.id);
+    if (rateLimitError) return rateLimitError;
+
     const result = chapterSchema.safeParse(values);
 
     if (!result.success) {
@@ -214,8 +237,11 @@ export async function createChapter(
 export async function createLesson(
   values: LessonSchemaType
 ): Promise<ApiResponse> {
-  await requireAdmin();
+  const user = await requireAdmin();
   try {
+    const rateLimitError = await checkRateLimit(user.user.id);
+    if (rateLimitError) return rateLimitError;
+
     const result = lessonSchema.safeParse(values);
 
     if (!result.success) {
@@ -272,9 +298,12 @@ export async function deleteLesson({
   lessonId: string;
   courseId: string;
 }): Promise<ApiResponse> {
-  await requireAdmin();
+  const user = await requireAdmin();
 
   try {
+    const rateLimitError = await checkRateLimit(user.user.id);
+    if (rateLimitError) return rateLimitError;
+
     const chapterWithLessons = await prisma.chapter.findUnique({
       where: {
         id: chapterId,
@@ -360,9 +389,12 @@ export async function deleteChapter({
   chapterId: string;
   courseId: string;
 }): Promise<ApiResponse> {
-  await requireAdmin();
+  const user = await requireAdmin();
 
   try {
+    const rateLimitError = await checkRateLimit(user.user.id);
+    if (rateLimitError) return rateLimitError;
+
     const courseWithChapter = await prisma.course.findUnique({
       where: {
         id: courseId,

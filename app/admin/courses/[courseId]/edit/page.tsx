@@ -1,3 +1,4 @@
+import { notFound } from "next/navigation";
 import { adminGetCourse } from "@/app/data/admin/admin-get-course";
 import {
   Card,
@@ -18,7 +19,7 @@ export default async function EditRoute({ params }: { params: Params }) {
   const data = await adminGetCourse(courseId);
 
   if (!data) {
-    throw new Error(`Course with id ${courseId} not found`);
+    notFound();
   }
 
   return (
