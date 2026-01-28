@@ -28,10 +28,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 import { Edit2Icon, Loader, SparkleIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useTransition } from "react";
+import { useId, useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -46,6 +47,7 @@ interface iAppProps {
 export function EditCourseForm({ data }: iAppProps) {
   const [Pending, startTransition] = useTransition();
   const router = useRouter();
+  const pricingId = useId();
 
   const form = useForm<CourseSchemaType>({
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -241,25 +243,65 @@ export function EditCourseForm({ data }: iAppProps) {
             control={form.control}
             name="isFree"
             render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel>Free Course</FormLabel>
+              <FormItem className="w-full md:col-span-2">
+                <FormLabel>Pricing Type</FormLabel>
                 <FormControl>
-                  <div className="flex items-center space-x-2 pt-2">
-                    <Switch
-                      checked={field.value}
-                      onCheckedChange={(checked) => {
-                        field.onChange(checked);
-                        if (checked) {
-                          form.setValue("price", 0);
-                        }
-                      }}
-                    />
-                    <span className="text-muted-foreground text-sm">
-                      {field.value
-                        ? "This course is free"
-                        : "This course is paid"}
-                    </span>
-                  </div>
+                  <RadioGroup
+                    value={field.value ? "free" : "paid"}
+                    onValueChange={(value) => {
+                      const isFreeValue = value === "free";
+                      field.onChange(isFreeValue);
+                      if (isFreeValue) {
+                        form.setValue("price", 0);
+                      }
+                    }}
+                    className="grid grid-cols-2 gap-4"
+                  >
+                    <div className="border-input has-data-[state=checked]:border-primary/50 relative flex w-full items-center gap-2 rounded-md border p-4 shadow-xs outline-none">
+                      <RadioGroupItem
+                        value="paid"
+                        id={`${pricingId}-paid`}
+                        aria-describedby={`${pricingId}-paid-description`}
+                        className="size-5 after:absolute after:inset-0 [&_svg]:size-3"
+                      />
+                      <div className="grid grow gap-1">
+                        <Label
+                          htmlFor={`${pricingId}-paid`}
+                          className="cursor-pointer"
+                        >
+                          Paid Course
+                        </Label>
+                        <p
+                          id={`${pricingId}-paid-description`}
+                          className="text-muted-foreground text-xs"
+                        >
+                          Set a price for your course
+                        </p>
+                      </div>
+                    </div>
+                    <div className="border-input has-data-[state=checked]:border-primary/50 relative flex w-full items-center gap-2 rounded-md border p-4 shadow-xs outline-none">
+                      <RadioGroupItem
+                        value="free"
+                        id={`${pricingId}-free`}
+                        aria-describedby={`${pricingId}-free-description`}
+                        className="size-5 after:absolute after:inset-0 [&_svg]:size-3"
+                      />
+                      <div className="grid grow gap-1">
+                        <Label
+                          htmlFor={`${pricingId}-free`}
+                          className="cursor-pointer"
+                        >
+                          Free Course
+                        </Label>
+                        <p
+                          id={`${pricingId}-free-description`}
+                          className="text-muted-foreground text-xs"
+                        >
+                          Make this course available for free
+                        </p>
+                      </div>
+                    </div>
+                  </RadioGroup>
                 </FormControl>
                 <FormMessage />
               </FormItem>
