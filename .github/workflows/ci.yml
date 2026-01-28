@@ -1,0 +1,104 @@
+name: CI
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run ESLint
+        run: pnpm lint
+
+      - name: Check formatting
+        run: pnpm format:check
+
+  typecheck:
+    name: Type Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate Prisma Client
+        run: pnpm db:generate
+
+      - name: Run TypeScript compiler
+        run: pnpm typecheck
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: [lint, typecheck]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate Prisma Client
+        run: pnpm db:generate
+
+      - name: Build application
+        run: pnpm build
+        env:
+          # Required for build but not used in CI
+          DATABASE_URL: "postgresql://localhost:5432/test"
+          BETTER_AUTH_SECRET: "ci-test-secret-not-real"
+          BETTER_AUTH_URL: "http://localhost:3000"
+          NEXT_PUBLIC_BETTER_AUTH_URL: "http://localhost:3000"
+          GITHUB_CLIENT_ID: "ci-placeholder"
+          GITHUB_CLIENT_SECRET: "ci-placeholder"
+          GOOGLE_CLIENT_ID: "ci-placeholder"
+          GOOGLE_CLIENT_SECRET: "ci-placeholder"
+          RESEND_API_KEY: "ci-placeholder"
+          ARCJET_KEY: "ci-placeholder"
+          AWS_ACCESS_KEY_ID: "ci-placeholder"
+          AWS_SECRET_ACCESS_KEY: "ci-placeholder"
+          AWS_ENDPOINT_URL_S3: "https://s3.us-east-1.amazonaws.com"
+          AWS_REGION: "us-east-1"
+          NEXT_PUBLIC_S3_BUCKET_NAME_IMAGES: "ci-placeholder"
+          STRIPE_SECRET_KEY: "ci-placeholder"
+          STRIPE_WEBHOOK_SECRET: "ci-placeholder"
