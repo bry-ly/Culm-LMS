@@ -74,9 +74,9 @@ export function CourseFilters() {
     priceType !== "all";
 
   return (
-    <div className="mb-8 space-y-4">
+    <div className="mb-10 flex justify-center space-y-4">
       <div className="flex flex-col gap-4 md:flex-row">
-        <div className="relative flex-1">
+        <div className="relative max-w-sm flex-1">
           <Search className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
           <Input
             placeholder="Search courses..."
@@ -129,18 +129,21 @@ export function CourseFilters() {
             <SelectItem value="paid">Paid</SelectItem>
           </SelectContent>
         </Select>
-      </div>
-
-      <div className="flex gap-2">
-        <Button onClick={applyFilters} disabled={isPending}>
-          {isPending ? "Searching..." : "Apply Filters"}
-        </Button>
-        {hasFilters && (
-          <Button variant="outline" onClick={clearFilters} disabled={isPending}>
-            <X className="mr-1 size-4" />
-            Clear Filters
+        <div className="flex gap-2">
+          <Button onClick={applyFilters} disabled={isPending}>
+            {isPending ? "Searching..." : "Apply Filters"}
           </Button>
-        )}
+          {hasFilters && (
+            <Button
+              variant="outline"
+              onClick={clearFilters}
+              disabled={isPending}
+            >
+              <X className="mr-1 size-4" />
+              Clear Filters
+            </Button>
+          )}
+        </div>
       </div>
     </div>
   );
