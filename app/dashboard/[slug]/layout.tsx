@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { CourseSidebar } from "../_components/CourseSidebar";
+import { MobileCourseSidebar } from "../_components/MobileCourseSidebar";
 import { getCourseSidebarData } from "@/app/data/course/get-course-sidebar-data";
 
 interface iAppProps {
@@ -15,11 +16,14 @@ export default async function CourseLayout({ params, children }: iAppProps) {
 
   return (
     <div className="flex flex-1">
-      {/*sidebar - 30% */}
-      <div className="border-border w-80 shrink-0 border-r">
+      <div className="border-border hidden w-80 shrink-0 border-r md:block">
         <CourseSidebar course={course} />
       </div>
-      {/*Main Content - 70% */}
+      <div className="md:hidden">
+        <MobileCourseSidebar>
+          <CourseSidebar course={course} />
+        </MobileCourseSidebar>
+      </div>
       <div className="flex-1 overflow-hidden">{children}</div>
     </div>
   );

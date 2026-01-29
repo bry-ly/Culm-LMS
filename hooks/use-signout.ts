@@ -10,7 +10,7 @@ export function useSignout() {
     await authClient.signOut({
       fetchOptions: {
         onSuccess: () => {
-          router.push("/");
+          router.push("/login");
           toast.success("Signed out successfully!");
         },
         onError: () => {
