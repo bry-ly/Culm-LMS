@@ -90,11 +90,24 @@ jobs:
       - name: Build application
         run: pnpm run build
         env:
-          # Stub environment variables for build
           DATABASE_URL: "postgresql://stub:stub@localhost:5432/stub"
-          BETTER_AUTH_SECRET: "stub-secret-for-ci-build"
+          GOOGLE_CLIENT_ID: "stub-google-client-id"
+          GOOGLE_CLIENT_SECRET: "stub-google-client-secret"
+          GITHUB_CLIENT_ID: "stub-github-client-id"
+          GITHUB_CLIENT_SECRET: "stub-github-client-secret"
+          BETTER_AUTH_SECRET: "stub-better-auth-secret"
           BETTER_AUTH_URL: "http://localhost:3000"
-          NEXT_PUBLIC_APP_URL: "http://localhost:3000"
+          NODE_ENV: "production"
+          RESEND_API_KEY: "stub-resend-api-key"
+          ARCJET_KEY: "stub-arcjet-key"
+          AWS_ACCESS_KEY_ID: "stub-aws-access-key-id"
+          AWS_SECRET_ACCESS_KEY: "stub-aws-secret-access-key"
+          AWS_ENDPOINT_URL_S3: "https://s3.amazonaws.com"
+          AWS_REGION: "us-east-1"
+          STRIPE_SECRET_KEY: "sk_test_stub"
+          STRIPE_WEBHOOK_SECRET: "whsec_stub"
+          NEXT_PUBLIC_BETTER_AUTH_URL: "http://localhost:3000"
+          NEXT_PUBLIC_S3_BUCKET_NAME_IMAGES: "stub-bucket"
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
