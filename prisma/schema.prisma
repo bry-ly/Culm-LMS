@@ -20,6 +20,9 @@ model User {
   courses        Course[]
   enrollment     Enrollment[]
   lessonProgress lessonProgress[]
+  reviews        Review[]
+  quizAttempts   QuizAttempt[]
+  certificates   Certificate[]
 
   stripeCustomerId String? @unique
 
@@ -90,7 +93,6 @@ model Course {
   price            Int
   duration         Int
   level            CourseLevel @default(Beginner)
-  category         String
   smallDescription String
   slug             String      @unique
   isFree           Boolean     @default(false)
@@ -104,8 +106,17 @@ model Course {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
 
-  chapter    Chapter[]
-  enrollment Enrollment[]
+  category   Category? @relation("CourseCategory", fields: [categoryId], references: [id], onDelete: SetNull)
+  categoryId String?
+
+  chapter      Chapter[]
+  enrollment   Enrollment[]
+  tags         CourseTag[]
+  reviews      Review[]
+  certificates Certificate[]
+
+  @@index([categoryId])
+  @@index([status])
 }
 
 enum CourseLevel {
@@ -129,7 +140,8 @@ model Chapter {
   course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
   courseId  String
 
-  lesson Lesson[]
+  lesson  Lesson[]
+  quizzes Quiz[]
 }
 
 model Lesson {
@@ -146,6 +158,7 @@ model Lesson {
   chapterId String
 
   lessonProgress lessonProgress[]
+  quizzes        Quiz[]
 }
 
 model Enrollment {
@@ -175,10 +188,180 @@ model lessonProgress {
   createdAt  DateTime @default(now())
   updatedtAt DateTime @updatedAt
 
-  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId   String
   lesson   Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
   lessonId String
-  
+
   @@unique([userId, lessonId])
+}
+
+// ============================================
+// PHASE 1 FEATURES: Categories, Tags, Reviews, Quizzes, Certificates
+// ============================================
+
+model Category {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  slug        String   @unique
+  description String?
+  imageKey    String?
+  position    Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  courses Course[] @relation("CourseCategory")
+
+  @@map("category")
+}
+
+model Tag {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  slug      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  courses CourseTag[]
+
+  @@map("tag")
+}
+
+model CourseTag {
+  id        String   @id @default(uuid())
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  courseId  String
+  tag       Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  tagId     String
+  createdAt DateTime @default(now())
+
+  @@unique([courseId, tagId])
+  @@map("course_tag")
+}
+
+model Review {
+  id        String       @id @default(uuid())
+  rating    Int
+  title     String?
+  content   String?
+  status    ReviewStatus @default(Pending)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  courseId String
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId   String
+
+  @@unique([userId, courseId])
+  @@index([courseId])
+  @@index([status])
+  @@map("review")
+}
+
+enum ReviewStatus {
+  Pending
+  Approved
+  Rejected
+}
+
+model Quiz {
+  id               String   @id @default(uuid())
+  title            String
+  description      String?
+  passingScore     Int      @default(70)
+  timeLimit        Int?
+  allowRetake      Boolean  @default(true)
+  maxAttempts      Int?
+  shuffleQuestions Boolean  @default(false)
+  position         Int      @default(0)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  lesson   Lesson? @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  lessonId String?
+
+  chapter   Chapter? @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  chapterId String?
+
+  questions Question[]
+  attempts  QuizAttempt[]
+
+  @@index([lessonId])
+  @@index([chapterId])
+  @@map("quiz")
+}
+
+model Question {
+  id            String       @id @default(uuid())
+  questionText  String
+  questionType  QuestionType @default(MultipleChoice)
+  options       Json
+  correctAnswer Json
+  explanation   String?
+  points        Int          @default(1)
+  position      Int          @default(0)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  quiz   Quiz   @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  quizId String
+
+  @@index([quizId])
+  @@map("question")
+}
+
+enum QuestionType {
+  MultipleChoice
+  TrueFalse
+  MultiSelect
+  FillInBlank
+  Matching
+  ShortAnswer
+}
+
+model QuizAttempt {
+  id          String            @id @default(uuid())
+  score       Int
+  totalPoints Int
+  percentage  Float
+  passed      Boolean
+  answers     Json
+  startedAt   DateTime          @default(now())
+  completedAt DateTime?
+  status      QuizAttemptStatus @default(InProgress)
+
+  quiz   Quiz   @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  quizId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  @@index([quizId])
+  @@index([userId])
+  @@index([quizId, userId])
+  @@map("quiz_attempt")
+}
+
+enum QuizAttemptStatus {
+  InProgress
+  Completed
+  TimedOut
+}
+
+model Certificate {
+  id                String    @id @default(uuid())
+  certificateNumber String    @unique
+  issuedAt          DateTime  @default(now())
+  expiresAt         DateTime?
+  completionDate    DateTime
+  finalScore        Float?
+
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  courseId String
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId   String
+
+  @@unique([userId, courseId])
+  @@index([certificateNumber])
+  @@map("certificate")
 }
