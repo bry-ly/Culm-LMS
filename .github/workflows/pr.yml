@@ -78,8 +78,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check PR has description
-        uses: jadrol/pr-description-checker@v1
+        uses: chrstnfrrs/csrf-protection-vanilla@master
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          min-length: 20
-          exempt-labels: "dependencies,automated"
+          stringCompare: contains
+          compareTo: "${{ github.event.pull_request.body }}"
+          triggerString: "<!--"
+          failIfBelow: 1
