@@ -22,9 +22,11 @@ export const getAllCourses = cache(async (filters?: CourseFilters) => {
     };
   }
 
-  // Apply category filter
+  // Apply category filter (by category slug)
   if (filters?.category && filters.category !== "all") {
-    where.category = filters.category;
+    where.category = {
+      slug: filters.category,
+    };
   }
 
   // Apply level filter
@@ -49,7 +51,14 @@ export const getAllCourses = cache(async (filters?: CourseFilters) => {
       price: true,
       smallDescription: true,
       filekey: true,
-      category: true,
+      categoryId: true,
+      category: {
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+        },
+      },
       id: true,
       level: true,
       duration: true,

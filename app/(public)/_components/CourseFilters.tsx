@@ -9,12 +9,17 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { courseCategory, courseLevels } from "@/lib/zodSchemas";
+import { courseLevels } from "@/lib/zodSchemas";
+import type { CategoriesType } from "@/app/data/course/get-categories";
 import { Search, X } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useState, useTransition } from "react";
 
-export function CourseFilters() {
+interface CourseFiltersProps {
+  categories: CategoriesType;
+}
+
+export function CourseFilters({ categories }: CourseFiltersProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
@@ -92,21 +97,21 @@ export function CourseFilters() {
         </div>
 
         <Select value={category} onValueChange={setCategory}>
-          <SelectTrigger className="w-full md:w-[180px]">
+          <SelectTrigger className="w-full md:w-45">
             <SelectValue placeholder="Category" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Categories</SelectItem>
-            {courseCategory.map((cat) => (
-              <SelectItem key={cat} value={cat}>
-                {cat}
+            {categories.map((cat) => (
+              <SelectItem key={cat.id} value={cat.slug}>
+                {cat.name}
               </SelectItem>
             ))}
           </SelectContent>
         </Select>
 
         <Select value={level} onValueChange={setLevel}>
-          <SelectTrigger className="w-full md:w-[150px]">
+          <SelectTrigger className="w-full md:w-37.5">
             <SelectValue placeholder="Level" />
           </SelectTrigger>
           <SelectContent>
@@ -120,7 +125,7 @@ export function CourseFilters() {
         </Select>
 
         <Select value={priceType} onValueChange={setPriceType}>
-          <SelectTrigger className="w-full md:w-[130px]">
+          <SelectTrigger className="w-full md:w-32.5">
             <SelectValue placeholder="Price" />
           </SelectTrigger>
           <SelectContent>

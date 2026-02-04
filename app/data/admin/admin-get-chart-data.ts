@@ -2,7 +2,6 @@ import "server-only";
 import prisma from "@/lib/db";
 import { requireAdmin } from "./require-admin";
 import { cache } from "react";
-import { Prisma } from "@/lib/generated/prisma/client";
 
 export type ChartDataPoint = {
   date: string;

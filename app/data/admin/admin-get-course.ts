@@ -22,7 +22,13 @@ export const adminGetCourse = cache(async (courseId: string) => {
       status: true,
       slug: true,
       level: true,
-      category: true,
+      categoryId: true,
+      category: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
       isFree: true,
       chapter: {
         select: {

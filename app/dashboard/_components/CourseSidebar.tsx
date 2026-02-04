@@ -9,10 +9,12 @@ import {
 } from "@/components/ui/collapsible";
 import { Progress } from "@/components/ui/progress";
 import { ChevronDown, Play } from "lucide-react";
+import { IconClipboardList, IconCheck, IconX } from "@tabler/icons-react";
 import { LessonItem } from "./LessonItem";
 import { usePathname } from "next/navigation";
 import { useCourseProgress } from "@/hooks/use-course-progress";
 import { useMemo } from "react";
+import Link from "next/link";
 
 interface iAppProps {
   course: CourseSidebarDataType;
@@ -49,7 +51,7 @@ export function CourseSidebar({ course }: iAppProps) {
               {course.title}
             </h1>
             <p className="text-muted-foreground mt-1 truncate text-xs">
-              {course.category}
+              {course.category?.name ?? "Uncategorized"}
             </p>
           </div>
         </div>
@@ -97,6 +99,44 @@ export function CourseSidebar({ course }: iAppProps) {
                   completed={completedLessonsMap.has(lesson.id)}
                 />
               ))}
+              {chapter.quizzes && chapter.quizzes.length > 0 && (
+                <div className="mt-2 space-y-2">
+                  {chapter.quizzes.map((quiz) => {
+                    const latestAttempt = quiz.attempts[0];
+                    const hasPassed = latestAttempt?.passed;
+                    const hasAttempted = latestAttempt?.status === "Completed";
+
+                    return (
+                      <Link
+                        key={quiz.id}
+                        href={`/dashboard/quiz/${quiz.id}`}
+                        className="hover:bg-accent flex items-center gap-3 rounded-md px-2 py-2 transition-colors"
+                      >
+                        <div className="bg-primary/10 flex size-7 shrink-0 items-center justify-center rounded">
+                          <IconClipboardList className="text-primary size-4" />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <p className="truncate text-sm font-medium">
+                            {quiz.title}
+                          </p>
+                          <p className="text-muted-foreground text-xs">
+                            {quiz._count.questions} questions
+                          </p>
+                        </div>
+                        {hasAttempted && (
+                          <div className="shrink-0">
+                            {hasPassed ? (
+                              <IconCheck className="size-4 text-green-500" />
+                            ) : (
+                              <IconX className="size-4 text-red-500" />
+                            )}
+                          </div>
+                        )}
+                      </Link>
+                    );
+                  })}
+                </div>
+              )}
             </CollapsibleContent>
           </Collapsible>
         ))}

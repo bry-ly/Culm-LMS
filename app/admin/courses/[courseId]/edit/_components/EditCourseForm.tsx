@@ -1,6 +1,13 @@
 "use client";
 
-import { Uploader } from "@/components/file-uploader/Uploader";
+import {
+  UploaderProvider,
+  UploaderTrigger,
+  UploaderEmpty,
+  UploaderUploading,
+  UploaderError,
+  UploaderUploaded,
+} from "@/components/file-uploader/Uploader";
 import { RichTextEditor } from "@/components/rich-text-editor/Editor";
 import {
   Form,
@@ -14,10 +21,9 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { tryCatch } from "@/hooks/try-catch";
 import {
-  courseCategory,
   courseLevels,
   courseSchema,
-  CourseSchemaType,
+  CourseFormValues,
   courseStatus,
 } from "@/lib/zodSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -34,24 +40,25 @@ import { Edit2Icon, Loader, SparkleIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useId, useTransition } from "react";
 import { Button } from "@/components/ui/button";
-import { useForm } from "react-hook-form";
+import { Resolver, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import slugify from "slugify";
 import { editCourse } from "../actions";
 import { AdminCourseSingularType } from "@/app/data/admin/admin-get-course";
+import { AdminCategoryType } from "@/app/data/admin/admin-get-categories";
 
-interface iAppProps {
+interface EditCourseFormProps {
   data: AdminCourseSingularType;
+  categories: AdminCategoryType[];
 }
 
-export function EditCourseForm({ data }: iAppProps) {
-  const [Pending, startTransition] = useTransition();
+export function EditCourseForm({ data, categories }: EditCourseFormProps) {
+  const [pending, startTransition] = useTransition();
   const router = useRouter();
   const pricingId = useId();
 
-  const form = useForm<CourseSchemaType>({
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    resolver: zodResolver(courseSchema) as any,
+  const form = useForm<CourseFormValues>({
+    resolver: zodResolver(courseSchema) as Resolver<CourseFormValues>,
     defaultValues: {
       title: data.title,
       description: data.description,
@@ -63,13 +70,14 @@ export function EditCourseForm({ data }: iAppProps) {
       slug: data.slug,
       status: data.status,
       level: data.level,
-      category: data.category as CourseSchemaType["category"],
+      categoryId: data.categoryId ?? null,
     },
   });
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const isFree = form.watch("isFree");
 
-  function onSubmit(values: CourseSchemaType) {
+  function onSubmit(values: CourseFormValues) {
     startTransition(async () => {
       const { data: result, error } = await tryCatch(
         editCourse(values, data.id)
@@ -89,6 +97,7 @@ export function EditCourseForm({ data }: iAppProps) {
       }
     });
   }
+
   return (
     <Form {...form}>
       <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
@@ -120,7 +129,7 @@ export function EditCourseForm({ data }: iAppProps) {
                   className="w-fit"
                   onClick={() => {
                     const titleValue = form.getValues("title");
-                    const slug = slugify(titleValue);
+                    const slug = slugify(titleValue, { lower: true });
                     form.setValue("slug", slug, { shouldValidate: true });
                   }}
                 >
@@ -166,12 +175,18 @@ export function EditCourseForm({ data }: iAppProps) {
             <FormItem className="w-full">
               <FormLabel>Thumbnail Image</FormLabel>
               <FormControl>
-                <Uploader
+                <UploaderProvider
                   fileTypeAccepted="image"
                   value={field.value}
                   onChange={field.onChange}
-                />
-                {/*<Input placeholder="thumbnail url" {...field} />*/}
+                >
+                  <UploaderTrigger>
+                    <UploaderEmpty />
+                    <UploaderUploading />
+                    <UploaderError />
+                    <UploaderUploaded />
+                  </UploaderTrigger>
+                </UploaderProvider>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -180,20 +195,23 @@ export function EditCourseForm({ data }: iAppProps) {
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <FormField
             control={form.control}
-            name="category"
+            name="categoryId"
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel>Category</FormLabel>
-                <Select onValueChange={field.onChange} value={field.value}>
+                <Select
+                  onValueChange={field.onChange}
+                  value={field.value ?? undefined}
+                >
                   <FormControl>
                     <SelectTrigger className="w-full">
                       <SelectValue placeholder="Select Category" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {courseCategory.map((category) => (
-                      <SelectItem key={category} value={category}>
-                        {category}
+                    {categories.map((category) => (
+                      <SelectItem key={category.id} value={category.id}>
+                        {category.name}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -215,9 +233,9 @@ export function EditCourseForm({ data }: iAppProps) {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {courseLevels.map((category) => (
-                      <SelectItem key={category} value={category}>
-                        {category}
+                    {courseLevels.map((level) => (
+                      <SelectItem key={level} value={level}>
+                        {level}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -336,9 +354,9 @@ export function EditCourseForm({ data }: iAppProps) {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {courseStatus.map((category) => (
-                    <SelectItem key={category} value={category}>
-                      {category}
+                  {courseStatus.map((status) => (
+                    <SelectItem key={status} value={status}>
+                      {status}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -347,11 +365,11 @@ export function EditCourseForm({ data }: iAppProps) {
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={Pending}>
-          {Pending ? (
+        <Button type="submit" disabled={pending}>
+          {pending ? (
             <>
               Updating...
-              <Loader />
+              <Loader className="ml-1 animate-spin" size={16} />
             </>
           ) : (
             <>
