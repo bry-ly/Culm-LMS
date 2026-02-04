@@ -1,0 +1,79 @@
+# Auto-labeling configuration for PRs based on file paths
+
+# Documentation
+documentation:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "*.md"
+          - "docs/**"
+          - ".github/**/*.md"
+
+# Dependencies
+dependencies:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "package.json"
+          - "package-lock.json"
+          - "prisma/schema.prisma"
+
+# Frontend
+frontend:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "app/**/*.tsx"
+          - "components/**"
+          - "styles/**"
+          - "public/**"
+
+# Backend/API
+backend:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "app/api/**"
+          - "app/data/**"
+          - "lib/**"
+          - "prisma/**"
+
+# Configuration
+config:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "*.config.*"
+          - "tsconfig.json"
+          - ".env*"
+          - ".github/**"
+
+# Database
+database:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "prisma/**"
+
+# Authentication
+auth:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "lib/auth*.ts"
+          - "app/(auth)/**"
+          - "app/api/auth/**"
+
+# Admin
+admin:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "app/admin/**"
+          - "app/data/admin/**"
+
+# UI Components
+ui:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "components/ui/**"
+
+# Payments
+payments:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "lib/stripe.ts"
+          - "app/api/stripe/**"
+          - "app/payment/**"
