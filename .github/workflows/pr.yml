@@ -78,9 +78,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check PR has description
-        uses: chrstnfrrs/csrf-protection-vanilla@master
+        uses: actions/github-script@v7
         with:
-          stringCompare: contains
-          compareTo: "${{ github.event.pull_request.body }}"
-          triggerString: "<!--"
-          failIfBelow: 1
+          script: |
+            const body = context.payload.pull_request.body;
+            if (!body || body.length < 20) {
+              core.setFailed('PR description is too short (min 20 characters)');
+            }
