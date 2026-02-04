@@ -19,7 +19,7 @@ export default function DashboardError({
   reset: () => void;
 }) {
   return (
-    <div className="flex min-h-[50vh] items-center justify-center p-4">
+    <div className="flex min-h-svh items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <div className="mx-auto mb-4 flex size-16 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/20">

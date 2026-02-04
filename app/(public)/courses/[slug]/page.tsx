@@ -127,7 +127,7 @@ export default async function SlugPage({ params }: { params: Params }) {
               </Badge>
               <Badge className="flex items-center gap-1 px-3 py-1">
                 <IconCategory2 className="size-4" />
-                <span>{course.category}</span>
+                <span>{course.category?.name ?? "Uncategorized"}</span>
               </Badge>
               <Badge className="flex items-center gap-1 px-3 py-1">
                 <IconClock className="size-4" />
@@ -273,7 +273,7 @@ export default async function SlugPage({ params }: { params: Params }) {
                       <div>
                         <p className="text-sm font-medium">Category</p>
                         <p className="text-muted-foreground text-sm">
-                          {course.category}
+                          {course.category?.name ?? "Uncategorized"}
                         </p>
                       </div>
                     </div>

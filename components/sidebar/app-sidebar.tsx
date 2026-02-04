@@ -3,12 +3,16 @@
 import * as React from "react";
 import {
   IconChartBar,
+  IconCategory,
   IconDashboard,
   IconFolder,
   IconHelp,
   IconListDetails,
+  IconMessage,
+  IconQuestionMark,
   IconSearch,
   IconSettings,
+  IconTag,
   IconUsers,
 } from "@tabler/icons-react";
 
@@ -38,6 +42,26 @@ const data = {
       title: "Courses",
       url: "/admin/courses",
       icon: IconListDetails,
+    },
+    {
+      title: "Categories",
+      url: "/admin/categories",
+      icon: IconCategory,
+    },
+    {
+      title: "Tags",
+      url: "/admin/tags",
+      icon: IconTag,
+    },
+    {
+      title: "Reviews",
+      url: "/admin/reviews",
+      icon: IconMessage,
+    },
+    {
+      title: "Quizzes",
+      url: "/admin/quizzes",
+      icon: IconQuestionMark,
     },
     {
       title: "Analytics",

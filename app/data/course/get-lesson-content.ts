@@ -27,6 +27,41 @@ export const getLessonContent = cache(async (lessonId: string) => {
           lessonId: true,
         },
       },
+      quizzes: {
+        select: {
+          id: true,
+          title: true,
+          description: true,
+          passingScore: true,
+          timeLimit: true,
+          allowRetake: true,
+          maxAttempts: true,
+          _count: {
+            select: {
+              questions: true,
+            },
+          },
+          attempts: {
+            where: {
+              userId: session.id,
+            },
+            select: {
+              id: true,
+              score: true,
+              percentage: true,
+              passed: true,
+              status: true,
+              completedAt: true,
+            },
+            orderBy: {
+              completedAt: "desc",
+            },
+          },
+        },
+        orderBy: {
+          position: "asc",
+        },
+      },
       chapter: {
         select: {
           courseId: true,

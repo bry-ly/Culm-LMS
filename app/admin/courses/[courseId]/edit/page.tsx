@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { adminGetCourse } from "@/app/data/admin/admin-get-course";
+import { adminGetCategories } from "@/app/data/admin/admin-get-categories";
 import {
   Card,
   CardContent,
@@ -16,7 +17,10 @@ type Params = Promise<{ courseId: string }>;
 export default async function EditRoute({ params }: { params: Params }) {
   const { courseId } = await params;
 
-  const data = await adminGetCourse(courseId);
+  const [data, categories] = await Promise.all([
+    adminGetCourse(courseId),
+    adminGetCategories(),
+  ]);
 
   if (!data) {
     notFound();
@@ -42,7 +46,7 @@ export default async function EditRoute({ params }: { params: Params }) {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <EditCourseForm data={data} />
+              <EditCourseForm data={data} categories={categories} />
             </CardContent>
           </Card>
         </TabsContent>

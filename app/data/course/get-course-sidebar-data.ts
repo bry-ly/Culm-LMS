@@ -17,7 +17,13 @@ export const getCourseSidebarData = cache(async (slug: string) => {
       filekey: true,
       duration: true,
       level: true,
-      category: true,
+      categoryId: true,
+      category: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
       slug: true,
       chapter: {
         orderBy: {
@@ -47,6 +53,36 @@ export const getCourseSidebarData = cache(async (slug: string) => {
                   lessonId: true,
                 },
               },
+            },
+          },
+          quizzes: {
+            select: {
+              id: true,
+              title: true,
+              passingScore: true,
+              _count: {
+                select: {
+                  questions: true,
+                },
+              },
+              attempts: {
+                where: {
+                  userId: session.id,
+                },
+                select: {
+                  id: true,
+                  passed: true,
+                  percentage: true,
+                  status: true,
+                },
+                orderBy: {
+                  completedAt: "desc",
+                },
+                take: 1,
+              },
+            },
+            orderBy: {
+              position: "asc",
             },
           },
         },

@@ -6,6 +6,7 @@ import {
   IconHelp,
   IconSearch,
   IconSettings,
+  IconHistory,
 } from "@tabler/icons-react";
 
 import { NavMain } from "@/components/sidebar/nav-main";
@@ -29,6 +30,11 @@ const data = {
       title: "Dashboard",
       url: "/dashboard",
       icon: IconDashboard,
+    },
+    {
+      title: "Quiz History",
+      url: "/dashboard/quiz/history",
+      icon: IconHistory,
     },
   ],
   navSecondary: [

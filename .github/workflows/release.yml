@@ -1,0 +1,56 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    name: Release Please
+    runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+    steps:
+      - name: Run Release Please
+        uses: googleapis/release-please-action@v4
+        id: release
+        with:
+          release-type: node
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+  version-verify:
+    name: Verify Version
+    runs-on: ubuntu-latest
+    needs: release-please
+    if: ${{ needs.release-please.outputs.release_created }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify package.json version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "Package version: $VERSION"
+          echo "Release tag: ${{ needs.release-please.outputs.tag_name }}"
+          if [[ "v$VERSION" != "${{ needs.release-please.outputs.tag_name }}" ]]; then
+            echo "❌ Version mismatch!"
+            exit 1
+          fi
+          echo "✅ Versions match"
+
+  notify:
+    name: Notify Release
+    runs-on: ubuntu-latest
+    needs: [release-please, version-verify]
+    if: ${{ needs.release-please.outputs.release_created }}
+    steps:
+      - name: Release Notification
+        run: |
+          echo "🎉 Release ${{ needs.release-please.outputs.tag_name }} created successfully!"
+          echo "See release notes for details."

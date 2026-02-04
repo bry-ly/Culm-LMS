@@ -1,7 +1,14 @@
 "use client";
 
 import { AdminLessonType } from "@/app/data/admin/admin-get-lesson";
-import { Uploader } from "@/components/file-uploader/Uploader";
+import {
+  UploaderProvider,
+  UploaderTrigger,
+  UploaderEmpty,
+  UploaderUploading,
+  UploaderError,
+  UploaderUploaded,
+} from "@/components/file-uploader/Uploader";
 import { RichTextEditor } from "@/components/rich-text-editor/Editor";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
@@ -124,11 +131,18 @@ export function LessonForm({ chapterId, data, courseId }: iAppProps) {
                   <FormItem>
                     <FormLabel>Thumbnail</FormLabel>
                     <FormControl>
-                      <Uploader
+                      <UploaderProvider
                         value={field.value}
                         onChange={field.onChange}
                         fileTypeAccepted="image"
-                      />
+                      >
+                        <UploaderTrigger>
+                          <UploaderEmpty />
+                          <UploaderUploading />
+                          <UploaderError />
+                          <UploaderUploaded />
+                        </UploaderTrigger>
+                      </UploaderProvider>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -141,11 +155,18 @@ export function LessonForm({ chapterId, data, courseId }: iAppProps) {
                   <FormItem>
                     <FormLabel>Video File</FormLabel>
                     <FormControl>
-                      <Uploader
+                      <UploaderProvider
                         value={field.value}
                         onChange={field.onChange}
                         fileTypeAccepted="video"
-                      />
+                      >
+                        <UploaderTrigger>
+                          <UploaderEmpty />
+                          <UploaderUploading />
+                          <UploaderError />
+                          <UploaderUploaded />
+                        </UploaderTrigger>
+                      </UploaderProvider>
                     </FormControl>
                     <FormMessage />
                   </FormItem>

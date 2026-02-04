@@ -2,6 +2,7 @@ import {
   CourseFilters as CourseFiltersType,
   getAllCourses,
 } from "@/app/data/course/get-all-courses";
+import { getCategories } from "@/app/data/course/get-categories";
 import { EmptyCourseState } from "@/components/general/EmptyState";
 import {
   PublicCourseCard,
@@ -26,7 +27,10 @@ export default async function PublicCoursesRoute({
 }: {
   searchParams: SearchParams;
 }) {
-  const params = await searchParams;
+  const [params, categories] = await Promise.all([
+    searchParams,
+    getCategories(),
+  ]);
 
   return (
     <div className="mt-5">
@@ -39,7 +43,7 @@ export default async function PublicCoursesRoute({
         </p>
       </div>
       <Suspense fallback={null}>
-        <CourseFilters />
+        <CourseFilters categories={categories} />
       </Suspense>
       <Suspense fallback={<LoadingSkeletonLayout />}>
         <RenderCourses filters={params} />
