@@ -1,14 +1,14 @@
 version: 2
 
 updates:
-  # npm dependencies
+  # npm dependencies - batch all into one weekly PR
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "weekly"
       day: "monday"
       time: "09:00"
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 3
     assignees:
       - "bry-ly"
     labels:
@@ -17,35 +17,15 @@ updates:
     commit-message:
       prefix: "chore(deps)"
       include: "scope"
-    groups:
-      # Group minor and patch updates together
-      minor-patch-updates:
-        patterns:
-          - "*"
-        update-types:
-          - "minor"
-          - "patch"
-        exclude-patterns:
-          - "next"
-          - "react"
-          - "react-dom"
-      # Keep major updates and critical packages separate
-      next:
-        patterns:
-          - "next"
-      react:
-        patterns:
-          - "react"
-          - "react-dom"
 
-  # GitHub Actions
+  # GitHub Actions - batch all into one weekly PR
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
       day: "monday"
       time: "09:00"
-    open-pull-requests-limit: 5
+    open-pull-requests-limit: 1
     assignees:
       - "bry-ly"
     labels:
