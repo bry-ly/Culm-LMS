@@ -78,8 +78,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check PR has description
-        uses: jadrol/pr-description-checker@v1
+        uses: actions/github-script@v7
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          min-length: 20
-          exempt-labels: "dependencies,automated"
+          script: |
+            const body = context.payload.pull_request.body;
+            if (!body || body.length < 20) {
+              core.setFailed('PR description is too short (min 20 characters)');
+            }
