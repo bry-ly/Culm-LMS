@@ -20,9 +20,12 @@ jobs:
         uses: googleapis/release-please-action@v4
         id: release
         with:
+          token: ${{ secrets.PERSONAL_TOKEN }}
           release-type: node
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
+          git-user-name: bry-ly
+          git-user-email: bryanpalay119@gmail.com
 
   version-verify:
     name: Verify Version
