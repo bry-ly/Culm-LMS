@@ -25,7 +25,8 @@
         { "type": "chore", "section": "Chores", "hidden": false },
         { "type": "revert", "section": "Reverts", "hidden": false }
       ],
-      "extra-files": []
+      "extra-files": [],
+      "pull-request-footer": "---\n\n_This release was generated automatically._"
     }
   }
 }
