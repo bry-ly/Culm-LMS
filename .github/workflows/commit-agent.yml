@@ -1,0 +1,295 @@
+name: Commit Agent Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      commit_type:
+        description: "Type of commit (feat, fix, refactor, docs, chore, ci, test, perf)"
+        required: false
+        default: feat
+        type: choice
+        options:
+          - feat
+          - fix
+          - refactor
+          - docs
+          - chore
+          - ci
+          - test
+          - perf
+      scope:
+        description: "Scope of changes (e.g., ui, auth, api, db)"
+        required: false
+        default: ""
+      message:
+        description: "Commit message description"
+        required: false
+        default: ""
+      run_tests:
+        description: "Run pre-commit validation tests"
+        required: false
+        type: boolean
+        default: false
+      push:
+        description: "Push to remote after commit"
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  analyze-repo:
+    name: Analyze Repository State
+    runs-on: ubuntu-latest
+    outputs:
+      branch: ${{ steps.branch.outputs.branch }}
+      has_changes: ${{ steps.changes.outputs.has_changes }}
+      version: ${{ steps.version.outputs.version }}
+      latest_tag: ${{ steps.tags.outputs.latest_tag }}
+      stale_branches: ${{ steps.stale.outputs.count }}
+      commit_count: ${{ steps.log.outputs.count }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get current branch
+        id: branch
+        run: echo "branch=$(git branch --show-current)" >> $GITHUB_OUTPUT
+
+      - name: Check for uncommitted changes
+        id: changes
+        run: |
+          if git diff --stat --exit-code > /dev/null 2>&1; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "files<<EOF" >> $GITHUB_OUTPUT
+            git diff --name-only >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Get version from VERSION file
+        id: version
+        run: |
+          if [ -f VERSION ]; then
+            echo "version=$(cat VERSION)" >> $GITHUB_OUTPUT
+          else
+            echo "version=unknown" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Get latest git tag
+        id: tags
+        run: echo "latest_tag=$(git tag --sort=-v:refname | head -1)" >> $GITHUB_OUTPUT
+
+      - name: Count stale automation branches
+        id: stale
+        run: |
+          count=$(git branch -a | grep -E "chore/version-bump|docs/auto-sync" | wc -l)
+          echo "count=$count" >> $GITHUB_OUTPUT
+
+      - name: Get recent commit count
+        id: log
+        run: echo "count=$(git log --oneline -5 | wc -l)" >> $GITHUB_OUTPUT
+
+      - name: Display repo analysis
+        run: |
+          echo "Repository Analysis:"
+          echo "- Current branch: ${{ steps.branch.outputs.branch }}"
+          echo "- Has uncommitted changes: ${{ steps.changes.outputs.has_changes }}"
+          echo "- Version: ${{ steps.version.outputs.version }}"
+          echo "- Latest tag: ${{ steps.tags.outputs.latest_tag }}"
+          echo "- Stale automation branches: ${{ steps.stale.outputs.count }}"
+          echo "- Recent commits: ${{ steps.log.outputs.count }}"
+
+  validate-changes:
+    name: Validate Changes
+    needs: analyze-repo
+    if: needs.analyze-repo.outputs.has_changes == 'true'
+    runs-on: ubuntu-latest
+    outputs:
+      changed_files: ${{ steps.files.outputs.files }}
+      diff_content: ${{ steps.diff.outputs.diff }}
+      change_type: ${{ steps.type.outputs.type }}
+      change_scope: ${{ steps.scope.outputs.scope }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get changed files
+        id: files
+        run: |
+          echo "files<<EOF" >> $GITHUB_OUTPUT
+          git diff --name-only HEAD >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Get diff content
+        id: diff
+        run: |
+          echo "diff<<EOF" >> $GITHUB_OUTPUT
+          git diff HEAD >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Analyze change type
+        id: type
+        run: |
+          files="${{ steps.files.outputs.files }}"
+          if echo "$files" | grep -qE "^evals/"; then
+            echo "type=evals" >> $GITHUB_OUTPUT
+          elif echo "$files" | grep -qE "^\.opencode/"; then
+            echo "type=agents" >> $GITHUB_OUTPUT
+          elif echo "$files" | grep -qE "\.(yml|yaml)$" && echo "$files" | grep -qE "^\.github/"; then
+            echo "type=ci" >> $GITHUB_OUTPUT
+          elif echo "$files" | grep -qE "\.(md|mdx)$"; then
+            echo "type=docs" >> $GITHUB_OUTPUT
+          elif echo "$files" | grep -qE "\.(ts|tsx|js|jsx)$"; then
+            echo "type=code" >> $GITHUB_OUTPUT
+          else
+            echo "type=other" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Analyze change scope
+        id: scope
+        run: |
+          files="${{ steps.files.outputs.files }}"
+          scope="general"
+          if echo "$files" | grep -qE "app/\(auth\)/"; then
+            scope="auth"
+          elif echo "$files" | grep -qE "components/ui/"; then
+            scope="ui"
+          elif echo "$files" | grep -qE "components/"; then
+            scope="components"
+          elif echo "$files" | grep -qE "app/api/"; then
+            scope="api"
+          elif echo "$files" | grep -qE "prisma/"; then
+            scope="database"
+          fi
+          echo "scope=$scope" >> $GITHUB_OUTPUT
+
+      - name: Display change analysis
+        run: |
+          echo "Change Analysis:"
+          echo "- Changed files:"
+          echo "${{ steps.files.outputs.files }}" | head -10
+          echo "- Change type: ${{ steps.type.outputs.type }}"
+          echo "- Change scope: ${{ steps.scope.outputs.scope }}"
+
+  generate-commit-message:
+    name: Generate Commit Message
+    needs: validate-changes
+    runs-on: ubuntu-latest
+    outputs:
+      commit_message: ${{ steps.generate.outputs.message }}
+      commit_type: ${{ steps.generate.outputs.type }}
+      commit_scope: ${{ steps.generate.outputs.scope }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate commit message
+        id: generate
+        run: |
+          files="${{ needs.validate-changes.outputs.changed_files }}"
+          diff="${{ needs.validate-changes.outputs.diff_content }}"
+          detected_type="${{ needs.validate-changes.outputs.change_type }}"
+          detected_scope="${{ needs.validate-changes.outputs.change_scope }}"
+
+          commit_type="${{ github.event.inputs.commit_type }}"
+          if [ -z "$commit_type" ] || [ "$commit_type" = "" ]; then
+            commit_type="feat"
+          fi
+
+          commit_scope="${{ github.event.inputs.scope }}"
+          if [ -z "$commit_scope" ] || [ "$commit_scope" = "" ]; then
+            commit_scope="$detected_scope"
+          fi
+
+          commit_msg="${{ github.event.inputs.message }}"
+          if [ -z "$commit_msg" ] || [ "$commit_msg" = "" ]; then
+            commit_msg="Update files"
+            if echo "$files" | grep -qE "auth"; then
+              commit_msg="Improve authentication"
+            elif echo "$files" | grep -qE "ui"; then
+              commit_msg="Update UI components"
+            elif echo "$files" | grep -qE "api"; then
+              commit_msg="Enhance API"
+            elif echo "$files" | grep -qE "database|prisma"; then
+              commit_msg="Update database schema"
+            fi
+          fi
+
+          echo "message=$commit_type($commit_scope): $commit_msg" >> $GITHUB_OUTPUT
+          echo "type=$commit_type" >> $GITHUB_OUTPUT
+          echo "scope=$commit_scope" >> $GITHUB_OUTPUT
+
+      - name: Display commit message
+        run: |
+          echo "Generated Commit Message:"
+          echo "${{ steps.generate.outputs.message }}"
+
+  commit-changes:
+    name: Commit Changes
+    needs: generate-commit-message
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Stage files
+        run: |
+          files="${{ needs.validate-changes.outputs.changed_files }}"
+          for file in $files; do
+            git add "$file" 2>/dev/null || true
+          done
+
+      - name: Commit changes
+        run: |
+          git status
+          git commit -m "${{ needs.generate-commit-message.outputs.commit_message }}" || echo "No changes to commit"
+
+      - name: Push changes
+        if: ${{ github.event.inputs.push == 'true' }}
+        run: |
+          git push origin $(git branch --show-current) || echo "Nothing to push"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  branch-cleanup:
+    name: Branch Cleanup
+    needs: commit-changes
+    runs-on: ubuntu-latest
+    if: needs.analyze-repo.outputs.stale_branches > 3
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Find stale branches
+        id: stale
+        run: |
+          echo "Stale branches found: ${{ needs.analyze-repo.outputs.stale_branches }}"
+          git branch -a | grep -E "chore/version-bump|docs/auto-sync"
+
+      - name: Display cleanup suggestion
+        run: |
+          echo "Consider cleaning up stale automation branches"
+          echo "Run: git branch -a | grep -E 'chore/version-bump|docs/auto-sync'"

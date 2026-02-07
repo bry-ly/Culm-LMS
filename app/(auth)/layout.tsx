@@ -3,10 +3,12 @@ import { ArrowLeftIcon } from "lucide-react";
 import Link from "next/link";
 import { ReactNode } from "react";
 import { Logo } from "@/components/logo/culm-logo/logo";
+import { AuthBackground } from "./_components/auth-background";
 
 export default function AuthLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="relative flex min-h-svh flex-col items-center justify-center">
+    <div className="relative flex min-h-svh flex-col items-center justify-center overflow-hidden">
+      <AuthBackground />
       <Link
         href="/"
         className={buttonVariants({
