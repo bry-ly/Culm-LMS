@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.4](https://github.com/bry-ly/Culm-LMS/compare/v1.0.3...v1.0.4) (2026-02-07)
+
+
+### Features
+
+* phase 1 features - auth UI, CI workflows, and dependency updates ([#35](https://github.com/bry-ly/Culm-LMS/issues/35)) ([47b6c40](https://github.com/bry-ly/Culm-LMS/commit/47b6c40ade678c8375291e1d4dea6b663bdbb5f8))
+* **ui:** add auth background and remove CornerBorders from inputs ([248cfaa](https://github.com/bry-ly/Culm-LMS/commit/248cfaa0e560fe2834a8f6b14ca4be3e7b80ad34))
+
+
+### Bug Fixes
+
+* **release:** configure release-please with personal token and clean pr description ([#34](https://github.com/bry-ly/Culm-LMS/issues/34)) ([9865911](https://github.com/bry-ly/Culm-LMS/commit/9865911fcee062e30f11752a39d00c5fb0ca3a0f))
+* **release:** replace bot footer with clean release message ([9474526](https://github.com/bry-ly/Culm-LMS/commit/94745263edd3e339086bf940d21d04c2affd1d0d))
+* **release:** replace bot header with clean release title ([869474d](https://github.com/bry-ly/Culm-LMS/commit/869474d1c643d642c06d57c2f046f6f95e99112e))
+
 ## [1.0.3](https://github.com/bry-ly/Culm-LMS/compare/v1.0.2...v1.0.3) (2026-02-07)
 
 ### Bug Fixes
