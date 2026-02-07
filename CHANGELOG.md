@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.3](https://github.com/bry-ly/Culm-LMS/compare/v1.0.2...v1.0.3) (2026-02-07)
+
+
+### Bug Fixes
+
+* **release:** use personal token for release-please commits ([#30](https://github.com/bry-ly/Culm-LMS/issues/30)) ([2cdfd8d](https://github.com/bry-ly/Culm-LMS/commit/2cdfd8d89b5fd6cd2a19cd0ef47c27c06bd6f9fc))
+
 ## [1.0.2](https://github.com/bry-ly/Culm-LMS/compare/v1.0.1...v1.0.2) (2026-02-07)
 
 
