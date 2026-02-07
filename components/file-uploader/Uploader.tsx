@@ -312,11 +312,13 @@ function UploaderTrigger({
 }
 
 function UploaderEmpty({ children }: { children?: React.ReactNode }) {
-  const { isDragActive } = useUploader();
+  const { isDragActive, state } = useUploader();
 
   if (children) {
     return <>{children}</>;
   }
+
+  if (state.objectUrl) return null;
 
   return (
     <div className="text-center">
