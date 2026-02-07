@@ -14,7 +14,6 @@ function Card({ className, ...props }: React.ComponentProps<"div">) {
       )}
       {...props}
     >
-      <CornerBorders />
       {props.children}
     </div>
   );
