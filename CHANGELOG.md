@@ -7,23 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.3](https://github.com/bry-ly/Culm-LMS/compare/v1.0.2...v1.0.3) (2026-02-07)
 
-
 ### Bug Fixes
 
-* **release:** use personal token for release-please commits ([#30](https://github.com/bry-ly/Culm-LMS/issues/30)) ([2cdfd8d](https://github.com/bry-ly/Culm-LMS/commit/2cdfd8d89b5fd6cd2a19cd0ef47c27c06bd6f9fc))
+- **release:** use personal token for release-please commits ([#30](https://github.com/bry-ly/Culm-LMS/issues/30)) ([2cdfd8d](https://github.com/bry-ly/Culm-LMS/commit/2cdfd8d89b5fd6cd2a19cd0ef47c27c06bd6f9fc))
 
 ## [1.0.2](https://github.com/bry-ly/Culm-LMS/compare/v1.0.1...v1.0.2) (2026-02-07)
 
-
 ### Bug Fixes
 
-* ci improvements, dependency updates, and uploader fix ([#28](https://github.com/bry-ly/Culm-LMS/issues/28)) ([af93ebc](https://github.com/bry-ly/Culm-LMS/commit/af93ebc7f5546293097c4e38ad54b4b186135cf4))
-* **ci:** disable subject-case rule to allow mixed case in commits ([5f4df4a](https://github.com/bry-ly/Culm-LMS/commit/5f4df4aa5453610502df6cb7546341ba9f1a9a0e))
-* **ci:** replace missing pr-description-checker action ([725c625](https://github.com/bry-ly/Culm-LMS/commit/725c6257e2ad40e0ebbfff4aab5a2553ae4f3bdc))
-* **ci:** use github-script for pr description check ([e6c0f93](https://github.com/bry-ly/Culm-LMS/commit/e6c0f939b088aaa0c07758dc47abeaa74f234adb))
-* **dependabot:** target dev branch for dependency updates ([a7799bb](https://github.com/bry-ly/Culm-LMS/commit/a7799bbed8ea9e193df0eb848ad941012e1bc6c0))
-* **deps:** improve dependabot config and fix CI checks ([#24](https://github.com/bry-ly/Culm-LMS/issues/24)) ([61cc983](https://github.com/bry-ly/Culm-LMS/commit/61cc983f8a3c4b44cae1ce3877ddda84b4cb8b4a))
-* **uploader:** hide empty uploader when objectUrl exists ([6f1e5c6](https://github.com/bry-ly/Culm-LMS/commit/6f1e5c69a82c7a2eb35d0be3f9d6bfc3b393c89c))
+- ci improvements, dependency updates, and uploader fix ([#28](https://github.com/bry-ly/Culm-LMS/issues/28)) ([af93ebc](https://github.com/bry-ly/Culm-LMS/commit/af93ebc7f5546293097c4e38ad54b4b186135cf4))
+- **ci:** disable subject-case rule to allow mixed case in commits ([5f4df4a](https://github.com/bry-ly/Culm-LMS/commit/5f4df4aa5453610502df6cb7546341ba9f1a9a0e))
+- **ci:** replace missing pr-description-checker action ([725c625](https://github.com/bry-ly/Culm-LMS/commit/725c6257e2ad40e0ebbfff4aab5a2553ae4f3bdc))
+- **ci:** use github-script for pr description check ([e6c0f93](https://github.com/bry-ly/Culm-LMS/commit/e6c0f939b088aaa0c07758dc47abeaa74f234adb))
+- **dependabot:** target dev branch for dependency updates ([a7799bb](https://github.com/bry-ly/Culm-LMS/commit/a7799bbed8ea9e193df0eb848ad941012e1bc6c0))
+- **deps:** improve dependabot config and fix CI checks ([#24](https://github.com/bry-ly/Culm-LMS/issues/24)) ([61cc983](https://github.com/bry-ly/Culm-LMS/commit/61cc983f8a3c4b44cae1ce3877ddda84b4cb8b4a))
+- **uploader:** hide empty uploader when objectUrl exists ([6f1e5c6](https://github.com/bry-ly/Culm-LMS/commit/6f1e5c69a82c7a2eb35d0be3f9d6bfc3b393c89c))
 
 ## [1.0.1](https://github.com/bry-ly/Culm-LMS/compare/v1.0.0...v1.0.1) (2026-02-04)
 

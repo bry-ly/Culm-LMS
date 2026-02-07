@@ -26,6 +26,7 @@
         { "type": "revert", "section": "Reverts", "hidden": false }
       ],
       "extra-files": [],
+      "pull-request-header": "## Release ${version}",
       "pull-request-footer": "---\n\n_This release was generated automatically._"
     }
   }
