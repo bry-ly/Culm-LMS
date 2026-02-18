@@ -29,7 +29,7 @@ function VerifyRequestContent() {
   const email = params.get("email") as string;
   const isOtpCompleted = otp.length === 6;
 
-  function VerifyOTP() {
+  const handleVerifyOTP = () => {
     startTransition(async () => {
       await authClient.signIn.emailOtp({
         email: email,
@@ -45,7 +45,7 @@ function VerifyRequestContent() {
         },
       });
     });
-  }
+  };
 
   return (
     <Card className="mx-auto w-full">
@@ -83,7 +83,7 @@ function VerifyRequestContent() {
         </div>
         <Button
           className="w-full"
-          onClick={VerifyOTP}
+          onClick={handleVerifyOTP}
           disabled={emailPending || !isOtpCompleted}
         >
           {emailPending ? (

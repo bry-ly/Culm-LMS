@@ -116,9 +116,9 @@ export default function Home() {
       </section>
 
       <section className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-        {features.map((feature, index) => (
+        {features.map((feature) => (
           <Card
-            key={index}
+            key={feature.title}
             className="bg-pattern-striped transition-shadow hover:shadow-lg"
           >
             <CardHeader>
