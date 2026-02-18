@@ -4,6 +4,7 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 import { emailOTP, admin, lastLoginMethod } from "better-auth/plugins";
 import OtpVerificationEmail from "@/emails/otp-verification";
 import WelcomeEmail from "@/emails/welcome";
+import ResetPasswordEmail from "@/emails/reset-password";
 import prisma from "./db";
 import { env } from "./env";
 import { resend } from "./resend";
@@ -12,6 +13,23 @@ export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),
+  emailAndPassword: {
+    enabled: true,
+    sendResetPassword: async ({ user, url }) => {
+      const html = await render(ResetPasswordEmail({ url }));
+      const text = await render(ResetPasswordEmail({ url }), {
+        plainText: true,
+      });
+
+      await resend.emails.send({
+        from: "Culm LMS <send@bryanpalay.me>",
+        to: [user.email],
+        subject: "Culm LMS - Reset your password",
+        html,
+        text,
+      });
+    },
+  },
   databaseHooks: {
     user: {
       create: {
