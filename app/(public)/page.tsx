@@ -1,47 +1,12 @@
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import {
-  BookCopy,
-  Gamepad2Icon,
-  AlignEndHorizontalIcon,
-  User2,
-} from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { FeaturesSection } from "./_components/landing/FeaturesSection";
+import { WorkflowSection } from "./_components/landing/WorkflowSection";
+import { TestimonialsSection } from "./_components/landing/TestimonialsSection";
+import { CtaSection } from "./_components/landing/CtaSection";
+import { FooterSection } from "./_components/landing/FooterSection";
 import { env } from "@/lib/env";
-
-type Feature = {
-  title: string;
-  description: string;
-  icon: React.ReactNode;
-};
-
-const features: Feature[] = [
-  {
-    title: "Comprehensive Courses",
-    description:
-      "Access a wide range of courses designed to enhance your skills and knowledge.",
-    icon: <BookCopy className="h-6 w-6" />,
-  },
-  {
-    title: "Interactive Learning",
-    description:
-      "Engage with interactive content, quizzes, and assignments to reinforce your learning.",
-    icon: <Gamepad2Icon className="h-6 w-6" />,
-  },
-  {
-    title: " Progress Tracking",
-    description:
-      "Track your progress and achievements with detailed analytics and personalized dashboards.",
-    icon: <AlignEndHorizontalIcon className="h-6 w-6" />,
-  },
-  {
-    title: "Community Support",
-    description:
-      "Connect with fellow learners and instructors through our community forums.",
-    icon: <User2 className="h-6 w-6" />,
-  },
-];
 
 export default function Home() {
   const baseUrl = env.BETTER_AUTH_URL;
@@ -115,22 +80,11 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-        {features.map((feature) => (
-          <Card
-            key={feature.title}
-            className="bg-pattern-striped transition-shadow hover:shadow-lg"
-          >
-            <CardHeader>
-              <div className="mb-4 text-4xl">{feature.icon}</div>
-              <CardTitle className="">{feature.title}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground">{feature.description}</p>
-            </CardContent>
-          </Card>
-        ))}
-      </section>
+      <FeaturesSection />
+      <WorkflowSection />
+      <TestimonialsSection />
+      <CtaSection />
+      <FooterSection />
     </>
   );
 }
