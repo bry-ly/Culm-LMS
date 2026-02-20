@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { toast } from "sonner";
-import { Eye, EyeOff, Mail, Send } from "lucide-react";
+import { Eye, EyeOff, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -19,8 +19,6 @@ export function LoginForm() {
   const [tab, setTab] = useState("magic");
   const [loading, setLoading] = useState(false);
   const [showPwd, setShowPwd] = useState(false);
-  const [showVerify, setShowVerify] = useState(false);
-  const [email, setEmail] = useState("");
   const router = useRouter();
   const callback = useSearchParams().get("callback") || "/dashboard";
 
@@ -30,7 +28,7 @@ export function LoginForm() {
     // Auto-select tab based on last method
     if (method === "email") {
       setTab("password");
-    } else if (method === "magic-link") {
+    } else if (method === "email-otp") {
       setTab("magic");
     }
   }, []);
@@ -49,22 +47,15 @@ export function LoginForm() {
     }
 
     try {
-      const { error } = await (
-        authClient.signIn as unknown as {
-          magicLink: (opts: {
-            email: string;
-            callbackURL: string;
-          }) => Promise<{ error?: Error }>;
-        }
-      ).magicLink({
+      const { error } = await authClient.emailOtp.sendVerificationOtp({
         email: emailVal,
-        callbackURL: callback,
+        type: "sign-in",
       });
       if (error) throw error;
-      setEmail(emailVal);
-      setShowVerify(true);
+      toast.success("Verification code sent!");
+      router.push(`/verify-request?email=${encodeURIComponent(emailVal)}`);
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Failed to send link");
+      toast.error(err instanceof Error ? err.message : "Failed to send code");
     } finally {
       setLoading(false);
     }
@@ -102,19 +93,6 @@ export function LoginForm() {
       setLoading(false);
     }
   };
-
-  if (showVerify) {
-    return (
-      <div className="space-y-4 text-center">
-        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-100 dark:bg-green-900">
-          <Mail className="h-8 w-8 text-green-600 dark:text-green-400" />
-        </div>
-        <h2 className="text-xl font-bold">Check your email</h2>
-        <p className="text-muted-foreground">We sent a magic link to {email}</p>
-        <Button onClick={() => setShowVerify(false)}>Back to login</Button>
-      </div>
-    );
-  }
 
   const handleOAuth = async (provider: "google" | "github") => {
     setLoading(true);
@@ -216,8 +194,8 @@ export function LoginForm() {
       <Tabs value={tab} onValueChange={setTab}>
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="magic" className="relative">
-            Magic Link
-            {lastMethod === "magic-link" && (
+            Email Code
+            {lastMethod === "email-otp" && (
               <Badge
                 variant="secondary"
                 className="absolute -top-2 -right-1 px-1.5 py-0 text-[10px]"
@@ -258,7 +236,7 @@ export function LoginForm() {
               ) : (
                 <>
                   <Send className="size-4" />
-                  Send Magic Link
+                  Send Code
                 </>
               )}
             </Button>
