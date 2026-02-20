@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0](https://github.com/bry-ly/Culm-LMS/compare/v1.0.5...v1.1.0) (2026-02-18)
+
+
+### Features
+
+* **auth:** add complete authentication system with password reset ([#42](https://github.com/bry-ly/Culm-LMS/issues/42)) ([0214464](https://github.com/bry-ly/Culm-LMS/commit/0214464156c57d971f78d84e0471bc59f607483e))
+* **auth:** add forgot password page ([c2ddd4d](https://github.com/bry-ly/Culm-LMS/commit/c2ddd4d8ade6ef1f73863437cba6774ddc8e3467))
+* **auth:** add signup page with OAuth and password registration ([b59874f](https://github.com/bry-ly/Culm-LMS/commit/b59874fa39a39e96acfade2afb36bc55dbe709b9))
+* **auth:** refactor login form with tabs and shared validation ([2505c23](https://github.com/bry-ly/Culm-LMS/commit/2505c23c7fee6c514edaf1c55a742ed7e414975f))
+* **emails:** add reset password email template ([7a50f17](https://github.com/bry-ly/Culm-LMS/commit/7a50f177ab41d5e6a225b5489bcec38ccddfbafd))
+* **ui:** add theme toggle component ([70c3b2c](https://github.com/bry-ly/Culm-LMS/commit/70c3b2c24c6b10459a4d69185540645ca803e674))
+
 ## [1.0.5](https://github.com/bry-ly/Culm-LMS/compare/v1.0.4...v1.0.5) (2026-02-14)
 
 
