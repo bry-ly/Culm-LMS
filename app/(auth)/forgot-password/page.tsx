@@ -24,16 +24,15 @@ export default function ForgotPasswordPage() {
 
   async function handleSubmit() {
     startTransition(async () => {
-      await authClient.forgetPassword({
+      await authClient.emailOtp.requestPasswordReset({
         email,
-        redirectTo: "/reset-password",
         fetchOptions: {
           onSuccess: () => {
             setIsSent(true);
             toast.success("Password reset email sent");
           },
-          onError: (error) => {
-            toast.error(error.error.message || "Failed to send reset email");
+          onError: (error: { error?: { message?: string } }) => {
+            toast.error(error.error?.message || "Failed to send reset email");
           },
         },
       });

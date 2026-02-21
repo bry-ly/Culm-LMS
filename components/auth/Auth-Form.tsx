@@ -44,9 +44,9 @@ function OAuthButtons({ isLogin }: { isLogin: boolean }) {
         provider,
         callbackURL: "/",
         fetchOptions: {
-          onSuccess: () => toast.success(`${action}ed with ${provider}`),
+          onSuccess: () => void toast.success(`${action}ed with ${provider}`),
           onError: (err: { error: { message: string } }) =>
-            toast.error(err.error.message),
+            void toast.error(err.error.message),
         },
       });
     });
@@ -142,7 +142,7 @@ function AuthTabs({
             );
             router.push(`/verify-request?email=${email}`);
           },
-          onError: () => toast.error("Error sending email"),
+          onError: () => void toast.error("Error sending email"),
         },
       });
     });
