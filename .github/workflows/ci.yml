@@ -1,4 +1,4 @@
-name: CI
+name: CI (Commit / Push)
 
 on:
   push:
@@ -10,15 +10,17 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-env:
-  NODE_VERSION: "20"
-
 jobs:
-  lint:
-    name: Lint
+  validate-and-build:
+    name: Code Quality & Build
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup pnpm
@@ -26,32 +28,11 @@ jobs:
         with:
           version: 9
 
-      - name: Setup Node.js
+      - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: pnpm
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-  typecheck:
-    name: Type Check
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: pnpm
+          node-version: ${{ matrix.node-version }}
+          cache: "pnpm"
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -59,47 +40,51 @@ jobs:
       - name: Generate Prisma Client
         run: npx prisma generate
 
-      - name: Run TypeScript check
-        run: pnpm run typecheck
+      - name: Run linter
+        run: pnpm run lint
 
-  prisma-validate:
-    name: Validate Prisma Schema
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: pnpm
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+      - name: Run format check
+        run: pnpm run format:check
 
       - name: Validate Prisma schema
         run: npx prisma validate
+
+      - name: Run TypeScript check
+        run: pnpm run typecheck
+
+      - name: Verify build
+        run: pnpm run build
+        env:
+          # Include dummy variables if necessary to pass Next.js build
+          NEXT_PUBLIC_APP_URL: http://localhost:3000
+
+  security-scan:
+    name: Security Vulnerability Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: "fs"
+          scan-ref: "."
+          format: "table"
+          exit-code: "0" # Set to 1 to fail build on severe vulnerabilities
+          ignore-unfixed: true
+          vuln-type: "os,library"
+          severity: "CRITICAL,HIGH"
 
   version-check:
     name: Version Control Check
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      - name: Check for version bump on release PRs
-        if: github.base_ref == 'main' && startsWith(github.head_ref, 'release-please')
-        run: |
-          echo "Release PR detected - version bump will be handled by release-please"
 
       - name: Validate commit messages
         uses: wagoid/commitlint-github-action@v6
