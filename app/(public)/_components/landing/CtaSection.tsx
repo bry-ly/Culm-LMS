@@ -25,7 +25,7 @@ export function CtaSection() {
             size: "lg",
             variant: "outline",
           })}
-          href="/login"
+          href="/signup"
         >
           Create an Account
         </Link>
