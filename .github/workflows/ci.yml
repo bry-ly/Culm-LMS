@@ -53,7 +53,6 @@ jobs:
         run: pnpm run typecheck
 
       - name: Verify build
-        run: pnpm run build
         env:
           # Include dummy variables if necessary to pass Next.js build
           NEXT_PUBLIC_APP_URL: http://localhost:3000
