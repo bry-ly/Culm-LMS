@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0](https://github.com/bry-ly/Culm-LMS/compare/v1.1.0...v1.2.0) (2026-02-21)
+
+
+### Features
+
+* **landing:** extract landing page into modular components ([#44](https://github.com/bry-ly/Culm-LMS/issues/44)) ([aa04557](https://github.com/bry-ly/Culm-LMS/commit/aa04557a9c8fa61267256a5a136eeb517e25876e))
+
+
+### Bug Fixes
+
+* **auth:** replace broken magic link with email OTP in login form ([a4dcec8](https://github.com/bry-ly/Culm-LMS/commit/a4dcec8d1b65cc6bee4c1a6e6f387ade26be907b))
+* explicit error typing in forgot-password to fix ci linting ([43344c8](https://github.com/bry-ly/Culm-LMS/commit/43344c8238cd71a5c90a8de6f7456d7e56d5654c))
+* update cta link to point to signup instead of login ([e204dbd](https://github.com/bry-ly/Culm-LMS/commit/e204dbd3e29b30c1bcedae31799e2a5f5d85ad07))
+
 ## [1.1.0](https://github.com/bry-ly/Culm-LMS/compare/v1.0.5...v1.1.0) (2026-02-18)
 
 
